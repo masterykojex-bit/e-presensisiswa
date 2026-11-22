@@ -145,6 +145,14 @@
             <span class="text-slate-500">Email:</span>
             <span id="student-email" class="font-medium text-slate-600 text-right truncate">-</span>
           </div>
+          <div class="flex justify-between gap-2">
+            <span class="text-slate-500">No. HP:</span>
+            <span id="student-hp" class="font-semibold text-slate-700 text-right">-</span>
+          </div>
+          <div class="flex justify-between gap-2">
+            <span class="text-slate-500 flex-shrink-0">Alamat:</span>
+            <span id="student-alamat" class="font-medium text-slate-600 text-right">-</span>
+          </div>
         </div>
       </div>
 
@@ -466,8 +474,18 @@
             <input type="text" id="crud-program" placeholder="Nama Program Pelatihan *" required
               class="w-full bg-white border border-slate-200 text-slate-800 text-xs rounded-xl p-2.5">
           </div>
-          <div class="flex gap-2">
+          <div>
             <input type="email" id="crud-email" placeholder="Email Peserta"
+              class="w-full bg-white border border-slate-200 text-slate-800 text-xs rounded-xl p-2.5">
+          </div>
+        </div>
+        <div class="grid grid-cols-1 sm:grid-cols-3 gap-2.5">
+          <div>
+            <input type="tel" id="crud-hp" inputmode="tel" placeholder="No. HP / WhatsApp"
+              class="w-full bg-white border border-slate-200 text-slate-800 text-xs rounded-xl p-2.5">
+          </div>
+          <div class="sm:col-span-2 flex gap-2">
+            <input type="text" id="crud-alamat" placeholder="Alamat Lengkap Peserta"
               class="w-full bg-white border border-slate-200 text-slate-800 text-xs rounded-xl p-2.5">
             <button id="btn-save-student" type="submit"
               class="px-4 py-2 rounded-xl text-xs font-semibold text-white bg-blue-600 hover:bg-blue-700 whitespace-nowrap shadow-sm">
@@ -490,9 +508,9 @@
           <thead class="bg-slate-100 text-slate-600 uppercase font-semibold sticky top-0 z-10">
             <tr>
               <th class="p-3 border-b">NIK / NIP</th>
-              <th class="p-3 border-b">Nama Lengkap</th>
+              <th class="p-3 border-b">Nama & Kontak</th>
               <th class="p-3 border-b">JK</th>
-              <th class="p-3 border-b">Nama Program</th>
+              <th class="p-3 border-b">Program & Alamat</th>
               <th class="p-3 border-b">Status</th>
               <th class="p-3 border-b text-center">Aksi</th>
             </tr>
@@ -777,10 +795,10 @@
 
     // Mock Data Siswa sesuai sheet Anda untuk simulasi di mode Preview
     const mockStudents = [
-      { nik: '3322052703960004', nama: 'Adi Nugroho', jk: 'L', program: 'Digital Office Administration Berbasis Google Workspace 1', status: 'Aktif', email: 'adottech.an@gmail.com' },
-      { nik: '3374102101020005', nama: 'Ahmad Surya Agung Putra Aryana', jk: 'L', program: 'Digital Office Administration Berbasis Google Workspace 1', status: 'Aktif', email: 'suryagparyana@gmail.com' },
-      { nik: '3311122308050001', nama: 'Edgar Irfana Darojatin', jk: 'L', program: 'Digital Office Administration Berbasis Google Workspace 1', status: 'Aktif', email: 'edgargarid@gmail.com' },
-      { nik: '3374135805000001', nama: 'Kinshafa Naillufar', jk: 'P', program: 'Digital Office Administration Berbasis Google Workspace 1', status: 'Aktif', email: 'shafanaillufar@gmail.com' }
+      { nik: '3322052703960004', nama: 'Adi Nugroho', jk: 'L', program: 'Digital Office Administration Berbasis Google Workspace 1', status: 'Aktif', email: 'adottech.an@gmail.com', alamat: 'Semarang', hp: '081234567890' },
+      { nik: '3374102101020005', nama: 'Ahmad Surya Agung Putra Aryana', jk: 'L', program: 'Digital Office Administration Berbasis Google Workspace 1', status: 'Aktif', email: 'suryagparyana@gmail.com', alamat: 'Semarang', hp: '081234567891' },
+      { nik: '3311122308050001', nama: 'Edgar Irfana Darojatin', jk: 'L', program: 'Digital Office Administration Berbasis Google Workspace 1', status: 'Aktif', email: 'edgargarid@gmail.com', alamat: 'Sukoharjo', hp: '081234567892' },
+      { nik: '3374135805000001', nama: 'Kinshafa Naillufar', jk: 'P', program: 'Digital Office Administration Berbasis Google Workspace 1', status: 'Aktif', email: 'shafanaillufar@gmail.com', alamat: 'Semarang', hp: '081234567893' }
     ];
     const mockAttendanceDB = {};
 
@@ -1153,7 +1171,9 @@
         const filtered = allStudentsCache.filter(s =>
           s.nama.toLowerCase().includes(keyword) ||
           s.nik.toLowerCase().includes(keyword) ||
-          s.program.toLowerCase().includes(keyword)
+          s.program.toLowerCase().includes(keyword) ||
+          (s.alamat || '').toLowerCase().includes(keyword) ||
+          (s.hp || '').toLowerCase().includes(keyword)
         );
 
         document.getElementById('student-count-badge').textContent = `${filtered.length} Peserta`;
@@ -1170,10 +1190,13 @@
               <td class="p-3 font-mono font-semibold text-slate-700 whitespace-nowrap">${s.nik}</td>
               <td class="p-3">
                 <div class="font-bold text-slate-800">${s.nama}</div>
-                <div class="text-[11px] text-slate-400">${s.email || '-'}</div>
+                <div class="text-[11px] text-slate-500">${s.hp ? `HP: ${s.hp}` : ''}${s.hp && s.email ? ' • ' : ''}${s.email || ''}</div>
               </td>
               <td class="p-3 font-semibold text-slate-600">${s.jk}</td>
-              <td class="p-3 text-slate-600 max-w-xs truncate" title="${s.program}">${s.program}</td>
+              <td class="p-3 text-slate-600 max-w-xs">
+                <div class="truncate font-medium" title="${s.program}">${s.program}</div>
+                <div class="text-[11px] text-slate-400 truncate" title="${s.alamat || '-'}">${s.alamat || '-'}</div>
+              </td>
               <td class="p-3">
                 <span class="px-2 py-0.5 rounded-full text-[10px] font-bold ${isAktif ? 'bg-emerald-100 text-emerald-700' : 'bg-slate-200 text-slate-600'}">
                   ${isAktif ? 'Aktif' : s.status}
@@ -1201,7 +1224,9 @@
             document.getElementById('crud-program').value = target.program;
             const isAktif = target.status.toLowerCase() === 'aktif' || target.status.toLowerCase() === 'akrif';
             document.getElementById('crud-status').value = isAktif ? 'Aktif' : 'Nonaktif';
-            document.getElementById('crud-email').value = target.email;
+            document.getElementById('crud-email').value = target.email || '';
+            document.getElementById('crud-hp').value = target.hp || '';
+            document.getElementById('crud-alamat').value = target.alamat || '';
             document.getElementById('crud-nik').focus();
           });
         });
@@ -1259,7 +1284,9 @@
           jk: document.getElementById('crud-jk').value,
           program: document.getElementById('crud-program').value.trim(),
           status: document.getElementById('crud-status').value,
-          email: document.getElementById('crud-email').value.trim()
+          email: document.getElementById('crud-email').value.trim(),
+          hp: document.getElementById('crud-hp').value.trim(),
+          alamat: document.getElementById('crud-alamat').value.trim()
         };
 
         const btnSaveStudent = document.getElementById('btn-save-student');
@@ -1789,7 +1816,9 @@
       document.getElementById('student-name').textContent = currentStudent.nama;
       document.getElementById('student-gender').textContent = currentStudent.jk === 'L' ? 'Laki-laki (L)' : (currentStudent.jk === 'P' ? 'Perempuan (P)' : currentStudent.jk);
       document.getElementById('student-program').textContent = currentStudent.program;
-      document.getElementById('student-email').textContent = currentStudent.email;
+      document.getElementById('student-email').textContent = currentStudent.email || '-';
+      document.getElementById('student-hp').textContent = currentStudent.hp || '-';
+      document.getElementById('student-alamat').textContent = currentStudent.alamat || '-';
       document.getElementById('student-status-pill').textContent = currentStudent.status;
 
       const profileCard = document.getElementById('student-profile-card');
