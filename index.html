@@ -65,8 +65,11 @@
       <!-- Top Bar: Logo Kemnaker & Tombol Admin -->
       <div class="relative z-10 flex items-center justify-between gap-2">
         <div class="flex items-center gap-3">
-          <!-- Logo Resmi Kemnaker (Motif Tenun Belah Ketupat Putih) -->
-          <svg class="w-9 h-9 text-white flex-shrink-0" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/3/3e/Logo_Kementerian_Ketenagakerjaan_%282016%29.png/240px-Logo_Kementerian_Ketenagakerjaan_%282016%29.png"
+            alt="Logo Kemnaker"
+            onerror="this.style.display='none'; document.getElementById('logo-kemnaker-fallback').classList.remove('hidden');"
+            class="w-10 h-10 object-contain brightness-0 invert flex-shrink-0">
+          <svg id="logo-kemnaker-fallback" class="hidden w-9 h-9 text-white flex-shrink-0" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
             <rect x="28" y="6" width="8" height="22" rx="4" transform="rotate(45 28 6)" fill="currentColor"/>
             <rect x="38" y="16" width="8" height="22" rx="4" transform="rotate(45 38 16)" fill="currentColor"/>
             <rect x="18" y="16" width="8" height="22" rx="4" transform="rotate(45 18 16)" fill="currentColor"/>
@@ -85,6 +88,9 @@
 
         <button id="btn-open-admin" onclick="window.handleOpenAdmin()" type="button"
           class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-white/10 hover:bg-white/20 active:scale-95 text-white text-xs font-semibold border border-white/15 transition-all cursor-pointer flex-shrink-0">
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"></path>
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path>
           </svg>
           <span>Admin</span>
         </button>
