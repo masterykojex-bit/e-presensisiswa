@@ -694,7 +694,7 @@
           </div>
           <div class="flex-grow">
             <h4 class="text-sm font-bold text-slate-800">Database Peserta (CRUD Siswa)</h4>
-            <p class="text-xs text-slate-500 mt-0.5">Tambah, ubah, atau hapus data peserta pelatihan</p>
+            <p class="text-xs text-slate-500 mt-0.5">Tambah, ubah, atau nonaktifkan data peserta pelatihan</p>
           </div>
         </button>
 
@@ -1986,7 +1986,10 @@
           </td>
           <td class="p-3 text-center whitespace-nowrap space-x-1.5">
             <button type="button" data-nik="${s.nik}" class="btn-edit-student px-2.5 py-1 rounded-lg bg-amber-100 hover:bg-amber-200 text-amber-800 font-semibold cursor-pointer">Edit</button>
-            <button type="button" data-nik="${s.nik}" class="btn-delete-student px-2.5 py-1 rounded-lg bg-rose-100 hover:bg-rose-200 text-rose-700 font-semibold cursor-pointer">Hapus</button>
+            ${(s.status || '').toLowerCase() === 'aktif'
+              ? `<button type="button" data-nik="${s.nik}" class="btn-delete-student px-2.5 py-1 rounded-lg bg-rose-100 hover:bg-rose-200 text-rose-700 font-semibold cursor-pointer">Non Aktif</button>`
+              : `<span class="px-2.5 py-1 rounded-lg bg-slate-100 text-slate-400 font-medium inline-block">Nonaktif</span>`
+            }
           </td>
         </tr>
       `).join('');
@@ -2015,11 +2018,11 @@
           const targetNik = btn.dataset.nik;
           const confirmRes = await Swal.fire({
             icon: 'warning',
-            title: 'Hapus Peserta?',
-            text: `Yakin ingin menghapus data peserta dengan NIK/NIP ${targetNik}?`,
+            title: 'Nonaktifkan Peserta?',
+            text: `Ubah status peserta dengan NIK/NIP ${targetNik} menjadi Nonaktif? Data tetap tersimpan di database.`,
             showCancelButton: true,
             confirmButtonColor: '#e11d48',
-            confirmButtonText: 'Ya, Hapus',
+            confirmButtonText: 'Ya, Nonaktifkan',
             cancelButtonText: 'Batal'
           });
           if (!confirmRes.isConfirmed) return;
@@ -2029,7 +2032,7 @@
             showToast('success', res.message);
             loadAdminStudents();
           } else {
-            showToast('error', (res && res.message) || 'Gagal menghapus peserta');
+            showToast('error', (res && res.message) || 'Gagal menonaktifkan peserta');
           }
         });
       });
