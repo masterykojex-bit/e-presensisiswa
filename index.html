@@ -1550,7 +1550,71 @@
       }
     }
 
-    function fetchGpsLocationAndMap() {
+    function renderMapIframeAndAddress(lat, lon, sourceLabel = '') {
+      const mapContainer = document.getElementById('gps-map-container');
+      const addrText = document.getElementById('gps-address-text');
+      const latNum = parseFloat(lat);
+      const lonNum = parseFloat(lon);
+      const latFixed = latNum.toFixed(6);
+      const lonFixed = lonNum.toFixed(6);
+      const delta = 0.003;
+      const bbox = `${(lonNum - delta).toFixed(6)},${(latNum - delta).toFixed(6)},${(lonNum + delta).toFixed(6)},${(latNum + delta).toFixed(6)}`;
+
+      if (mapContainer) {
+        mapContainer.innerHTML = `<iframe class="w-full h-full border-0" loading="lazy" src="https://www.openstreetmap.org/export/embed.html?bbox=${bbox}&layer=mapnik&marker=${latFixed},${lonFixed}"></iframe>`;
+      }
+
+      const prefix = sourceLabel ? `[${sourceLabel}] ` : '';
+      currentLocationText = `${prefix}Koordinat (${latFixed}, ${lonFixed})`;
+      if (addrText) addrText.textContent = `${currentLocationText} — Memuat alamat...`;
+
+      fetch(`https://nominatim.openstreetmap.org/reverse?format=json&lat=${latFixed}&lon=${lonFixed}&zoom=18&addressdetails=1`)
+        .then((res) => res.json())
+        .then((geoJson) => {
+          if (geoJson && geoJson.display_name) {
+            currentLocationText = `${prefix}${geoJson.display_name} (${latFixed}, ${lonFixed})`;
+            if (addrText) addrText.textContent = currentLocationText;
+          }
+        })
+        .catch(() => {});
+    }
+
+    async function fallbackIpLocation() {
+      const providers = [
+        async () => {
+          const r = await fetch('https://ipapi.co/json/');
+          const d = await r.json();
+          if (d && d.latitude && d.longitude) {
+            return { lat: d.latitude, lon: d.longitude, city: [d.city, d.region].filter(Boolean).join(', ') };
+          }
+          return null;
+        },
+        async () => {
+          const r = await fetch('https://ipwho.is/');
+          const d = await r.json();
+          if (d && d.success && d.latitude && d.longitude) {
+            return { lat: d.latitude, lon: d.longitude, city: [d.city, d.region].filter(Boolean).join(', ') };
+          }
+          return null;
+        }
+      ];
+
+      for (const fn of providers) {
+        try {
+          const loc = await fn();
+          if (loc) return loc;
+        } catch (e) {}
+      }
+      return null;
+    }
+
+    function getPositionPromise(options) {
+      return new Promise((resolve, reject) => {
+        navigator.geolocation.getCurrentPosition(resolve, reject, options);
+      });
+    }
+
+    async function fetchGpsLocationAndMap() {
       const mapContainer = document.getElementById('gps-map-container');
       const addrText = document.getElementById('gps-address-text');
       currentLocationText = '';
@@ -1562,47 +1626,57 @@
         addrText.textContent = 'Mengambil koordinat lokasi Anda...';
       }
 
-      if (!navigator.geolocation) {
-        currentLocationText = 'Perangkat tidak mendukung GPS';
-        if (mapContainer) mapContainer.innerHTML = '<span class="text-xs text-rose-500">GPS tidak didukung browser ini</span>';
-        if (addrText) addrText.textContent = currentLocationText;
+      if (navigator.geolocation) {
+        try {
+          // Tahap 1: Coba akurasi tinggi (GPS perangkat)
+          const pos = await getPositionPromise({ enableHighAccuracy: true, timeout: 7000, maximumAge: 60000 });
+          renderMapIframeAndAddress(pos.coords.latitude, pos.coords.longitude);
+          return;
+        } catch (errHigh) {
+          // Tahap 2: Jika timeout atau posisi tidak tersedia (bukan ditolak), coba akurasi standar (Wi-Fi / Seluler)
+          if (errHigh && errHigh.code !== 1) {
+            try {
+              const posLow = await getPositionPromise({ enableHighAccuracy: false, timeout: 8000, maximumAge: 300000 });
+              renderMapIframeAndAddress(posLow.coords.latitude, posLow.coords.longitude);
+              return;
+            } catch (errLow) {}
+          }
+        }
+      }
+
+      // Tahap 3: Fallback otomatis via Jaringan/IP (berguna jika dibuka dalam iframe Google Apps Script yang memblokir sensor GPS)
+      if (addrText) addrText.textContent = 'GPS browser dibatasi, mendeteksi lokasi jaringan...';
+      const ipLoc = await fallbackIpLocation();
+      if (ipLoc) {
+        renderMapIframeAndAddress(ipLoc.lat, ipLoc.lon, 'Lokasi Jaringan');
         return;
       }
 
-      navigator.geolocation.getCurrentPosition(
-        async (pos) => {
-          const lat = pos.coords.latitude.toFixed(6);
-          const lon = pos.coords.longitude.toFixed(6);
-          const delta = 0.003;
-          const bbox = `${(parseFloat(lon) - delta).toFixed(6)},${(parseFloat(lat) - delta).toFixed(6)},${(parseFloat(lon) + delta).toFixed(6)},${(parseFloat(lat) + delta).toFixed(6)}`;
-
-          if (mapContainer) {
-            mapContainer.innerHTML = `<iframe class="w-full h-full border-0" loading="lazy" src="https://www.openstreetmap.org/export/embed.html?bbox=${bbox}&layer=mapnik&marker=${lat},${lon}"></iframe>`;
-          }
-
-          currentLocationText = `Koordinat (${lat}, ${lon})`;
-          if (addrText) addrText.textContent = `${currentLocationText} — Memuat nama jalan...`;
-
-          try {
-            const geoRes = await fetch(`https://nominatim.openstreetmap.org/reverse?format=json&lat=${lat}&lon=${lon}&zoom=18&addressdetails=1`);
-            const geoJson = await geoRes.json();
-            if (geoJson && geoJson.display_name) {
-              currentLocationText = `${geoJson.display_name} (${lat}, ${lon})`;
-            }
-          } catch (e) {}
-
-          if (addrText) addrText.textContent = currentLocationText;
-        },
-        () => {
-          currentLocationText = 'Lokasi GPS tidak diizinkan / tidak terjangkau';
-          if (mapContainer) {
-            mapContainer.innerHTML = `<div class="p-3 text-center text-xs text-amber-700">Izin lokasi belum aktif. Aktifkan GPS browser Anda lalu klik Perbarui Lokasi.</div>`;
-          }
-          if (addrText) addrText.textContent = currentLocationText;
-        },
-        { enableHighAccuracy: true, timeout: 10000, maximumAge: 0 }
-      );
+      // Tahap 4: Jika seluruh metode otomatis gagal/diblokir, tampilkan panduan & tombol lokasi BBPVP Semarang
+      currentLocationText = 'Lokasi manual / Izin GPS browser tidak aktif';
+      if (mapContainer) {
+        mapContainer.innerHTML = `
+          <div class="p-3 text-center space-y-2">
+            <p class="text-[11px] text-amber-800 leading-snug">
+              Browser/iframe memblokir akses GPS otomatis. Klik ikon <strong>Gembok / Pengaturan</strong> di bilah alamat browser &rarr; pilih <strong>Izinkan Lokasi (Allow)</strong>, atau gunakan lokasi instansi:
+            </p>
+            <button type="button" onclick="window.useDefaultCampusLocation()"
+              class="px-3 py-1.5 rounded-lg bg-[#0F3562] text-white text-[11px] font-semibold shadow-sm cursor-pointer">
+              Gunakan Titik Lokasi ${appSettings.companyName || 'BBPVP Semarang'}
+            </button>
+          </div>
+        `;
+      }
+      if (addrText) {
+        addrText.textContent = 'Izin lokasi browser diblokir. Aktifkan izin lokasi di pengaturan situs atau klik tombol di peta.';
+      }
     }
+
+    window.useDefaultCampusLocation = function() {
+      // Koordinat BBPVP Semarang (Jl. Brigjen Sudiarto No.118, Semarang)
+      renderMapIframeAndAddress(-7.001389, 110.446944, appSettings.companyName || 'BBPVP Semarang');
+      showToast('info', 'Menggunakan titik koordinat lokasi pelatihan.');
+    };
 
     async function openEvidenceModal(actionType) {
       currentActionType = actionType;
