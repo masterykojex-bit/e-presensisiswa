@@ -951,8 +951,29 @@
 
         <div>
           <label class="block text-xs font-semibold text-slate-600 mb-1">ID Folder Google Drive (Bukti Foto & TTD)</label>
-          <input type="text" id="set-drive-folder" placeholder="Opsional (kosongkan untuk folder otomatis)"
+          <input type="text" id="set-drive-folder" placeholder="1AZEzlYDFF_As4KMEyd690gb_QgD9XMap"
             class="w-full bg-slate-50 border border-slate-200 text-slate-800 text-xs font-mono rounded-xl p-2.5">
+        </div>
+
+        <!-- Pintasan Cepat Buka Database Spreadsheet & Folder Drive -->
+        <div class="p-3.5 rounded-2xl bg-slate-50 border border-slate-200/80 space-y-2">
+          <p class="text-[11px] font-bold uppercase tracking-wider text-slate-500">Pintasan Database & Penyimpanan</p>
+          <div class="grid grid-cols-2 gap-2">
+            <a id="link-open-spreadsheet" href="https://docs.google.com/spreadsheets/d/1KtC99JnvHIr8LucdPinpVzj3SN-iV8Inagk0CzHq9Fw/edit" target="_blank" rel="noopener noreferrer"
+              class="py-2 px-3 rounded-xl bg-emerald-50 hover:bg-emerald-100 border border-emerald-200 text-emerald-700 text-xs font-semibold flex items-center justify-center gap-1.5 transition-colors">
+              <svg class="w-4 h-4 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 10h18M3 14h18m-9-4v8m-7 0h14a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z"></path>
+              </svg>
+              <span>Buka Spreadsheet</span>
+            </a>
+            <a id="link-open-drive-folder" href="https://drive.google.com/drive/folders/1AZEzlYDFF_As4KMEyd690gb_QgD9XMap" target="_blank" rel="noopener noreferrer"
+              class="py-2 px-3 rounded-xl bg-blue-50 hover:bg-blue-100 border border-blue-200 text-blue-700 text-xs font-semibold flex items-center justify-center gap-1.5 transition-colors">
+              <svg class="w-4 h-4 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 7v10a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-6l-2-2H5a2 2 0 00-2 2z"></path>
+              </svg>
+              <span>Buka Folder Drive</span>
+            </a>
+          </div>
         </div>
 
         <div>
@@ -1969,7 +1990,11 @@
         return;
       }
 
-      tbody.innerHTML = filtered.map(s => `
+      tbody.innerHTML = filtered.map(s => {
+        const cleanStatus = (s.status || '').trim();
+        const isAktif = cleanStatus.toLowerCase() === 'aktif' || cleanStatus.toLowerCase() === 'akrif';
+        const displayStatus = isAktif ? 'Aktif' : (cleanStatus || 'Nonaktif');
+        return `
         <tr class="hover:bg-slate-50">
           <td class="p-3 font-mono font-semibold text-slate-700">${s.nik}</td>
           <td class="p-3">
@@ -1982,17 +2007,18 @@
             <div class="text-[11px] text-slate-400 truncate max-w-[200px]">${s.alamat || '-'}</div>
           </td>
           <td class="p-3">
-            <span class="px-2 py-0.5 rounded-full text-[10px] font-bold ${(s.status || '').toLowerCase() === 'aktif' ? 'bg-emerald-100 text-emerald-700' : 'bg-slate-200 text-slate-600'}">${s.status}</span>
+            <span class="px-2 py-0.5 rounded-full text-[10px] font-bold ${isAktif ? 'bg-emerald-100 text-emerald-700' : 'bg-slate-200 text-slate-600'}">${displayStatus}</span>
           </td>
           <td class="p-3 text-center whitespace-nowrap space-x-1.5">
             <button type="button" data-nik="${s.nik}" class="btn-edit-student px-2.5 py-1 rounded-lg bg-amber-100 hover:bg-amber-200 text-amber-800 font-semibold cursor-pointer">Edit</button>
-            ${(s.status || '').toLowerCase() === 'aktif'
-              ? `<button type="button" data-nik="${s.nik}" class="btn-delete-student px-2.5 py-1 rounded-lg bg-rose-100 hover:bg-rose-200 text-rose-700 font-semibold cursor-pointer">Non Aktif</button>`
-              : `<span class="px-2.5 py-1 rounded-lg bg-slate-100 text-slate-400 font-medium inline-block">Nonaktif</span>`
+            ${isAktif
+              ? `<button type="button" data-nik="${s.nik}" data-target-status="Nonaktif" class="btn-toggle-status px-2.5 py-1 rounded-lg bg-rose-100 hover:bg-rose-200 text-rose-700 font-semibold cursor-pointer">Non Aktif</button>`
+              : `<button type="button" data-nik="${s.nik}" data-target-status="Aktif" class="btn-toggle-status px-2.5 py-1 rounded-lg bg-emerald-100 hover:bg-emerald-200 text-emerald-700 font-semibold cursor-pointer">Aktifkan</button>`
             }
           </td>
         </tr>
-      `).join('');
+      `;
+      }).join('');
 
       tbody.querySelectorAll('.btn-edit-student').forEach(btn => {
         btn.addEventListener('click', () => {
@@ -2004,8 +2030,8 @@
           document.getElementById('crud-original-nik').value = st.nik;
           document.getElementById('crud-nik').value = st.nik;
           document.getElementById('crud-nama').value = st.nama;
-          document.getElementById('crud-jk').value = st.jk || 'L';
-          document.getElementById('crud-status').value = st.status || 'Aktif';
+          document.getElementById('crud-jk').value = (st.jk || 'L').trim();
+          document.getElementById('crud-status').value = (st.status || '').trim().toLowerCase() === 'nonaktif' ? 'Nonaktif' : 'Aktif';
           document.getElementById('crud-program').value = st.program || '';
           document.getElementById('crud-email').value = st.email || '';
           document.getElementById('crud-hp').value = st.hp || '';
@@ -2013,26 +2039,37 @@
         });
       });
 
-      tbody.querySelectorAll('.btn-delete-student').forEach(btn => {
+      tbody.querySelectorAll('.btn-toggle-status').forEach(btn => {
         btn.addEventListener('click', async () => {
           const targetNik = btn.dataset.nik;
+          const targetStatus = btn.dataset.targetStatus;
+          const st = allStudentsCache.find(x => x.nik === targetNik);
+          if (!st) return;
+
+          const isDeactivating = targetStatus === 'Nonaktif';
           const confirmRes = await Swal.fire({
-            icon: 'warning',
-            title: 'Nonaktifkan Peserta?',
-            text: `Ubah status peserta dengan NIK/NIP ${targetNik} menjadi Nonaktif? Data tetap tersimpan di database.`,
+            icon: isDeactivating ? 'warning' : 'question',
+            title: isDeactivating ? 'Nonaktifkan Peserta?' : 'Aktifkan Peserta?',
+            text: isDeactivating
+              ? `Ubah status ${st.nama} (${targetNik}) menjadi Nonaktif? Data tetap tersimpan di database.`
+              : `Aktifkan kembali peserta ${st.nama} (${targetNik})?`,
             showCancelButton: true,
-            confirmButtonColor: '#e11d48',
-            confirmButtonText: 'Ya, Nonaktifkan',
+            confirmButtonColor: isDeactivating ? '#e11d48' : '#059669',
+            confirmButtonText: isDeactivating ? 'Ya, Nonaktifkan' : 'Ya, Aktifkan',
             cancelButtonText: 'Batal'
           });
           if (!confirmRes.isConfirmed) return;
 
-          const res = await callBackend('deleteStudent', { pin: verifiedAdminPin, nik: targetNik });
+          const res = await callBackend('saveStudent', {
+            pin: verifiedAdminPin,
+            student: { ...st, status: targetStatus },
+            originalNik: targetNik
+          });
           if (res && res.success) {
-            showToast('success', res.message);
+            showToast('success', `Status peserta berhasil diubah menjadi ${targetStatus}.`);
             loadAdminStudents();
           } else {
-            showToast('error', (res && res.message) || 'Gagal menonaktifkan peserta');
+            showToast('error', (res && res.message) || 'Gagal mengubah status peserta');
           }
         });
       });
@@ -2150,12 +2187,16 @@
 
       document.getElementById('btn-open-settings-modal').addEventListener('click', () => {
         closeModalEl('admin-menu-modal');
+        const defaultFolderId = appSettings.driveFolderId || '1AZEzlYDFF_As4KMEyd690gb_QgD9XMap';
+        const defaultSheetId = appSettings.spreadsheetId || '1KtC99JnvHIr8LucdPinpVzj3SN-iV8Inagk0CzHq9Fw';
         document.getElementById('set-company-name').value = appSettings.companyName || '';
         document.getElementById('set-jam-masuk').value = appSettings.jamMasuk || '08:00';
         document.getElementById('set-toleransi').value = appSettings.toleransi != null ? appSettings.toleransi : 15;
         document.getElementById('set-max-checkin').value = appSettings.maxCheckIn || '10:00';
         document.getElementById('set-min-hours').value = appSettings.minWorkHours != null ? appSettings.minWorkHours : 8;
-        document.getElementById('set-drive-folder').value = appSettings.driveFolderId || '';
+        document.getElementById('set-drive-folder').value = defaultFolderId;
+        document.getElementById('link-open-spreadsheet').href = `https://docs.google.com/spreadsheets/d/${defaultSheetId}/edit`;
+        document.getElementById('link-open-drive-folder').href = `https://drive.google.com/drive/folders/${defaultFolderId}`;
         document.getElementById('set-admin-pin').value = '';
         openModalEl('admin-settings-modal');
       });
