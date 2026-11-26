@@ -14,6 +14,8 @@
   <script src="https://cdn.tailwindcss.com"></script>
   <!-- SweetAlert2 -->
   <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+  <!-- html2pdf.js untuk Unduh PDF Langsung di HP tanpa Printer -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
   <!-- Google Fonts: Inter & Plus Jakarta Sans -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -1597,7 +1599,63 @@
       document.getElementById('print-sign-nama').textContent = currentStudent.nama || '-';
       document.getElementById('print-sign-nik').textContent = `NIK. ${currentStudent.nik || '-'}`;
 
-      setTimeout(() => window.print(), 120);
+      Swal.fire({
+        title: 'Ekspor / Cetak Laporan',
+        text: 'Pilih metode penyimpanan dokumen laporan presensi:',
+        icon: 'question',
+        showCancelButton: true,
+        showDenyButton: true,
+        confirmButtonText: 'Unduh File PDF (HP)',
+        denyButtonText: 'Cetak via Printer',
+        cancelButtonText: 'Batal',
+        confirmButtonColor: '#0F3562',
+        denyButtonColor: '#148296'
+      }).then((choice) => {
+        if (choice.isConfirmed) {
+          window.downloadLaporanPdfDirect(periodLabel);
+        } else if (choice.isDenied) {
+          setTimeout(() => window.print(), 150);
+        }
+      });
+    };
+
+    window.downloadLaporanPdfDirect = async function(periodLabel) {
+      const printEl = document.getElementById('print-report-sheet');
+      if (!printEl) return;
+
+      if (typeof html2pdf === 'undefined') {
+        showToast('info', 'Membuka dialog cetak sistem...');
+        window.print();
+        return;
+      }
+
+      showToast('info', 'Menyiapkan file PDF laporan...');
+      const cleanNama = (currentStudent.nama || 'Peserta').replace(/[^a-zA-Z0-9]/g, '_');
+      const cleanPeriode = (periodLabel || 'Rekap').replace(/[^a-zA-Z0-9]/g, '_');
+      const fileName = `Laporan_Presensi_${cleanNama}_${cleanPeriode}.pdf`;
+
+      // Tampilkan sementara elemen laporan untuk dirender menjadi PDF
+      printEl.classList.remove('hidden');
+      printEl.style.padding = '16px';
+
+      const opt = {
+        margin: [10, 10, 10, 10],
+        filename: fileName,
+        image: { type: 'jpeg', quality: 0.98 },
+        html2canvas: { scale: 2, useCORS: true, logging: false },
+        jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' }
+      };
+
+      try {
+        await html2pdf().set(opt).from(printEl).save();
+        showToast('success', `PDF "${fileName}" berhasil diunduh ke perangkat Anda!`);
+      } catch (err) {
+        showToast('warning', 'Mengalihkan ke dialog cetak bawaan perangkat...');
+        window.print();
+      } finally {
+        printEl.style.padding = '';
+        printEl.classList.add('hidden');
+      }
     };
 
     function renderLocationWithMapLink(locText) {
