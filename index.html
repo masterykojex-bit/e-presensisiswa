@@ -237,7 +237,14 @@
           <form onsubmit="event.preventDefault(); window.searchStudentByNIK();" class="flex items-center gap-2">
             <div class="relative flex-1">
               <input type="text" id="input-nik" inputmode="numeric" placeholder="Ketik NIK / NIP Peserta..."
-                class="w-full pl-3.5 pr-3 py-2 text-xs sm:text-sm font-medium bg-white border border-slate-200 rounded-xl focus:ring-2 focus:ring-[#148296] focus:border-[#148296] outline-none transition-all">
+                oninput="window.toggleClearNikButton()"
+                class="w-full pl-3.5 pr-9 py-2 text-xs sm:text-sm font-medium bg-white border border-slate-200 rounded-xl focus:ring-2 focus:ring-[#148296] focus:border-[#148296] outline-none transition-all">
+              <button type="button" id="btn-clear-nik" onclick="window.clearNikInput()" title="Hapus NIK"
+                class="hidden absolute inset-y-0 right-2 my-auto w-6 h-6 rounded-full text-slate-400 hover:text-slate-600 hover:bg-slate-100 flex items-center justify-center transition-colors cursor-pointer">
+                <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"></path>
+                </svg>
+              </button>
             </div>
             <button type="submit" id="btn-search-nik"
               class="px-4 py-2 rounded-xl bg-[#0F3562] hover:bg-[#0b284b] text-white text-xs sm:text-sm font-semibold shadow-xs transition-all cursor-pointer">
@@ -1753,6 +1760,7 @@
       try { localStorage.removeItem('epresensi_last_nik'); } catch (e) {}
 
       document.getElementById('input-nik').value = '';
+      window.toggleClearNikButton();
       document.getElementById('header-user-name').textContent = 'PESERTA PELATIHAN';
       document.getElementById('header-user-program').textContent = 'Masukkan NIK / NIP untuk memulai presensi';
       document.getElementById('akun-nama').textContent = 'PESERTA PELATIHAN';
@@ -1798,6 +1806,25 @@
       if (akunInstEl) akunInstEl.textContent = appSettings.companyName;
       if (schedEl) schedEl.textContent = `${appSettings.jamMasuk} - ${appSettings.jamPulang}`;
     }
+
+    window.toggleClearNikButton = function() {
+      const input = document.getElementById('input-nik');
+      const btn = document.getElementById('btn-clear-nik');
+      if (!input || !btn) return;
+      if (input.value && input.value.length > 0) {
+        btn.classList.remove('hidden');
+      } else {
+        btn.classList.add('hidden');
+      }
+    };
+
+    window.clearNikInput = function() {
+      const input = document.getElementById('input-nik');
+      if (!input) return;
+      input.value = '';
+      window.toggleClearNikButton();
+      input.focus();
+    };
 
     window.searchStudentByNIK = async function() {
       const nikInput = document.getElementById('input-nik');
@@ -2686,6 +2713,7 @@
         const savedNik = localStorage.getItem('epresensi_last_nik');
         if (savedNik) {
           document.getElementById('input-nik').value = savedNik;
+          window.toggleClearNikButton();
           await window.searchStudentByNIK();
         }
       } catch (e) {}
