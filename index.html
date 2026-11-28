@@ -3062,12 +3062,9 @@
       tbody.innerHTML = `<tr><td colspan="6" class="p-6 text-center text-slate-400">Memuat data absensi...</td></tr>`;
 
       try {
-        // Jika allStudentsCache belum dimuat, ambil dulu agar daftar Nama Program tersedia
-        if (typeof allStudentsCache !== 'undefined' && allStudentsCache.length === 0) {
-          const resStudents = await callBackend('getStudents', { pin: adminSessionPin }); // Sesuaikan nama fungsi backend Anda jika berbeda
-          if (resStudents && resStudents.success && Array.isArray(resStudents.students)) {
-            allStudentsCache = resStudents.students;
-          }
+        // Otomatis muat data peserta jika memori allStudentsCache masih kosong
+        if (typeof allStudentsCache !== 'undefined' && allStudentsCache.length === 0 && typeof loadAdminStudents === 'function') {
+          await loadAdminStudents();
         }
 
         const res = await callBackend('getAttendanceRecords', { pin: adminSessionPin, dateFilter: dateFilter });
