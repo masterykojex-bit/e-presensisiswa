@@ -100,7 +100,7 @@
     <div class="max-w-lg mx-auto">
       <div class="flex items-center justify-between gap-2 pb-4 border-b border-white/15">
         <div class="flex items-center gap-2.5 min-w-0">
-          <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/1/1a/Logo_Kementerian_Ketenagakerjaan_%282016%29.png/512px-Logo_Kementerian_Ketenagakerjaan_%282016%29.png"
+          <img src="https://upload.wikimedia.org/wikipedia/commons/9/98/Logo_Kementerian_Ketenagakerjaan_%282016%29.png"
             alt="Logo Kemnaker"
             onerror="this.onerror=null;this.src='https://placehold.co/36x36/0F3562/ffffff?text=K';"
             class="w-9 h-9 rounded-xl bg-white p-1 object-contain flex-shrink-0">
@@ -116,11 +116,20 @@
       </div>
 
       <div class="pt-4 flex items-center gap-3">
-        <div class="w-12 h-12 rounded-2xl bg-white/15 border border-white/20 flex items-center justify-center flex-shrink-0">
-          <svg class="w-7 h-7 text-sky-100" fill="currentColor" viewBox="0 0 24 24">
+        <!-- Avatar Profil Peserta (Klik untuk Ubah / Hapus Foto) -->
+        <button type="button" onclick="window.handleOpenAvatarModal()" title="Ubah Foto Profil"
+          class="relative group w-12 h-12 rounded-2xl bg-white/15 border border-white/25 flex items-center justify-center flex-shrink-0 overflow-hidden cursor-pointer focus:outline-none">
+          <img id="header-avatar-img" src="" alt="Foto Profil" class="hidden w-full h-full object-cover">
+          <svg id="header-avatar-placeholder" class="w-7 h-7 text-sky-100" fill="currentColor" viewBox="0 0 24 24">
             <path d="M12 12c2.7 0 4.8-2.1 4.8-4.8S14.7 2.4 12 2.4 7.2 4.5 7.2 7.2 9.3 12 12 12zm0 2.4c-3.2 0-9.6 1.6-9.6 4.8v2.4h19.2v-2.4c0-3.2-6.4-4.8-9.6-4.8z"/>
           </svg>
-        </div>
+          <span class="absolute bottom-0 right-0 w-4 h-4 rounded-tl-lg bg-[#148296] text-white flex items-center justify-center shadow-xs">
+            <svg class="w-2.5 h-2.5" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z"></path>
+              <circle cx="12" cy="13" r="3"></circle>
+            </svg>
+          </span>
+        </button>
         <div class="min-w-0 flex-1">
           <p id="header-user-name" class="font-display text-sm sm:text-base font-extrabold tracking-wide truncate">PESERTA PELATIHAN</p>
           <p id="header-user-program" class="text-xs text-sky-200 truncate">Masukkan NIK / NIP untuk memulai presensi</p>
@@ -130,237 +139,272 @@
   </header>
 
   <!-- ======================================================================= -->
-  <!-- VIEW 1: BERANDA                                                         -->
+  <!-- MODAL UBAH / HAPUS FOTO PROFIL AVATAR                                   -->
   <!-- ======================================================================= -->
-  <div id="view-beranda" class="max-w-lg w-full mx-auto px-4 -mt-3 space-y-4 no-print">
-    <!-- Kotak Pencarian NIK / NIP -->
-    <div class="bg-white rounded-3xl p-4 shadow-md border border-slate-100">
-      <div class="flex items-center justify-between mb-2">
-        <label for="input-nik" class="text-xs font-bold text-slate-700">Cari Peserta (NIK / NIP)</label>
-        <span class="text-[11px] text-slate-400">Jam: <strong id="schedule-info" class="text-slate-600">07:00 - 17:00</strong></span>
+  <div id="avatar-modal" class="fixed inset-0 z-50 hidden items-center justify-center p-4 bg-slate-900/70 backdrop-blur-sm no-print">
+    <div class="bg-white rounded-3xl max-w-sm w-full p-5 sm:p-6 shadow-2xl border border-slate-100 space-y-4">
+      <div class="flex items-center justify-between pb-3 border-b border-slate-100">
+        <div>
+          <h3 class="font-display text-base font-bold text-slate-800">Foto Profil Peserta</h3>
+          <p class="text-xs text-slate-500">Pilih atau ambil foto untuk avatar akun Anda</p>
+        </div>
+        <button type="button" onclick="window.closeAvatarModal()"
+          class="p-1.5 rounded-xl text-slate-400 hover:text-slate-600 hover:bg-slate-100 cursor-pointer">
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+          </svg>
+        </button>
+      </div>
+
+      <div class="flex flex-col items-center gap-3 py-2">
+        <div class="w-28 h-28 rounded-3xl bg-slate-100 border-2 border-slate-200 overflow-hidden flex items-center justify-center shadow-inner">
+          <img id="avatar-modal-preview" src="" alt="Preview Avatar" class="hidden w-full h-full object-cover">
+          <svg id="avatar-modal-placeholder" class="w-14 h-14 text-slate-300" fill="currentColor" viewBox="0 0 24 24">
+            <path d="M12 12c2.7 0 4.8-2.1 4.8-4.8S14.7 2.4 12 2.4 7.2 4.5 7.2 7.2 9.3 12 12 12zm0 2.4c-3.2 0-9.6 1.6-9.6 4.8v2.4h19.2v-2.4c0-3.2-6.4-4.8-9.6-4.8z"/>
+          </svg>
+        </div>
+
+        <label class="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-800 text-xs font-bold cursor-pointer transition-colors">
+          <svg class="w-4 h-4 text-[#0F3562]" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z"></path>
+            <circle cx="12" cy="13" r="3"></circle>
+          </svg>
+          <span>Pilih Foto / Kamera</span>
+          <input type="file" id="avatar-file-input" accept="image/*" class="hidden">
+        </label>
+      </div>
+
+      <div class="flex items-center gap-2 pt-2 border-t border-slate-100">
+        <button id="btn-delete-avatar" type="button" onclick="window.handleDeleteAvatarPhoto()"
+          class="px-3.5 py-2.5 rounded-xl bg-rose-50 hover:bg-rose-100 text-rose-600 text-xs font-semibold transition-colors cursor-pointer">
+          Hapus Foto
+        </button>
+        <button id="btn-save-avatar" type="button" onclick="window.handleSaveAvatarPhoto()"
+          class="flex-1 py-2.5 px-4 rounded-xl bg-[#0F3562] hover:bg-[#0b284b] text-white text-xs font-bold shadow-md transition-colors cursor-pointer">
+          Simpan Foto Profil
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ======================================================================= -->
+  <!-- VIEW 1: BERANDA (PENCARIAN NIK, PRESENSI HARIAN & RIWAYAT SINGKAT)       -->
+  <!-- ======================================================================= -->
+  <main id="view-beranda" class="max-w-lg w-full mx-auto px-4 mt-4 space-y-4 no-print">
+    <!-- Kartu Pencarian NIK / NIP -->
+    <div class="bg-white rounded-3xl p-4 sm:p-5 shadow-md border border-slate-100 space-y-3">
+      <div class="flex items-center justify-between">
+        <label for="input-nik" class="text-xs font-bold text-slate-700">Identifikasi Peserta (NIK / NIP)</label>
+        <span id="status-badge" class="px-2.5 py-0.5 rounded-full bg-slate-100 text-slate-500 text-[11px] font-semibold">Belum Login</span>
       </div>
       <div class="flex items-center gap-2">
         <div class="relative flex-1">
-          <input type="text" id="input-nik" inputmode="numeric"
+          <input type="text" id="input-nik" inputmode="numeric" placeholder="Masukkan 16 digit NIK / NIP..."
             oninput="window.toggleClearNikButton()"
             onkeydown="if(event.key==='Enter'){event.preventDefault();window.searchStudentByNIK();}"
-            placeholder="Ketik NIK / NIP peserta..."
-            class="w-full pl-3.5 pr-8 py-2.5 rounded-xl bg-slate-50 border border-slate-200 focus:bg-white focus:border-[#0F3562] focus:ring-2 focus:ring-[#0F3562]/15 outline-none text-xs sm:text-sm font-semibold text-slate-800">
-          <button id="btn-clear-nik" type="button" onclick="window.clearNikInput()"
-            class="hidden absolute right-2.5 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600 text-xs font-bold px-1 cursor-pointer">
-            ✕
+            class="w-full pl-3.5 pr-9 py-2.5 rounded-xl border border-slate-200 text-sm font-medium focus:border-[#0F3562] focus:ring-2 focus:ring-[#0F3562]/15 outline-none">
+          <button id="btn-clear-nik" type="button" onclick="window.clearNikInput()" title="Hapus NIK"
+            class="hidden absolute right-2.5 top-1/2 -translate-y-1/2 w-5 h-5 rounded-full bg-slate-200 hover:bg-slate-300 text-slate-600 flex items-center justify-center text-xs cursor-pointer">
+            &times;
           </button>
         </div>
         <button id="btn-search-nik" type="button" onclick="window.searchStudentByNIK()"
-          class="px-4 py-2.5 rounded-xl bg-[#0F3562] hover:bg-[#0b284b] text-white text-xs sm:text-sm font-bold transition-colors cursor-pointer">
+          class="px-4 py-2.5 rounded-xl bg-[#0F3562] hover:bg-[#0b284b] text-white text-xs sm:text-sm font-bold shadow-sm transition-colors cursor-pointer flex-shrink-0">
           Cari
         </button>
       </div>
     </div>
 
-    <!-- Kartu Jam Live & Tombol Masuk / Pulang -->
+    <!-- Kartu Waktu Real-Time & Tombol Presensi Masuk / Pulang -->
     <div class="bg-white rounded-3xl p-4 sm:p-5 shadow-md border border-slate-100 space-y-4">
-      <div class="flex items-center justify-between gap-2 pb-3 border-b border-slate-100">
+      <div class="flex items-center justify-between border-b border-slate-100 pb-3">
         <div>
-          <p id="live-date" class="text-xs font-semibold text-slate-500">Sabtu, 28 November 2026</p>
-          <p id="live-clock" class="font-display text-2xl sm:text-3xl font-extrabold text-[#0F3562] tabular-nums mt-0.5">00:00:00</p>
+          <p id="live-date" class="text-xs font-semibold text-slate-500">Memuat tanggal...</p>
+          <p id="live-clock" class="font-display text-2xl font-extrabold text-[#0F3562] tracking-tight tabular-nums mt-0.5">00:00:00</p>
         </div>
-        <span id="status-badge" class="px-2.5 py-0.5 rounded-full bg-amber-100 text-amber-700 text-xs font-semibold">
-          Belum Login
-        </span>
+        <div class="text-right">
+          <p class="text-[11px] text-slate-400">Jadwal Pelatihan</p>
+          <p id="schedule-info" class="text-xs font-bold text-[#148296] mt-0.5">07:00 - 17:00</p>
+        </div>
       </div>
 
       <div class="grid grid-cols-2 gap-3">
-        <button id="btn-checkin" type="button" disabled onclick="window.handleClickCheckIn()"
-          class="p-3.5 rounded-2xl bg-[#124076] hover:bg-[#0d325e] disabled:bg-slate-200 disabled:text-slate-400 text-white text-left transition-all cursor-pointer disabled:cursor-not-allowed">
-          <p class="text-xs font-bold opacity-90">Presensi Masuk</p>
-          <p id="checkin-time" class="font-display text-lg sm:text-xl font-extrabold tabular-nums mt-1">--:--</p>
+        <button id="btn-checkin" type="button" onclick="window.handleClickCheckIn()" disabled
+          class="p-3.5 rounded-2xl bg-gradient-to-br from-[#148296] to-[#0f6878] hover:opacity-95 disabled:opacity-45 disabled:cursor-not-allowed text-white text-left shadow-md transition-all cursor-pointer">
+          <div class="flex items-center justify-between mb-1.5">
+            <span class="text-xs font-bold uppercase tracking-wider text-sky-100">Masuk</span>
+            <svg class="w-5 h-5 text-white/90" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M11 16l-4-4m0 0l4-4m-4 4h14m-5 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h7a3 3 0 013 3v1"></path>
+            </svg>
+          </div>
+          <p id="checkin-time" class="font-display text-xl font-extrabold tabular-nums">--:--</p>
+          <p class="text-[10px] text-sky-100 mt-0.5">Check-In Harian / OJT</p>
         </button>
 
-        <button id="btn-checkout" type="button" disabled onclick="window.handleClickCheckOut()"
-          class="p-3.5 rounded-2xl bg-[#148296] hover:bg-[#0f6b7c] disabled:bg-slate-200 disabled:text-slate-400 text-white text-left transition-all cursor-pointer disabled:cursor-not-allowed">
-          <p class="text-xs font-bold opacity-90">Presensi Pulang</p>
-          <p id="checkout-time" class="font-display text-lg sm:text-xl font-extrabold tabular-nums mt-1">--:--</p>
+        <button id="btn-checkout" type="button" onclick="window.handleClickCheckOut()" disabled
+          class="p-3.5 rounded-2xl bg-gradient-to-br from-[#0F3562] to-[#174E8C] hover:opacity-95 disabled:opacity-45 disabled:cursor-not-allowed text-white text-left shadow-md transition-all cursor-pointer">
+          <div class="flex items-center justify-between mb-1.5">
+            <span class="text-xs font-bold uppercase tracking-wider text-sky-200">Pulang</span>
+            <svg class="w-5 h-5 text-white/90" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"></path>
+            </svg>
+          </div>
+          <p id="checkout-time" class="font-display text-xl font-extrabold tabular-nums">--:--</p>
+          <p class="text-[10px] text-sky-200 mt-0.5">Check-Out Selesai</p>
         </button>
       </div>
     </div>
 
-    <!-- Riwayat Presensi Terbaru -->
-    <div class="space-y-2">
-      <div class="flex items-center justify-between px-1">
-        <h2 class="font-display text-sm font-bold text-slate-800">Riwayat Presensi</h2>
+    <!-- Kartu Riwayat Rekap Presensi Singkat -->
+    <div class="bg-white rounded-3xl shadow-md border border-slate-100 overflow-hidden">
+      <div class="px-4 py-3.5 border-b border-slate-100 flex items-center justify-between">
+        <div>
+          <h2 class="font-display text-sm font-bold text-slate-800">Rekap Presensi Terakhir</h2>
+          <p class="text-[11px] text-slate-400">Ketuk baris untuk melihat foto, peta &amp; TTD</p>
+        </div>
         <button type="button" onclick="window.handleLihatSemua()"
-          class="text-xs font-bold text-[#148296] hover:underline cursor-pointer">
-          Lihat Semua &gt;
+          class="px-3 py-1.5 rounded-xl bg-sky-50 hover:bg-sky-100 text-[#0F3562] text-xs font-bold transition-colors cursor-pointer">
+          Lihat Semua
         </button>
       </div>
-      <div id="beranda-rekap-list" class="bg-white rounded-2xl divide-y divide-slate-100 border border-slate-100 shadow-2xs overflow-hidden">
+      <div id="beranda-rekap-list" class="divide-y divide-slate-100">
         <div class="p-6 text-center text-xs text-slate-400">Cari NIK / NIP Anda di atas untuk menampilkan riwayat presensi.</div>
       </div>
     </div>
-  </div>
+  </main>
 
   <!-- ======================================================================= -->
-  <!-- VIEW 2: REKAP SEMUA RIWAYAT PRESENSI                                    -->
+  <!-- VIEW 2: REKAP SEMUA PRESENSI & FILTER BULANAN                           -->
   <!-- ======================================================================= -->
   <div id="view-rekap-semua" class="hidden max-w-lg w-full mx-auto px-4 mt-4 space-y-4 no-print">
     <div class="bg-white rounded-3xl p-4 shadow-md border border-slate-100 space-y-3">
-      <div class="flex items-center justify-between gap-2">
-        <div class="flex items-center gap-2">
-          <button type="button" onclick="window.switchMainTab('beranda')"
-            class="p-2 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-bold cursor-pointer">
-            &larr;
-          </button>
-          <div>
-            <h2 class="font-display text-sm sm:text-base font-bold text-slate-800">Semua Riwayat Presensi</h2>
-            <p class="text-xs text-slate-500">Filter berdasarkan bulan kehadiran</p>
-          </div>
-        </div>
+      <div class="flex items-center justify-between">
+        <button type="button" onclick="window.switchMainTab('beranda')"
+          class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-semibold cursor-pointer">
+          &larr; Kembali
+        </button>
         <button type="button" onclick="window.openMonthlyReportView()"
-          class="px-3 py-1.5 rounded-xl bg-[#0F3562] hover:bg-[#0b284b] text-white text-xs font-semibold cursor-pointer">
-          Rekap &amp; Cetak
+          class="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-xl bg-[#0F3562] hover:bg-[#0b284b] text-white text-xs font-bold shadow-xs cursor-pointer">
+          Ringkasan &amp; Cetak
         </button>
       </div>
-
-      <div class="flex items-center gap-2">
-        <label for="select-rekap-month" class="text-xs font-semibold text-slate-600">Periode:</label>
+      <div class="flex items-center justify-between gap-2 pt-1">
+        <h2 class="font-display text-sm font-bold text-slate-800">Seluruh Riwayat Presensi</h2>
         <select id="select-rekap-month" onchange="window.onChangeRekapMonth()"
-          class="flex-1 px-3 py-2 rounded-xl bg-slate-50 border border-slate-200 text-xs font-semibold text-slate-800 outline-none">
+          class="px-3 py-1.5 rounded-xl border border-slate-200 text-xs font-semibold text-slate-700 bg-slate-50 outline-none focus:border-[#0F3562]">
           <option value="ALL">Semua Periode</option>
         </select>
       </div>
     </div>
 
-    <div id="rekap-semua-list" class="bg-white rounded-2xl divide-y divide-slate-100 border border-slate-100 shadow-2xs overflow-hidden"></div>
+    <div class="bg-white rounded-3xl shadow-md border border-slate-100 overflow-hidden">
+      <div id="rekap-semua-list" class="divide-y divide-slate-100"></div>
+    </div>
   </div>
 
   <!-- ======================================================================= -->
-  <!-- VIEW 3: LAPORAN BULANAN & RINGKASAN KEHADIRAN                          -->
+  <!-- VIEW 3: LAPORAN BULANAN & CETAK DOKUMEN A4                              -->
   <!-- ======================================================================= -->
   <div id="view-laporan-bulanan" class="hidden max-w-lg w-full mx-auto px-4 mt-4 space-y-4 no-print">
     <div class="bg-white rounded-3xl p-4 sm:p-5 shadow-md border border-slate-100 space-y-4">
-      <div class="flex items-center justify-between gap-2 pb-3 border-b border-slate-100">
-        <div class="flex items-center gap-2">
-          <button type="button" onclick="window.handleLihatSemua()"
-            class="p-2 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-bold cursor-pointer">
-            &larr;
-          </button>
-          <div>
-            <h2 class="font-display text-sm sm:text-base font-bold text-slate-800">Laporan Rekapitulasi</h2>
-            <p id="laporan-bulan-label" class="text-xs text-[#148296] font-semibold">Semua Periode</p>
-          </div>
-        </div>
+      <div class="flex items-center justify-between">
+        <button type="button" onclick="window.handleLihatSemua()"
+          class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-semibold cursor-pointer">
+          &larr; Kembali
+        </button>
         <button type="button" onclick="window.printRekapReport()"
-          class="px-3.5 py-2 rounded-xl bg-[#0F3562] hover:bg-[#0b284b] text-white text-xs font-bold cursor-pointer">
-          Cetak / PDF
+          class="inline-flex items-center gap-1.5 px-4 py-2 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-bold shadow-md cursor-pointer">
+          Cetak / Unduh PDF
         </button>
       </div>
 
+      <div>
+        <p class="text-[11px] font-bold uppercase tracking-wider text-[#148296]">Laporan Kehadiran Peserta</p>
+        <h2 id="laporan-bulan-label" class="font-display text-lg font-extrabold text-slate-900 mt-0.5">Semua Periode</h2>
+      </div>
+
       <div class="grid grid-cols-3 gap-2.5 text-center">
-        <div class="p-3 rounded-2xl bg-slate-50 border border-slate-200">
-          <p class="text-[10px] text-slate-500">Total Hadir</p>
-          <p id="lap-total-hari" class="font-display text-sm font-extrabold text-[#0F3562] mt-0.5">0 Hari</p>
+        <div class="p-3 rounded-2xl bg-sky-50 border border-sky-100">
+          <p class="text-[11px] text-slate-500">Total Hadir</p>
+          <p id="lap-total-hari" class="font-display text-base font-extrabold text-[#0F3562] mt-0.5">0 Hari</p>
         </div>
-        <div class="p-3 rounded-2xl bg-slate-50 border border-slate-200">
-          <p class="text-[10px] text-slate-500">Akumulasi Jam</p>
-          <p id="lap-total-jam" class="font-display text-sm font-extrabold text-slate-800 mt-0.5">0 jam 0 menit</p>
+        <div class="p-3 rounded-2xl bg-emerald-50 border border-emerald-100">
+          <p class="text-[11px] text-slate-500">Tepat Waktu</p>
+          <p id="lap-persen-tepat" class="font-display text-base font-extrabold text-emerald-700 mt-0.5">0%</p>
         </div>
-        <div class="p-3 rounded-2xl bg-slate-50 border border-slate-200">
-          <p class="text-[10px] text-slate-500">Tepat Waktu</p>
-          <p id="lap-persen-tepat" class="font-display text-sm font-extrabold text-emerald-700 mt-0.5">0%</p>
+        <div class="p-3 rounded-2xl bg-amber-50 border border-amber-100">
+          <p class="text-[11px] text-slate-500">Total Jam</p>
+          <p id="lap-total-jam" class="font-display text-xs sm:text-sm font-extrabold text-amber-800 mt-1">0 jam 0 menit</p>
         </div>
       </div>
 
-      <div class="grid grid-cols-2 sm:grid-cols-4 gap-2 text-center text-xs">
-        <div class="p-2.5 rounded-xl bg-slate-50">
-          <p class="text-[10px] text-slate-400">Harian</p>
-          <p id="stat-harian" class="font-bold text-slate-800 mt-0.5">0</p>
-        </div>
-        <div class="p-2.5 rounded-xl bg-slate-50">
-          <p class="text-[10px] text-slate-400">OJT</p>
-          <p id="stat-ojt" class="font-bold text-slate-800 mt-0.5">0</p>
-        </div>
-        <div class="p-2.5 rounded-xl bg-emerald-50/70">
-          <p class="text-[10px] text-emerald-600">Tepat</p>
-          <p id="stat-tepat" class="font-bold text-emerald-700 mt-0.5">0</p>
-        </div>
-        <div class="p-2.5 rounded-xl bg-amber-50/70">
-          <p class="text-[10px] text-amber-600">Terlambat</p>
-          <p id="stat-terlambat" class="font-bold text-amber-700 mt-0.5">0</p>
-        </div>
-        <div class="p-2.5 rounded-xl bg-sky-50/70">
-          <p class="text-[10px] text-sky-600">Selesai</p>
-          <p id="stat-selesai" class="font-bold text-sky-700 mt-0.5">0</p>
-        </div>
-        <div class="p-2.5 rounded-xl bg-rose-50/70">
-          <p class="text-[10px] text-rose-600">Belum Pulang</p>
-          <p id="stat-belum-pulang" class="font-bold text-rose-700 mt-0.5">0</p>
-        </div>
-        <div class="p-2.5 rounded-xl bg-slate-100 col-span-2">
-          <p class="text-[10px] text-slate-500">Total Hari Tercatat</p>
-          <p id="stat-total-hari" class="font-bold text-[#0F3562] mt-0.5">0</p>
-        </div>
+      <div class="bg-slate-50 rounded-2xl p-3.5 border border-slate-200/80 space-y-2 text-xs">
+        <div class="flex justify-between"><span class="text-slate-500">Presensi Harian</span><span id="stat-harian" class="font-bold text-slate-800">0</span></div>
+        <div class="flex justify-between"><span class="text-slate-500">Presensi OJT</span><span id="stat-ojt" class="font-bold text-slate-800">0</span></div>
+        <div class="flex justify-between"><span class="text-slate-500">Hadir Tepat Waktu</span><span id="stat-tepat" class="font-bold text-emerald-600">0</span></div>
+        <div class="flex justify-between"><span class="text-slate-500">Terlambat</span><span id="stat-terlambat" class="font-bold text-amber-600">0</span></div>
+        <div class="flex justify-between"><span class="text-slate-500">Selesai Check-Out</span><span id="stat-selesai" class="font-bold text-slate-800">0</span></div>
+        <div class="flex justify-between"><span class="text-slate-500">Belum Check-Out</span><span id="stat-belum-pulang" class="font-bold text-rose-600">0</span></div>
+        <div class="flex justify-between border-t border-slate-200 pt-2"><span class="font-bold text-slate-700">Total Hari Tercatat</span><span id="stat-total-hari" class="font-extrabold text-[#0F3562]">0</span></div>
       </div>
     </div>
   </div>
 
   <!-- ======================================================================= -->
-  <!-- VIEW 4: DETAIL PRESENSI HARIAN                                          -->
+  <!-- VIEW 4: DETAIL PRESENSI HARIAN (FOTO SELFIE, GPS MAPS & TTD)            -->
   <!-- ======================================================================= -->
   <div id="view-detail-presensi" class="hidden max-w-lg w-full mx-auto px-4 mt-4 space-y-4 no-print">
     <div class="bg-white rounded-3xl p-4 sm:p-5 shadow-md border border-slate-100 space-y-4">
-      <div class="flex items-center gap-2.5 pb-3 border-b border-slate-100">
+      <div class="flex items-center justify-between">
         <button type="button" onclick="window.backFromDetailView()"
-          class="p-2 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-bold cursor-pointer">
-          &larr;
+          class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-semibold cursor-pointer">
+          &larr; Kembali
         </button>
-        <div>
-          <h2 class="font-display text-sm sm:text-base font-bold text-slate-800">Detail Presensi</h2>
-          <p id="det-tanggal" class="text-xs text-slate-500">-</p>
-        </div>
+        <span id="det-jenis-presensi" class="px-3 py-1 rounded-full bg-sky-50 text-[#0F3562] text-xs font-bold">Presensi Harian</span>
       </div>
 
-      <div class="flex flex-wrap items-center justify-between gap-2 text-xs bg-slate-50 p-3 rounded-2xl">
-        <span id="det-jenis-presensi" class="font-bold text-[#0F3562]">Presensi Harian</span>
-        <span id="det-status" class="font-semibold text-slate-700">-</span>
+      <div>
+        <h2 id="det-tanggal" class="font-display text-base sm:text-lg font-extrabold text-slate-900">-</h2>
+        <p id="det-status" class="text-xs font-semibold text-[#148296] mt-0.5">-</p>
+        <p id="det-program" class="text-[11px] text-slate-500 mt-0.5">-</p>
       </div>
 
-      <div class="grid grid-cols-2 gap-3 text-center">
+      <div class="grid grid-cols-2 gap-3">
         <div class="p-3 rounded-2xl bg-emerald-50/70 border border-emerald-100">
-          <p class="text-[11px] text-emerald-700">Jam Masuk</p>
+          <p class="text-[11px] text-slate-500">Jam Masuk</p>
           <p id="det-waktu-masuk" class="font-display text-lg font-extrabold text-emerald-700 mt-0.5">--:--</p>
         </div>
         <div class="p-3 rounded-2xl bg-rose-50/70 border border-rose-100">
-          <p class="text-[11px] text-rose-700">Jam Pulang</p>
-          <p id="det-waktu-pulang" class="font-display text-lg font-extrabold text-rose-700 mt-0.5">--:--</p>
+          <p class="text-[11px] text-slate-500">Jam Pulang</p>
+          <p id="det-waktu-pulang" class="font-display text-lg font-extrabold text-rose-600 mt-0.5">--:--</p>
         </div>
       </div>
 
-      <div class="space-y-2 text-xs">
-        <div class="p-3 rounded-2xl bg-slate-50 border border-slate-200">
-          <p class="font-bold text-slate-700">Lokasi Masuk</p>
-          <p id="det-lokasi-masuk" class="text-slate-600 mt-1">-</p>
-        </div>
-        <div class="p-3 rounded-2xl bg-slate-50 border border-slate-200">
-          <p class="font-bold text-slate-700">Lokasi Pulang</p>
-          <p id="det-lokasi-pulang" class="text-slate-600 mt-1">-</p>
-        </div>
-        <div class="p-3 rounded-2xl bg-slate-50 border border-slate-200">
-          <p class="font-bold text-slate-700">Program Pelatihan</p>
-          <p id="det-program" class="text-slate-600 mt-1">-</p>
-        </div>
-      </div>
-
-      <div class="grid grid-cols-2 gap-3 text-center text-xs">
+      <div class="grid grid-cols-2 gap-3">
         <div class="space-y-1.5">
-          <p class="font-semibold text-slate-600">Foto Masuk</p>
-          <div id="det-foto-in-box" class="h-32 rounded-2xl bg-slate-100 border border-slate-200 overflow-hidden flex items-center justify-center text-slate-400">Tidak ada foto</div>
+          <p class="text-[11px] font-semibold text-slate-600">Foto Masuk</p>
+          <div id="det-foto-in-box" class="h-36 rounded-2xl bg-slate-100 border border-slate-200 flex items-center justify-center text-xs text-slate-400 overflow-hidden">
+            Tidak ada foto
+          </div>
           <p id="det-ttd-in-box" class="text-[11px] text-slate-500">TTD Masuk: -</p>
         </div>
         <div class="space-y-1.5">
-          <p class="font-semibold text-slate-600">Foto Pulang</p>
-          <div id="det-foto-out-box" class="h-32 rounded-2xl bg-slate-100 border border-slate-200 overflow-hidden flex items-center justify-center text-slate-400">Belum pulang</div>
+          <p class="text-[11px] font-semibold text-slate-600">Foto Pulang</p>
+          <div id="det-foto-out-box" class="h-36 rounded-2xl bg-slate-100 border border-slate-200 flex items-center justify-center text-xs text-slate-400 overflow-hidden">
+            Belum pulang
+          </div>
           <p id="det-ttd-out-box" class="text-[11px] text-slate-500">TTD Pulang: -</p>
+        </div>
+      </div>
+
+      <div class="space-y-2.5 pt-2 border-t border-slate-100 text-xs">
+        <div>
+          <p class="font-semibold text-slate-700">Lokasi Presensi Masuk:</p>
+          <p id="det-lokasi-masuk" class="text-slate-500 mt-0.5 leading-relaxed">-</p>
+        </div>
+        <div>
+          <p class="font-semibold text-slate-700">Lokasi Presensi Pulang:</p>
+          <p id="det-lokasi-pulang" class="text-slate-500 mt-0.5 leading-relaxed">-</p>
         </div>
       </div>
     </div>
@@ -371,232 +415,181 @@
   <!-- ======================================================================= -->
   <div id="view-user" class="hidden max-w-lg w-full mx-auto px-4 mt-4 space-y-4 no-print">
     <div class="bg-white rounded-3xl p-4 sm:p-5 shadow-md border border-slate-100 space-y-4">
-      <div class="flex items-center justify-between gap-2">
-        <div>
-          <p id="akun-nama" class="font-display text-base font-extrabold text-slate-900">PESERTA PELATIHAN</p>
-          <p id="akun-program" class="text-xs text-slate-500">Belum ada akun aktif</p>
-          <p id="akun-instansi" class="text-[11px] font-semibold text-[#148296] mt-0.5">BBPVP Semarang</p>
+      <div class="flex items-center justify-between gap-3">
+        <div class="flex items-center gap-3 min-w-0">
+          <button type="button" onclick="window.handleOpenAvatarModal()" title="Ubah Foto Profil"
+            class="relative w-14 h-14 rounded-2xl bg-slate-100 border border-slate-200 flex items-center justify-center flex-shrink-0 overflow-hidden cursor-pointer">
+            <img id="akun-avatar-img" src="" alt="Foto Profil" class="hidden w-full h-full object-cover">
+            <svg id="akun-avatar-placeholder" class="w-8 h-8 text-slate-400" fill="currentColor" viewBox="0 0 24 24">
+              <path d="M12 12c2.7 0 4.8-2.1 4.8-4.8S14.7 2.4 12 2.4 7.2 4.5 7.2 7.2 9.3 12 12 12zm0 2.4c-3.2 0-9.6 1.6-9.6 4.8v2.4h19.2v-2.4c0-3.2-6.4-4.8-9.6-4.8z"/>
+            </svg>
+          </button>
+          <div class="min-w-0">
+            <p id="akun-nama" class="font-display text-base font-extrabold text-slate-900 truncate">PESERTA PELATIHAN</p>
+            <p id="akun-program" class="text-xs text-slate-500 truncate">Belum ada akun aktif</p>
+            <p id="akun-instansi" class="text-[11px] font-semibold text-[#148296] mt-0.5">BBPVP Semarang</p>
+          </div>
         </div>
-        <button type="button" onclick="window.toggleAkunProfilCard()"
-          class="px-3 py-1.5 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-semibold cursor-pointer">
-          Detail Profil
-        </button>
+        <div class="flex flex-col gap-1.5 flex-shrink-0">
+          <button type="button" onclick="window.handleOpenAvatarModal()"
+            class="px-3 py-1.5 rounded-xl bg-[#0F3562] hover:bg-[#0b284b] text-white text-xs font-semibold cursor-pointer">
+            Ubah Foto
+          </button>
+          <button type="button" onclick="window.toggleAkunProfilCard()"
+            class="px-3 py-1.5 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-semibold cursor-pointer">
+            Detail Profil
+          </button>
+        </div>
       </div>
 
-      <div id="akun-profil-detail" class="grid grid-cols-1 gap-2 pt-3 border-t border-slate-100 text-xs">
-        <div class="flex justify-between py-1"><span class="text-slate-400">NIK / NIP</span><span id="prof-nik" class="font-mono font-semibold text-slate-800">-</span></div>
-        <div class="flex justify-between py-1"><span class="text-slate-400">Jenis Kelamin</span><span id="prof-jk" class="font-semibold text-slate-800">-</span></div>
-        <div class="flex justify-between py-1"><span class="text-slate-400">Email</span><span id="prof-email" class="font-semibold text-slate-800">-</span></div>
-        <div class="flex justify-between py-1"><span class="text-slate-400">No. HP</span><span id="prof-hp" class="font-semibold text-slate-800">-</span></div>
-        <div class="flex justify-between py-1"><span class="text-slate-400">Alamat</span><span id="prof-alamat" class="font-semibold text-slate-800">-</span></div>
+      <!-- Detail Biodata Peserta -->
+      <div id="akun-profil-detail" class="hidden pt-3 border-t border-slate-100 space-y-2 text-xs">
+        <div class="flex justify-between"><span class="text-slate-500">NIK / NIP</span><span id="prof-nik" class="font-mono font-semibold text-slate-800">-</span></div>
+        <div class="flex justify-between"><span class="text-slate-500">Jenis Kelamin</span><span id="prof-jk" class="font-semibold text-slate-800">-</span></div>
+        <div class="flex justify-between"><span class="text-slate-500">Email</span><span id="prof-email" class="font-semibold text-slate-800">-</span></div>
+        <div class="flex justify-between"><span class="text-slate-500">No. HP</span><span id="prof-hp" class="font-semibold text-slate-800">-</span></div>
+        <div class="flex justify-between gap-4"><span class="text-slate-500 flex-shrink-0">Alamat</span><span id="prof-alamat" class="font-semibold text-slate-800 text-right">-</span></div>
       </div>
     </div>
 
-    <div class="bg-white rounded-2xl divide-y divide-slate-100 border border-slate-100 shadow-2xs overflow-hidden">
-      <a href="https://drive.google.com/file/d/1IutovyYoG_8E7Jrk3TIBr2uIoEHv0ere/view?usp=drivesdk" target="_blank" rel="noopener noreferrer"
-        class="w-full px-5 py-4 flex items-center justify-between hover:bg-slate-50 transition-colors cursor-pointer">
-        <div class="flex items-center gap-3.5">
-          <svg class="w-5 h-5 text-rose-600" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" d="M7 21h10a2 2 0 002-2V9.414a1 1 0 00-.293-.707l-5.414-5.414A1 1 0 0012.586 3H7a2 2 0 00-2 2v14a2 2 0 002 2z"></path>
-          </svg>
-          <span class="text-sm font-medium text-slate-800">Unduh Buku Panduan (PDF)</span>
-        </div>
-        <svg class="w-4 h-4 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"></path>
-        </svg>
-      </a>
-
-      <button onclick="window.showAkunInfoModal('tentang')" type="button"
-        class="w-full px-5 py-4 flex items-center justify-between hover:bg-slate-50 transition-colors cursor-pointer">
-        <div class="flex items-center gap-3.5">
-          <span class="w-5 h-5 rounded-full bg-[#587291] text-white text-xs font-bold flex items-center justify-center">i</span>
-          <span class="text-sm font-medium text-slate-800">Tentang Aplikasi</span>
-        </div>
-        <svg class="w-4 h-4 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
-        </svg>
+    <!-- Menu Informasi & Keluar Akun -->
+    <div class="bg-white rounded-3xl shadow-md border border-slate-100 divide-y divide-slate-100 overflow-hidden text-xs font-semibold">
+      <button type="button" onclick="window.showAkunInfoModal('tentang')" class="w-full px-4 py-3.5 flex items-center justify-between text-slate-700 hover:bg-slate-50 cursor-pointer">
+        <span>Tentang Aplikasi</span>
+        <span class="text-slate-400">&rsaquo;</span>
       </button>
-
-      <button onclick="window.showAkunInfoModal('ketentuan')" type="button"
-        class="w-full px-5 py-4 flex items-center justify-between hover:bg-slate-50 transition-colors cursor-pointer">
-        <div class="flex items-center gap-3.5">
-          <svg class="w-5 h-5 text-[#587291]" fill="currentColor" viewBox="0 0 24 24">
-            <path d="M14 2H6c-1.1 0-2 .9-2 2v16c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V8l-6-6zm2 16H8v-2h8v2zm0-4H8v-2h8v2zm-3-5V3.5L18.5 9H13z"/>
-          </svg>
-          <span class="text-sm font-medium text-slate-800">Ketentuan Layanan</span>
-        </div>
-        <svg class="w-4 h-4 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
-        </svg>
+      <button type="button" onclick="window.showAkunInfoModal('ketentuan')" class="w-full px-4 py-3.5 flex items-center justify-between text-slate-700 hover:bg-slate-50 cursor-pointer">
+        <span>Ketentuan Layanan</span>
+        <span class="text-slate-400">&rsaquo;</span>
       </button>
-
-      <button onclick="window.showAkunInfoModal('privasi')" type="button"
-        class="w-full px-5 py-4 flex items-center justify-between hover:bg-slate-50 transition-colors cursor-pointer">
-        <div class="flex items-center gap-3.5">
-          <svg class="w-5 h-5 text-[#587291]" fill="currentColor" viewBox="0 0 24 24">
-            <path d="M12 1L3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5l-9-4z"/>
-          </svg>
-          <span class="text-sm font-medium text-slate-800">Kebijakan Privasi</span>
-        </div>
-        <svg class="w-4 h-4 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
-        </svg>
+      <button type="button" onclick="window.showAkunInfoModal('privasi')" class="w-full px-4 py-3.5 flex items-center justify-between text-slate-700 hover:bg-slate-50 cursor-pointer">
+        <span>Kebijakan Privasi</span>
+        <span class="text-slate-400">&rsaquo;</span>
       </button>
-    </div>
-
-    <div class="px-5 mt-6">
-      <button onclick="window.handleLogoutAccount()" type="button"
-        class="w-full py-3.5 px-4 rounded-xl border border-[#A63A3A] text-[#A63A3A] hover:bg-rose-50 font-semibold text-sm transition-colors cursor-pointer">
-        Keluar dari Akun
+      <button type="button" onclick="window.handleLogoutAccount()" class="w-full px-4 py-3.5 flex items-center justify-between text-rose-600 hover:bg-rose-50 cursor-pointer">
+        <span>Keluar dari Sesi Akun</span>
+        <span>&rarr;</span>
       </button>
-      <p class="text-center text-xs text-slate-400 mt-4">e-Presensi Kemnaker v2.2.0</p>
     </div>
   </div>
 
   <!-- ======================================================================= -->
-  <!-- MODAL PILIH JENIS PRESENSI (PRESENSI HARIAN / PRESENSI OJT)             -->
+  <!-- MODAL 1: PILIH JENIS PRESENSI (HARIAN / OJT)                            -->
   <!-- ======================================================================= -->
   <div id="jenis-presensi-modal" class="fixed inset-0 z-50 hidden items-center justify-center p-4 bg-slate-900/60 backdrop-blur-sm no-print">
-    <div class="bg-white rounded-3xl max-w-sm w-full p-6 shadow-2xl border border-slate-100">
-      <div class="flex items-center gap-3 mb-4">
-        <div class="w-11 h-11 rounded-2xl bg-[#0F3562]/10 text-[#0F3562] flex items-center justify-center flex-shrink-0">
-          <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-3 7h3m-3 4h3m-6-4h.01M9 16h.01"></path>
-          </svg>
-        </div>
-        <div>
-          <h3 id="jenis-modal-title" class="font-display text-base font-bold text-slate-800">Pilih Jenis Presensi</h3>
-          <p class="text-xs text-slate-500">Tentukan kategori kehadiran Anda hari ini</p>
-        </div>
+    <div class="bg-white rounded-3xl max-w-sm w-full p-5 sm:p-6 shadow-2xl border border-slate-100 space-y-4">
+      <div>
+        <h3 id="jenis-modal-title" class="font-display text-base font-bold text-slate-800">Jenis Presensi</h3>
+        <p class="text-xs text-slate-500 mt-0.5">Pilih kategori kegiatan pelatihan Anda hari ini</p>
       </div>
 
-      <div class="space-y-2">
-        <label for="select-jenis-presensi" class="block text-xs font-semibold text-slate-600">Kategori Presensi</label>
-        <div class="relative">
-          <select id="select-jenis-presensi"
-            class="w-full appearance-none bg-slate-50 border border-slate-200 text-slate-800 text-sm font-semibold rounded-xl px-4 py-3 pr-10 outline-none focus:ring-2 focus:ring-[#0F3562] focus:border-[#0F3562] cursor-pointer">
-            <option value="Presensi Harian">1. Presensi Harian</option>
-            <option value="Presensi OJT">2. Presensi OJT</option>
-          </select>
-          <div class="pointer-events-none absolute inset-y-0 right-0 pr-3.5 flex items-center text-slate-500">
-            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
-            </svg>
-          </div>
-        </div>
+      <div>
+        <label for="select-jenis-presensi" class="block text-xs font-semibold text-slate-600 mb-1.5">Kategori Presensi</label>
+        <select id="select-jenis-presensi"
+          class="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 text-sm font-semibold text-slate-800 bg-slate-50 outline-none focus:border-[#0F3562]">
+          <option value="Presensi Harian">Presensi Harian (Pelatihan di Balai)</option>
+          <option value="Presensi OJT">Presensi OJT (On the Job Training)</option>
+        </select>
       </div>
 
-      <div class="grid grid-cols-2 gap-3 mt-6">
+      <div class="grid grid-cols-2 gap-2.5 pt-2">
         <button id="btn-cancel-jenis" type="button"
-          class="py-2.5 px-4 rounded-xl text-sm font-semibold text-slate-600 bg-slate-100 hover:bg-slate-200 transition-colors cursor-pointer">
+          class="py-2.5 px-4 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-semibold cursor-pointer">
           Batal
         </button>
         <button id="btn-confirm-jenis" type="button"
-          class="py-2.5 px-4 rounded-xl text-sm font-semibold text-white bg-[#0F3562] hover:bg-[#0b284b] transition-colors shadow-md cursor-pointer">
-          Lanjutkan
+          class="py-2.5 px-4 rounded-xl bg-[#0F3562] hover:bg-[#0b284b] text-white text-xs font-bold shadow-md cursor-pointer">
+          Lanjutkan &rarr;
         </button>
       </div>
     </div>
   </div>
 
   <!-- ======================================================================= -->
-  <!-- MODAL BUKTI KEHADIRAN (MAPS LOKASI, KAMERA SELFIE & TANDA TANGAN)       -->
+  <!-- MODAL 2: VERIFIKASI BUKTI PRESENSI (GPS MAPS, SELFIE & TTD DIGITAL)     -->
   <!-- ======================================================================= -->
-  <div id="evidence-modal" class="fixed inset-0 z-50 hidden items-center justify-center p-3 sm:p-4 bg-slate-900/70 backdrop-blur-sm no-print">
-    <div class="bg-white rounded-3xl max-w-md w-full p-5 sm:p-6 shadow-2xl border border-slate-100 max-h-[94vh] overflow-y-auto">
+  <div id="evidence-modal" class="fixed inset-0 z-50 hidden items-center justify-center p-3 sm:p-4 bg-slate-900/75 backdrop-blur-sm no-print">
+    <div class="bg-white rounded-3xl max-w-md w-full p-4 sm:p-6 shadow-2xl border border-slate-100 max-h-[92vh] overflow-y-auto space-y-4">
       <div class="flex items-center justify-between pb-3 border-b border-slate-100">
         <div>
-          <h3 id="evidence-modal-title" class="font-display text-base sm:text-lg font-bold text-slate-800">Verifikasi Bukti Kehadiran</h3>
-          <p id="evidence-modal-subtitle" class="text-xs text-[#148296] font-semibold">Presensi Harian</p>
+          <h3 id="evidence-modal-title" class="font-display text-base font-bold text-slate-800">Verifikasi Presensi</h3>
+          <p id="evidence-modal-subtitle" class="text-xs font-semibold text-[#148296]">Presensi Harian</p>
         </div>
-        <button id="btn-close-evidence" type="button" class="p-1.5 rounded-lg text-slate-400 hover:text-slate-600 hover:bg-slate-100 cursor-pointer">
+        <button id="btn-close-evidence" type="button"
+          class="p-1.5 rounded-xl text-slate-400 hover:text-slate-600 hover:bg-slate-100 cursor-pointer">
           <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
           </svg>
         </button>
       </div>
 
-      <div class="mt-4 space-y-4">
-        <div>
-          <div class="flex items-center justify-between mb-1.5">
-            <label class="text-xs font-semibold text-slate-600">1. Lokasi Presensi (Maps GPS)</label>
-            <button id="btn-refresh-gps" type="button" class="text-[11px] font-semibold text-[#148296] hover:underline cursor-pointer">
-              Perbarui Lokasi
-            </button>
-          </div>
-          <div class="rounded-2xl overflow-hidden border border-slate-200 bg-slate-100">
-            <div id="gps-map-container" class="w-full h-36 bg-slate-200 flex items-center justify-center text-xs text-slate-500">
-              Mendeteksi titik koordinat lokasi...
-            </div>
-            <div class="p-2.5 bg-white border-t border-slate-100 flex items-start gap-2">
-              <svg class="w-4 h-4 text-rose-500 flex-shrink-0 mt-0.5" fill="currentColor" viewBox="0 0 24 24">
-                <path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/>
-              </svg>
-              <p id="gps-address-text" class="text-[11px] text-slate-700 leading-snug font-medium">Menunggu izin akses lokasi GPS...</p>
-            </div>
-          </div>
-        </div>
-
-        <div>
-          <div class="flex items-center justify-between mb-1.5">
-            <label class="text-xs font-semibold text-slate-600">2. Foto Selfie Wajah</label>
-            <span id="selfie-status" class="text-[11px] font-medium text-amber-600">Belum diambil</span>
-          </div>
-          <div class="relative bg-slate-900 rounded-2xl overflow-hidden aspect-video flex items-center justify-center border border-slate-200">
-            <video id="camera-video" autoplay playsinline class="w-full h-full object-cover transform -scale-x-100"></video>
-            <img id="selfie-preview" alt="Hasil Selfie" class="hidden w-full h-full object-cover" />
-            <canvas id="selfie-canvas" class="hidden"></canvas>
-
-            <div id="camera-error" class="hidden p-4 text-center text-white space-y-2.5 w-full">
-              <p class="text-xs text-slate-300 leading-relaxed">
-                Kamera live tidak tersedia. Klik tombol di bawah untuk membuka Kamera HP atau memilih foto selfie:
-              </p>
-              <label class="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-[#148296] hover:bg-[#116f80] text-white text-xs font-semibold cursor-pointer shadow-md transition-all">
-                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z"></path>
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 13a3 3 0 11-6 0 3 3 0 016 0z"></path>
-                </svg>
-                <span>Buka Kamera / Pilih Foto</span>
-                <input type="file" id="fallback-photo-input" accept="image/*" capture="user" class="hidden">
-              </label>
-            </div>
-          </div>
-
-          <div class="flex gap-2 mt-2">
-            <button id="btn-capture-selfie" type="button"
-              class="flex-1 py-2 px-3 rounded-xl text-xs font-semibold bg-slate-800 hover:bg-slate-900 text-white transition-colors cursor-pointer">
-              Ambil Foto Selfie
-            </button>
-            <button id="btn-retake-selfie" type="button"
-              class="hidden flex-1 py-2 px-3 rounded-xl text-xs font-semibold bg-amber-100 hover:bg-amber-200 text-amber-800 transition-colors cursor-pointer">
-              Foto Ulang
-            </button>
-          </div>
-        </div>
-
-        <div>
-          <div class="flex items-center justify-between mb-1.5">
-            <label class="text-xs font-semibold text-slate-600">3. Tanda Tangan Digital</label>
-            <button id="btn-clear-sig" type="button" class="text-xs font-semibold text-rose-600 hover:text-rose-700 cursor-pointer">
-              Hapus TTD
-            </button>
-          </div>
-          <div class="border-2 border-dashed border-slate-300 rounded-2xl bg-slate-50 overflow-hidden">
-            <canvas id="signature-pad" class="w-full h-32 touch-none cursor-crosshair block"></canvas>
-          </div>
-          <p class="text-[11px] text-slate-400 mt-1">Gunakan jari atau mouse untuk tanda tangan di kotak atas.</p>
-        </div>
-
-        <div class="grid grid-cols-2 gap-3 pt-2">
-          <button id="btn-cancel-evidence" type="button"
-            class="py-2.5 px-4 rounded-xl text-sm font-semibold text-slate-600 bg-slate-100 hover:bg-slate-200 transition-colors cursor-pointer">
-            Batal
-          </button>
-          <button id="btn-submit-evidence" type="button"
-            class="py-2.5 px-4 rounded-xl text-sm font-semibold text-white bg-[#0F3562] hover:bg-[#0b284b] transition-colors shadow-md cursor-pointer">
-            Kirim Absensi
+      <!-- 1. Titik Lokasi GPS & Peta -->
+      <div class="space-y-1.5">
+        <div class="flex items-center justify-between">
+          <span class="text-xs font-bold text-slate-700">1. Lokasi GPS Anda</span>
+          <button id="btn-refresh-gps" type="button" class="text-[11px] font-semibold text-[#148296] hover:underline cursor-pointer">
+            Muat Ulang GPS
           </button>
         </div>
+        <div id="gps-map-container" class="w-full h-36 rounded-2xl bg-slate-100 border border-slate-200 overflow-hidden flex items-center justify-center">
+          <span class="text-xs text-slate-400">Mendeteksi lokasi...</span>
+        </div>
+        <p id="gps-address-text" class="text-[11px] text-slate-500 leading-snug">Mengambil koordinat lokasi Anda...</p>
+      </div>
+
+      <!-- 2. Foto Selfie Wajah -->
+      <div class="space-y-1.5">
+        <div class="flex items-center justify-between">
+          <span class="text-xs font-bold text-slate-700">2. Foto Selfie Wajah</span>
+          <span id="selfie-status" class="text-[11px] font-medium text-amber-600">Belum diambil</span>
+        </div>
+        <div class="relative w-full h-48 rounded-2xl bg-slate-900 overflow-hidden flex items-center justify-center">
+          <video id="camera-video" autoplay playsinline muted class="w-full h-full object-cover -scale-x-100"></video>
+          <img id="selfie-preview" src="" alt="Hasil Selfie" class="hidden w-full h-full object-cover">
+          <canvas id="selfie-canvas" class="hidden"></canvas>
+
+          <div id="camera-error" class="hidden p-4 text-center space-y-2">
+            <p class="text-xs text-slate-200">Kamera tidak dapat diakses otomatis. Unggah foto selfie dari kamera HP:</p>
+            <label class="inline-block px-3.5 py-2 rounded-xl bg-[#148296] text-white text-xs font-bold cursor-pointer">
+              Ambil / Pilih Foto
+              <input type="file" id="fallback-photo-input" accept="image/*" capture="user" class="hidden">
+            </label>
+          </div>
+        </div>
+        <div class="flex justify-center pt-1">
+          <button id="btn-capture-selfie" type="button"
+            class="px-4 py-2 rounded-xl bg-[#148296] hover:bg-[#0f6878] text-white text-xs font-bold shadow-sm cursor-pointer">
+            Ambil Foto Selfie
+          </button>
+          <button id="btn-retake-selfie" type="button"
+            class="hidden px-4 py-2 rounded-xl bg-amber-500 hover:bg-amber-600 text-white text-xs font-bold shadow-sm cursor-pointer">
+            Foto Ulang
+          </button>
+        </div>
+      </div>
+
+      <!-- 3. Tanda Tangan Digital -->
+      <div class="space-y-1.5">
+        <div class="flex items-center justify-between">
+          <span class="text-xs font-bold text-slate-700">3. Tanda Tangan Digital</span>
+          <button id="btn-clear-sig" type="button" class="text-[11px] font-semibold text-rose-600 hover:underline cursor-pointer">
+            Hapus TTD
+          </button>
+        </div>
+        <div class="rounded-2xl border-2 border-dashed border-slate-300 bg-slate-50 overflow-hidden">
+          <canvas id="signature-pad" class="w-full h-32 block touch-none cursor-crosshair"></canvas>
+        </div>
+      </div>
+
+      <div class="grid grid-cols-2 gap-2.5 pt-2 border-t border-slate-100">
+        <button id="btn-cancel-evidence" type="button"
+          class="py-2.5 px-4 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-semibold cursor-pointer">
+          Batal
+        </button>
+        <button id="btn-submit-evidence" type="button"
+          class="py-2.5 px-4 rounded-xl bg-[#0F3562] hover:bg-[#0b284b] text-white text-xs font-bold shadow-md cursor-pointer">
+          Kirim Presensi
+        </button>
       </div>
     </div>
   </div>
@@ -1067,6 +1060,7 @@
     let cameraStream = null;
     let capturedPhotoBase64 = null;
     let hasSignature = false;
+    let pendingAvatarBase64 = null;
 
     let adminSessionPin = '';
     let allStudentsCache = [];
@@ -1081,6 +1075,7 @@
 
           if (action === 'getInitialSettings') runner.getSettings();
           else if (action === 'getStudentAndAttendance') runner.getStudentAndAttendance(params.nik);
+          else if (action === 'updateProfilePhoto') runner.updateProfilePhoto(params.nik, params.photoBase64);
           else if (action === 'checkIn') runner.checkIn(params.nik, params.photoBase64, params.signatureBase64, params.jenisPresensi, params.lokasi);
           else if (action === 'checkOut') runner.checkOut(params.nik, params.photoBase64, params.signatureBase64, params.jenisPresensi, params.lokasi);
           else if (action === 'verifyAdminPin') runner.verifyAdminPin(params.pin);
@@ -1618,6 +1613,7 @@
       document.getElementById('header-user-program').textContent = 'Masukkan NIK / NIP untuk memulai presensi';
       document.getElementById('akun-nama').textContent = 'PESERTA PELATIHAN';
       document.getElementById('akun-program').textContent = 'Belum ada akun aktif';
+      updateStudentAvatarUI('');
 
       document.getElementById('checkin-time').textContent = '--:--';
       document.getElementById('checkout-time').textContent = '--:--';
@@ -1729,6 +1725,7 @@
       document.getElementById('prof-email').textContent = student.email || '-';
       document.getElementById('prof-hp').textContent = student.hp || '-';
       document.getElementById('prof-alamat').textContent = student.alamat || '-';
+      updateStudentAvatarUI(student.fotoProfil || '');
 
       const btnIn = document.getElementById('btn-checkin');
       const btnOut = document.getElementById('btn-checkout');
@@ -2737,7 +2734,7 @@
 
     function applyDynamicKemnakerFavicon() {
       try {
-        const iconUrl = 'https://upload.wikimedia.org/wikipedia/commons/thumb/1/1a/Logo_Kementerian_Ketenagakerjaan_%282016%29.png/512px-Logo_Kementerian_Ketenagakerjaan_%282016%29.png';
+        const iconUrl = 'https://upload.wikimedia.org/wikipedia/commons/9/98/Logo_Kementerian_Ketenagakerjaan_%282016%29.png';
         const links = document.querySelectorAll('link[rel="icon"], link[rel="apple-touch-icon"]');
         if (links.length > 0) {
           links.forEach((el) => {
@@ -2746,28 +2743,177 @@
         } else {
           const newLink = document.createElement('link');
           newLink.rel = 'icon';
-          newLink.type = 'image/png';
+          newLink.type = 'image/svg+xml';
           newLink.href = iconUrl;
           document.head.appendChild(newLink);
         }
       } catch (e) {}
     }
 
+    function updateStudentAvatarUI(photoUrl) {
+      const imgSrc = photoUrl
+        ? (photoUrl.startsWith('data:') ? photoUrl : convertDriveUrlToImg(photoUrl))
+        : '';
+
+      const targets = [
+        { img: 'header-avatar-img', ph: 'header-avatar-placeholder' },
+        { img: 'akun-avatar-img', ph: 'akun-avatar-placeholder' },
+        { img: 'avatar-modal-preview', ph: 'avatar-modal-placeholder' }
+      ];
+
+      targets.forEach((t) => {
+        const imgEl = document.getElementById(t.img);
+        const phEl = document.getElementById(t.ph);
+        if (!imgEl || !phEl) return;
+        if (imgSrc) {
+          imgEl.src = imgSrc;
+          imgEl.classList.remove('hidden');
+          phEl.classList.add('hidden');
+        } else {
+          imgEl.src = '';
+          imgEl.classList.add('hidden');
+          phEl.classList.remove('hidden');
+        }
+      });
+    }
+
+    window.handleOpenAvatarModal = function() {
+      if (!currentStudent) {
+        showToast('warning', 'Silakan cari NIK / NIP Anda terlebih dahulu sebelum mengubah foto profil.');
+        return;
+      }
+      pendingAvatarBase64 = null;
+      const fileInput = document.getElementById('avatar-file-input');
+      if (fileInput) fileInput.value = '';
+      updateStudentAvatarUI(currentStudent.fotoProfil || '');
+
+      const modal = document.getElementById('avatar-modal');
+      if (modal) {
+        modal.classList.remove('hidden');
+        modal.classList.add('flex');
+      }
+    };
+
+    window.closeAvatarModal = function() {
+      pendingAvatarBase64 = null;
+      closeModalEl('avatar-modal');
+    };
+
+    function setupAvatarInputListener() {
+      const fileInput = document.getElementById('avatar-file-input');
+      if (!fileInput) return;
+      fileInput.addEventListener('change', (e) => {
+        const file = e.target.files && e.target.files[0];
+        if (!file) return;
+        const reader = new FileReader();
+        reader.onload = (ev) => {
+          const img = new Image();
+          img.onload = () => {
+            const canvas = document.createElement('canvas');
+            const maxDim = 480;
+            const scale = Math.min(1, maxDim / Math.max(img.width, img.height));
+            canvas.width = Math.round(img.width * scale);
+            canvas.height = Math.round(img.height * scale);
+            canvas.getContext('2d').drawImage(img, 0, 0, canvas.width, canvas.height);
+            pendingAvatarBase64 = canvas.toDataURL('image/jpeg', 0.85);
+
+            const prevImg = document.getElementById('avatar-modal-preview');
+            const prevPh = document.getElementById('avatar-modal-placeholder');
+            if (prevImg && prevPh) {
+              prevImg.src = pendingAvatarBase64;
+              prevImg.classList.remove('hidden');
+              prevPh.classList.add('hidden');
+            }
+          };
+          img.src = ev.target.result;
+        };
+        reader.readAsDataURL(file);
+      });
+    }
+
+    window.handleSaveAvatarPhoto = async function() {
+      if (!currentStudent) return;
+      if (!pendingAvatarBase64) {
+        showToast('warning', 'Silakan pilih foto terlebih dahulu.');
+        return;
+      }
+      const btn = document.getElementById('btn-save-avatar');
+      const origText = btn ? btn.textContent : 'Simpan Foto Profil';
+      if (btn) {
+        btn.disabled = true;
+        btn.textContent = 'Menyimpan...';
+      }
+
+      try {
+        const res = await callBackend('updateProfilePhoto', {
+          nik: currentStudent.nik,
+          photoBase64: pendingAvatarBase64
+        });
+        if (res && res.success) {
+          currentStudent.fotoProfil = res.photoUrl || pendingAvatarBase64;
+          updateStudentAvatarUI(currentStudent.fotoProfil);
+          window.closeAvatarModal();
+          showToast('success', res.message || 'Foto profil berhasil diperbarui!');
+        } else {
+          showToast('error', (res && res.message) || 'Gagal menyimpan foto profil.');
+        }
+      } catch (err) {
+        showToast('error', 'Terjadi kesalahan: ' + err.message);
+      } finally {
+        if (btn) {
+          btn.disabled = false;
+          btn.textContent = origText;
+        }
+      }
+    };
+
+    window.handleDeleteAvatarPhoto = async function() {
+      if (!currentStudent) return;
+      const btn = document.getElementById('btn-delete-avatar');
+      if (btn) btn.disabled = true;
+
+      try {
+        const res = await callBackend('updateProfilePhoto', {
+          nik: currentStudent.nik,
+          photoBase64: ''
+        });
+        if (res && res.success) {
+          currentStudent.fotoProfil = '';
+          updateStudentAvatarUI('');
+          window.closeAvatarModal();
+          showToast('success', res.message || 'Foto profil berhasil dihapus.');
+        } else {
+          showToast('error', (res && res.message) || 'Gagal menghapus foto profil.');
+        }
+      } catch (err) {
+        showToast('error', 'Terjadi kesalahan: ' + err.message);
+      } finally {
+        if (btn) btn.disabled = false;
+      }
+    };
+
     async function initApp() {
       applyDynamicKemnakerFavicon();
       updateLiveDateTime();
       setInterval(updateLiveDateTime, 1000);
 
-      document.getElementById('btn-cancel-jenis').addEventListener('click', () => closeModalEl('jenis-presensi-modal'));
-      document.getElementById('btn-confirm-jenis').addEventListener('click', () => {
-        const selectEl = document.getElementById('select-jenis-presensi');
-        selectedJenisPresensi = selectEl ? selectEl.value : 'Presensi Harian';
-        closeModalEl('jenis-presensi-modal');
-        openEvidenceModal(currentActionType);
-      });
+      const btnCancelJenis = document.getElementById('btn-cancel-jenis');
+      const btnConfirmJenis = document.getElementById('btn-confirm-jenis');
+      if (btnCancelJenis) {
+        btnCancelJenis.addEventListener('click', () => closeModalEl('jenis-presensi-modal'));
+      }
+      if (btnConfirmJenis) {
+        btnConfirmJenis.addEventListener('click', () => {
+          const selectEl = document.getElementById('select-jenis-presensi');
+          selectedJenisPresensi = selectEl ? selectEl.value : 'Presensi Harian';
+          closeModalEl('jenis-presensi-modal');
+          openEvidenceModal(currentActionType);
+        });
+      }
 
       setupEvidenceListeners();
       setupAdminListeners();
+      setupAvatarInputListener();
 
       try {
         const s = await callBackend('getInitialSettings');
@@ -2776,8 +2922,9 @@
 
       try {
         const savedNik = localStorage.getItem('epresensi_last_nik');
-        if (savedNik) {
-          document.getElementById('input-nik').value = savedNik;
+        const inputNik = document.getElementById('input-nik');
+        if (savedNik && inputNik) {
+          inputNik.value = savedNik;
           window.toggleClearNikButton();
           await window.searchStudentByNIK();
         }
