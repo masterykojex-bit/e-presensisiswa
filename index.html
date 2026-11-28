@@ -5,11 +5,11 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>e-Presensi Siswa - BBPVP Semarang</title>
   <!-- Favicon & Thumbnail Icon Kemnaker -->
-  <link rel="icon" type="image/png" href="https://upload.wikimedia.org/wikipedia/commons/9/98/Logo_Kementerian_Ketenagakerjaan_%282016%29.png">
-  <link rel="apple-touch-icon" href="https://upload.wikimedia.org/wikipedia/commons/9/98/Logo_Kementerian_Ketenagakerjaan_%282016%29.png">
+  <link rel="icon" type="image/png" href="https://upload.wikimedia.org/wikipedia/commons/thumb/1/1a/Logo_Kementerian_Ketenagakerjaan_%282016%29.png/512px-Logo_Kementerian_Ketenagakerjaan_%282016%29.png">
+  <link rel="apple-touch-icon" href="https://upload.wikimedia.org/wikipedia/commons/thumb/1/1a/Logo_Kementerian_Ketenagakerjaan_%282016%29.png/512px-Logo_Kementerian_Ketenagakerjaan_%282016%29.png">
   <meta property="og:title" content="e-Presensi Siswa - BBPVP Semarang">
   <meta property="og:description" content="Sistem Absensi Digital Peserta Pelatihan BBPVP Semarang">
-  <meta property="og:image" content="https://upload.wikimedia.org/wikipedia/commons/9/98/Logo_Kementerian_Ketenagakerjaan_%282016%29.png">
+  <meta property="og:image" content="https://upload.wikimedia.org/wikipedia/commons/thumb/1/1a/Logo_Kementerian_Ketenagakerjaan_%282016%29.png/512px-Logo_Kementerian_Ketenagakerjaan_%282016%29.png">
   <!-- Tailwind CSS -->
   <script src="https://cdn.tailwindcss.com"></script>
   <!-- SweetAlert2 -->
@@ -177,10 +177,13 @@
       <!-- Top Bar: Logo Kemnaker & Tombol Panduan + Admin -->
       <div class="flex items-center justify-between gap-2 mb-5">
         <div class="flex items-center gap-2.5 min-w-0">
-          <img src="https://upload.wikimedia.org/wikipedia/commons/9/98/Logo_Kementerian_Ketenagakerjaan_%282016%29.png"
-            alt="Logo Kemnaker"
-            onerror="this.style.display='none'"
-            class="w-8 h-8 sm:w-9 sm:h-9 object-contain brightness-0 invert flex-shrink-0">
+          <!-- Logo Resmi Kemnaker (Sesuai Gambar Referensi) -->
+          <svg viewBox="0 0 120 120" class="w-9 h-9 sm:w-10 sm:h-10 flex-shrink-0 drop-shadow-xs" aria-label="Logo Kementerian Ketenagakerjaan">
+            <rect x="6" y="6" width="108" height="108" rx="22" fill="#0B2E59" stroke="#FFFFFF" stroke-width="5"/>
+            <path d="M22 44 C22 28, 36 22, 54 22 L90 22 C96 22, 98 26, 98 32 L98 44 L44 44 L44 98 L32 98 C26 98, 22 94, 22 88 Z" fill="#FFFFFF"/>
+            <path d="M54 54 L98 54 L98 86 C98 94, 92 98, 84 98 L54 98 Z" fill="#1C75BC"/>
+            <path d="M54 78 L98 54 L98 90 C98 95, 94 98, 88 98 L54 98 Z" fill="#27AAE1"/>
+          </svg>
           <div class="leading-tight min-w-0">
             <p class="text-[9px] sm:text-[10px] font-bold tracking-wider uppercase text-white/95 truncate">Kementerian Ketenagakerjaan</p>
             <p class="text-[9px] sm:text-[10px] font-medium tracking-wide uppercase text-sky-200 truncate">Republik Indonesia</p>
@@ -209,11 +212,28 @@
 
       <!-- Profil Peserta di Header -->
       <div class="flex items-center gap-4">
-        <div class="w-16 h-16 sm:w-20 sm:h-20 rounded-full bg-slate-200 border-2 border-white/30 flex items-center justify-center flex-shrink-0 overflow-hidden shadow-inner">
-          <svg class="w-11 h-11 sm:w-14 sm:h-14 text-slate-500 mt-1" fill="currentColor" viewBox="0 0 24 24">
+        <div id="header-avatar-btn" onclick="window.handleClickProfileAvatar()" role="button" tabindex="0" title="Klik untuk ubah foto profil"
+          class="relative group w-16 h-16 sm:w-20 sm:h-20 rounded-full bg-slate-200 border-2 border-white/40 flex items-center justify-center flex-shrink-0 overflow-hidden shadow-inner cursor-pointer hover:ring-4 hover:ring-white/25 transition-all">
+          <img id="header-avatar-img" src="" alt="Foto Profil" class="hidden w-full h-full object-cover">
+          <svg id="header-avatar-placeholder" class="w-11 h-11 sm:w-14 sm:h-14 text-slate-500 mt-1" fill="currentColor" viewBox="0 0 24 24">
             <path d="M12 12c2.7 0 4.8-2.1 4.8-4.8S14.7 2.4 12 2.4 7.2 4.5 7.2 7.2 9.3 12 12 12zm0 2.4c-3.2 0-9.6 1.6-9.6 4.8v2.4h19.2v-2.4c0-3.2-6.4-4.8-9.6-4.8z"/>
           </svg>
+          <!-- Overlay ikon kamera saat diarahkan / diklik -->
+          <div class="absolute inset-0 bg-slate-900/45 opacity-0 group-hover:opacity-100 transition-opacity flex flex-col items-center justify-center text-white">
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z"></path>
+              <path stroke-linecap="round" stroke-linejoin="round" d="M15 13a3 3 0 11-6 0 3 3 0 016 0z"></path>
+            </svg>
+            <span class="text-[9px] font-semibold mt-0.5">Ubah</span>
+          </div>
+          <span class="absolute bottom-0.5 right-0.5 w-5 h-5 rounded-full bg-[#0F3562] text-white border border-white flex items-center justify-center shadow-xs">
+            <svg class="w-2.5 h-2.5" fill="none" stroke="currentColor" stroke-width="2.4" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z"></path>
+              <path stroke-linecap="round" stroke-linejoin="round" d="M15 13a3 3 0 11-6 0 3 3 0 016 0z"></path>
+            </svg>
+          </span>
         </div>
+        <input type="file" id="input-profile-photo-file" accept="image/*" class="hidden">
         <div class="min-w-0 flex-1">
           <h1 id="header-user-name" class="font-display text-lg sm:text-xl font-extrabold tracking-tight text-white truncate">
             PESERTA PELATIHAN
@@ -546,10 +566,15 @@
     </div>
 
     <div class="bg-white p-5 flex items-center gap-4 border-b border-slate-100">
-      <div class="w-16 h-16 rounded-full bg-slate-200 flex items-center justify-center flex-shrink-0 overflow-hidden">
-        <svg class="w-10 h-10 text-slate-500 mt-1" fill="currentColor" viewBox="0 0 24 24">
+      <div onclick="window.handleClickProfileAvatar()" role="button" tabindex="0" title="Klik untuk ubah foto profil"
+        class="relative group w-16 h-16 rounded-full bg-slate-200 flex items-center justify-center flex-shrink-0 overflow-hidden cursor-pointer border border-slate-300 hover:ring-2 hover:ring-[#0F3562]/40 transition-all">
+        <img id="akun-avatar-img" src="" alt="Foto Profil" class="hidden w-full h-full object-cover">
+        <svg id="akun-avatar-placeholder" class="w-10 h-10 text-slate-500 mt-1" fill="currentColor" viewBox="0 0 24 24">
           <path d="M12 12c2.7 0 4.8-2.1 4.8-4.8S14.7 2.4 12 2.4 7.2 4.5 7.2 7.2 9.3 12 12 12zm0 2.4c-3.2 0-9.6 1.6-9.6 4.8v2.4h19.2v-2.4c0-3.2-6.4-4.8-9.6-4.8z"/>
         </svg>
+        <div class="absolute inset-0 bg-slate-900/45 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center text-white text-[10px] font-bold">
+          Ubah
+        </div>
       </div>
       <div class="min-w-0 flex-1">
         <h3 id="akun-nama" class="font-display text-base sm:text-lg font-bold text-slate-900 truncate">PESERTA PELATIHAN</h3>
@@ -1294,6 +1319,7 @@
 
           if (action === 'getInitialSettings') runner.getSettings();
           else if (action === 'getStudentAndAttendance') runner.getStudentAndAttendance(params.nik);
+          else if (action === 'updateProfilePhoto') runner.updateProfilePhoto(params.nik, params.photoBase64);
           else if (action === 'checkIn') runner.checkIn(params.nik, params.photoBase64, params.signatureBase64, params.jenisPresensi, params.lokasi);
           else if (action === 'checkOut') runner.checkOut(params.nik, params.photoBase64, params.signatureBase64, params.jenisPresensi, params.lokasi);
           else if (action === 'verifyAdminPin') runner.verifyAdminPin(params.pin);
@@ -1376,6 +1402,7 @@
 
     function convertDriveUrlToImg(url) {
       if (!url) return '';
+      if (url.startsWith('data:image/')) return url;
       const match = url.match(/\/d\/([a-zA-Z0-9_-]+)/) || url.match(/id=([a-zA-Z0-9_-]+)/);
       if (match && match[1]) {
         return `https://drive.google.com/thumbnail?id=${match[1]}&sz=w600`;
@@ -1383,13 +1410,163 @@
       return url;
     }
 
-    // -------------------------------------------------------------------------
-    // 3. NAVIGASI HALAMAN (BERANDA, LIHAT SEMUA, LAPORAN BULANAN, DETAIL, USER)
-    // -------------------------------------------------------------------------
-    function hideAllMainViews() {
-      ['view-beranda', 'view-rekap-semua', 'view-laporan-bulanan', 'view-detail-presensi', 'view-user'].forEach((id) => {
-        const el = document.getElementById(id);
-        if (el) el.classList.add('hidden');
+    function renderProfileAvatarUI(photoUrl) {
+      const headerImg = document.getElementById('header-avatar-img');
+      const headerPlaceholder = document.getElementById('header-avatar-placeholder');
+      const akunImg = document.getElementById('akun-avatar-img');
+      const akunPlaceholder = document.getElementById('akun-avatar-placeholder');
+
+      const resolvedUrl = convertDriveUrlToImg(photoUrl || '');
+
+      if (resolvedUrl) {
+        if (headerImg) {
+          headerImg.src = resolvedUrl;
+          headerImg.classList.remove('hidden');
+        }
+        if (headerPlaceholder) headerPlaceholder.classList.add('hidden');
+
+        if (akunImg) {
+          akunImg.src = resolvedUrl;
+          akunImg.classList.remove('hidden');
+        }
+        if (akunPlaceholder) akunPlaceholder.classList.add('hidden');
+      } else {
+        if (headerImg) {
+          headerImg.src = '';
+          headerImg.classList.add('hidden');
+        }
+        if (headerPlaceholder) headerPlaceholder.classList.remove('hidden');
+
+        if (akunImg) {
+          akunImg.src = '';
+          akunImg.classList.add('hidden');
+        }
+        if (akunPlaceholder) akunPlaceholder.classList.remove('hidden');
+      }
+    }
+
+    window.handleClickProfileAvatar = function() {
+      if (!currentStudent || !currentStudent.nik) {
+        showToast('warning', 'Masukkan NIK / NIP terlebih dahulu sebelum mengubah foto profil.');
+        const inputNik = document.getElementById('input-nik');
+        if (inputNik) inputNik.focus();
+        return;
+      }
+
+      const currentPhoto = currentStudent.fotoProfil || localStorage.getItem('epresensi_avatar_' + currentStudent.nik) || '';
+      const previewUrl = convertDriveUrlToImg(currentPhoto);
+
+      Swal.fire({
+        title: 'Foto Profil Peserta',
+        html: `
+          <div class="flex flex-col items-center gap-3 mt-1">
+            <div class="w-28 h-28 rounded-full bg-slate-100 border-2 border-[#0F3562]/20 overflow-hidden flex items-center justify-center shadow-inner">
+              ${previewUrl
+                ? `<img src="${previewUrl}" alt="Foto Profil" class="w-full h-full object-cover">`
+                : `<svg class="w-16 h-16 text-slate-400 mt-2" fill="currentColor" viewBox="0 0 24 24"><path d="M12 12c2.7 0 4.8-2.1 4.8-4.8S14.7 2.4 12 2.4 7.2 4.5 7.2 7.2 9.3 12 12 12zm0 2.4c-3.2 0-9.6 1.6-9.6 4.8v2.4h19.2v-2.4c0-3.2-6.4-4.8-9.6-4.8z"/></svg>`
+              }
+            </div>
+            <div class="text-center">
+              <p class="text-sm font-bold text-slate-800">${currentStudent.nama}</p>
+              <p class="text-xs text-slate-500">NIK: ${currentStudent.nik}</p>
+            </div>
+          </div>
+        `,
+        showCancelButton: true,
+        showDenyButton: Boolean(previewUrl),
+        confirmButtonText: 'Pilih / Ganti Foto',
+        denyButtonText: 'Hapus Foto',
+        cancelButtonText: 'Tutup',
+        confirmButtonColor: '#0F3562',
+        denyButtonColor: '#e11d48'
+      }).then((res) => {
+        if (res.isConfirmed) {
+          const fileInput = document.getElementById('input-profile-photo-file');
+          if (fileInput) {
+            fileInput.value = '';
+            fileInput.click();
+          }
+        } else if (res.isDenied) {
+          window.saveSelectedProfilePhoto('');
+        }
+      });
+    };
+
+    window.saveSelectedProfilePhoto = async function(base64Photo) {
+      if (!currentStudent || !currentStudent.nik) return;
+      const nik = currentStudent.nik;
+
+      // Simpan & tampilkan langsung di UI agar responsif
+      currentStudent.fotoProfil = base64Photo;
+      renderProfileAvatarUI(base64Photo);
+      try {
+        if (base64Photo) {
+          localStorage.setItem('epresensi_avatar_' + nik, base64Photo);
+        } else {
+          localStorage.removeItem('epresensi_avatar_' + nik);
+        }
+      } catch (e) {}
+
+      showToast('info', base64Photo ? 'Menyimpan foto profil ke server...' : 'Menghapus foto profil...');
+
+      try {
+        const res = await callBackend('updateProfilePhoto', {
+          nik: nik,
+          photoBase64: base64Photo
+        });
+        if (res && res.success) {
+          if (res.photoUrl !== undefined) {
+            currentStudent.fotoProfil = res.photoUrl;
+            renderProfileAvatarUI(res.photoUrl);
+            try {
+              if (res.photoUrl) localStorage.setItem('epresensi_avatar_' + nik, res.photoUrl);
+              else localStorage.removeItem('epresensi_avatar_' + nik);
+            } catch (e) {}
+          }
+          showToast('success', res.message || 'Foto profil berhasil diperbarui!');
+        } else {
+          showToast('warning', 'Foto tersimpan di perangkat ini. Pastikan Apps Script sudah di-update untuk sinkronisasi cloud.');
+        }
+      } catch (err) {
+        showToast('warning', 'Foto tersimpan di perangkat ini.');
+      }
+    };
+
+    function setupProfilePhotoInputListener() {
+      const fileInput = document.getElementById('input-profile-photo-file');
+      if (!fileInput) return;
+
+      fileInput.addEventListener('change', (e) => {
+        const file = e.target.files && e.target.files[0];
+        if (!file) return;
+
+        if (!file.type.startsWith('image/')) {
+          showToast('error', 'Harap pilih file gambar (JPG, PNG, atau WEBP).');
+          return;
+        }
+
+        const reader = new FileReader();
+        reader.onload = (ev) => {
+          const img = new Image();
+          img.onload = () => {
+            // Crop persegi terpusat & kompres ukuran ideal untuk avatar profil
+            const size = 360;
+            const canvas = document.createElement('canvas');
+            canvas.width = size;
+            canvas.height = size;
+            const ctx = canvas.getContext('2d');
+
+            const minSide = Math.min(img.width, img.height);
+            const sx = (img.width - minSide) / 2;
+            const sy = (img.height - minSide) / 2;
+
+            ctx.drawImage(img, sx, sy, minSide, minSide, 0, 0, size, size);
+            const compressedBase64 = canvas.toDataURL('image/jpeg', 0.85);
+            window.saveSelectedProfilePhoto(compressedBase64);
+          };
+          img.src = ev.target.result;
+        };
+        reader.readAsDataURL(file);
       });
     }
 
@@ -1835,6 +2012,7 @@
       document.getElementById('header-user-program').textContent = 'Masukkan NIK / NIP untuk memulai presensi';
       document.getElementById('akun-nama').textContent = 'PESERTA PELATIHAN';
       document.getElementById('akun-program').textContent = 'Belum ada akun aktif';
+      renderProfileAvatarUI('');
 
       document.getElementById('checkin-time').textContent = '--:--';
       document.getElementById('checkout-time').textContent = '--:--';
@@ -1941,6 +2119,15 @@
       if (!student) return;
       document.getElementById('header-user-name').textContent = student.nama || '-';
       document.getElementById('header-user-program').textContent = student.program || '-';
+
+      let savedAvatar = student.fotoProfil || '';
+      if (!savedAvatar) {
+        try {
+          savedAvatar = localStorage.getItem('epresensi_avatar_' + student.nik) || '';
+        } catch (e) {}
+      }
+      student.fotoProfil = savedAvatar;
+      renderProfileAvatarUI(savedAvatar);
 
       document.getElementById('akun-nama').textContent = student.nama || '-';
       document.getElementById('akun-program').textContent = student.program || '-';
@@ -2962,40 +3149,18 @@
     // -------------------------------------------------------------------------
     function applyDynamicKemnakerFavicon() {
       try {
-        const iconUrl = 'https://upload.wikimedia.org/wikipedia/commons/thumb/1/1a/Logo_Kementerian_Ketenagakerjaan_%282016%29.png/512px-Logo_Kementerian_Ketenagakerjaan_%282016%29.png';
-        
-        const links = document.querySelectorAll('link[rel="icon"], link[rel="apple-touch-icon"]');
-        
-        if (links.length > 0) {
-          // Jika tag <link> sudah ada di <head>, langsung ganti href-nya
-          links.forEach((el) => {
-            el.setAttribute('href', iconUrl);
-          });
-        } else {
-          // Jika belum ada tag <link>, buat elemen baru secara otomatis
-          const newLink = document.createElement('link');
-          newLink.rel = 'icon';
-          newLink.type = 'image/png';
-          newLink.href = iconUrl;
-          document.head.appendChild(newLink);
-        }
+        const svgMarkup = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 120">
+          <rect x="4" y="4" width="112" height="112" rx="22" fill="#0B2E59"/>
+          <path d="M22 44 C22 28, 36 22, 54 22 L90 22 C96 22, 98 26, 98 32 L98 44 L44 44 L44 98 L32 98 C26 98, 22 94, 22 88 Z" fill="#FFFFFF"/>
+          <path d="M54 54 L98 54 L98 86 C98 94, 92 98, 84 98 L54 98 Z" fill="#1C75BC"/>
+          <path d="M54 78 L98 54 L98 90 C98 95, 94 98, 88 98 L54 98 Z" fill="#27AAE1"/>
+        </svg>`;
+        const encoded = 'data:image/svg+xml;charset=utf-8,' + encodeURIComponent(svgMarkup);
+        document.querySelectorAll('link[rel="icon"], link[rel="apple-touch-icon"]').forEach((el) => {
+          el.setAttribute('href', encoded);
+        });
       } catch (e) {}
     }
-
-    // function applyDynamicKemnakerFavicon() {
-    //   try {
-    //     const svgMarkup = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 120">
-    //       <rect x="4" y="4" width="112" height="112" rx="22" fill="#0B2E59"/>
-    //       <path d="M22 44 C22 28, 36 22, 54 22 L90 22 C96 22, 98 26, 98 32 L98 44 L44 44 L44 98 L32 98 C26 98, 22 94, 22 88 Z" fill="#FFFFFF"/>
-    //       <path d="M54 54 L98 54 L98 86 C98 94, 92 98, 84 98 L54 98 Z" fill="#1C75BC"/>
-    //       <path d="M54 78 L98 54 L98 90 C98 95, 94 98, 88 98 L54 98 Z" fill="#27AAE1"/>
-    //     </svg>`;
-    //     const encoded = 'data:image/svg+xml;charset=utf-8,' + encodeURIComponent(svgMarkup);
-    //     document.querySelectorAll('link[rel="icon"], link[rel="apple-touch-icon"]').forEach((el) => {
-    //       el.setAttribute('href', encoded);
-    //     });
-    //   } catch (e) {}
-    // }
 
     async function initApp() {
       applyDynamicKemnakerFavicon();
@@ -3012,6 +3177,7 @@
 
       setupEvidenceListeners();
       setupAdminListeners();
+      setupProfilePhotoInputListener();
 
       try {
         const s = await callBackend('getInitialSettings');
