@@ -1600,22 +1600,99 @@
     }
 
     window.switchMainTab = function(tabName) {
-      hideAllMainViews();
       const navBeranda = document.getElementById('nav-beranda');
       const navAdmin = document.getElementById('nav-admin');
       const navUser = document.getElementById('nav-user');
 
-      if (tabName === 'user') {
-        document.getElementById('view-user').classList.remove('hidden');
-        if (navUser) navUser.className = 'flex flex-col items-center justify-center gap-1 text-[#0F3562] font-semibold transition-colors cursor-pointer';
-        if (navBeranda) navBeranda.className = 'flex flex-col items-center justify-center gap-1 text-slate-400 hover:text-slate-600 font-medium transition-colors cursor-pointer';
-      } else {
-        document.getElementById('view-beranda').classList.remove('hidden');
-        if (navBeranda) navBeranda.className = 'flex flex-col items-center justify-center gap-1 text-[#0F3562] font-semibold transition-colors cursor-pointer';
-        if (navUser) navUser.className = 'flex flex-col items-center justify-center gap-1 text-slate-400 hover:text-slate-600 font-medium transition-colors cursor-pointer';
+      const activeClass = 'flex flex-col items-center justify-center gap-1 text-[#0F3562] font-semibold transition-colors cursor-pointer';
+      const inactiveClass = 'flex flex-col items-center justify-center gap-1 text-slate-400 hover:text-slate-600 font-medium transition-colors cursor-pointer';
+
+      // Khusus tab 'admin': buka modal PIN tanpa menutup tampilan halaman saat ini
+      if (tabName === 'admin') {
+        const adminPinModal = document.getElementById('admin-pin-modal');
+        if (adminPinModal) {
+          adminPinModal.classList.remove('hidden');
+          adminPinModal.classList.add('flex'); // Penting agar modal berada tepat di tengah layar
+          
+          // Otomatis fokus ke kolom input PIN
+          const inputPin = document.getElementById('input-admin-pin');
+          if (inputPin) {
+            inputPin.value = ''; // Kosongkan input sebelumnya (opsional)
+            setTimeout(() => inputPin.focus(), 100);
+          }
+        }
+        return; // Hentikan eksekusi agar tampilan tab di belakang modal tetap terlihat
       }
+
+      // Untuk tab 'beranda' dan 'user', jalankan perpindahan view seperti biasa
+      hideAllMainViews();
+
+      if (navBeranda) navBeranda.className = inactiveClass;
+      if (navAdmin) navAdmin.className = inactiveClass;
+      if (navUser) navUser.className = inactiveClass;
+
+      if (tabName === 'user') {
+        const viewUser = document.getElementById('view-user');
+        if (viewUser) viewUser.classList.remove('hidden');
+        if (navUser) navUser.className = activeClass;
+      } else {
+        const viewBeranda = document.getElementById('view-beranda');
+        if (viewBeranda) viewBeranda.classList.remove('hidden');
+        if (navBeranda) navBeranda.className = activeClass;
+      }
+
       window.scrollTo({ top: 0, behavior: 'smooth' });
     };
+
+    // window.switchMainTab = function(tabName) {
+    //   hideAllMainViews();
+    //   const navBeranda = document.getElementById('nav-beranda');
+    //   const navAdmin = document.getElementById('nav-admin');
+    //   const navUser = document.getElementById('nav-user');
+
+    //   const activeClass = 'flex flex-col items-center justify-center gap-1 text-[#0F3562] font-semibold transition-colors cursor-pointer';
+    //   const inactiveClass = 'flex flex-col items-center justify-center gap-1 text-slate-400 hover:text-slate-600 font-medium transition-colors cursor-pointer';
+
+    //   // Reset semua tombol navigasi ke status non-aktif terlebih dahulu
+    //   if (navBeranda) navBeranda.className = inactiveClass;
+    //   if (navAdmin) navAdmin.className = inactiveClass;
+    //   if (navUser) navUser.className = inactiveClass;
+
+    //   // Aktifkan tampilan (view) dan tombol navigasi sesuai tab yang dipilih
+    //   if (tabName === 'user') {
+    //     const viewUser = document.getElementById('view-user');
+    //     if (viewUser) viewUser.classList.remove('hidden');
+    //     if (navUser) navUser.className = activeClass;
+    //   } else if (tabName === 'admin') {
+    //     const viewAdmin = document.getElementById('view-admin');
+    //     if (viewAdmin) viewAdmin.classList.remove('hidden');
+    //     if (navAdmin) navAdmin.className = activeClass;
+    //   } else {
+    //     const viewBeranda = document.getElementById('view-beranda');
+    //     if (viewBeranda) viewBeranda.classList.remove('hidden');
+    //     if (navBeranda) navBeranda.className = activeClass;
+    //   }
+
+    //   window.scrollTo({ top: 0, behavior: 'smooth' });
+    // };
+
+    // window.switchMainTab = function(tabName) {
+    //   hideAllMainViews();
+    //   const navBeranda = document.getElementById('nav-beranda');
+    //   const navAdmin = document.getElementById('nav-admin');
+    //   const navUser = document.getElementById('nav-user');
+
+    //   if (tabName === 'user') {
+    //     document.getElementById('view-user').classList.remove('hidden');
+    //     if (navUser) navUser.className = 'flex flex-col items-center justify-center gap-1 text-[#0F3562] font-semibold transition-colors cursor-pointer';
+    //     if (navBeranda) navBeranda.className = 'flex flex-col items-center justify-center gap-1 text-slate-400 hover:text-slate-600 font-medium transition-colors cursor-pointer';
+    //   } else {
+    //     document.getElementById('view-beranda').classList.remove('hidden');
+    //     if (navBeranda) navBeranda.className = 'flex flex-col items-center justify-center gap-1 text-[#0F3562] font-semibold transition-colors cursor-pointer';
+    //     if (navUser) navUser.className = 'flex flex-col items-center justify-center gap-1 text-slate-400 hover:text-slate-600 font-medium transition-colors cursor-pointer';
+    //   }
+    //   window.scrollTo({ top: 0, behavior: 'smooth' });
+    // };
 
     window.handleLihatSemua = function() {
       hideAllMainViews();
