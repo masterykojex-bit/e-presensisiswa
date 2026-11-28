@@ -2962,18 +2962,40 @@
     // -------------------------------------------------------------------------
     function applyDynamicKemnakerFavicon() {
       try {
-        const svgMarkup = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 120">
-          <rect x="4" y="4" width="112" height="112" rx="22" fill="#0B2E59"/>
-          <path d="M22 44 C22 28, 36 22, 54 22 L90 22 C96 22, 98 26, 98 32 L98 44 L44 44 L44 98 L32 98 C26 98, 22 94, 22 88 Z" fill="#FFFFFF"/>
-          <path d="M54 54 L98 54 L98 86 C98 94, 92 98, 84 98 L54 98 Z" fill="#1C75BC"/>
-          <path d="M54 78 L98 54 L98 90 C98 95, 94 98, 88 98 L54 98 Z" fill="#27AAE1"/>
-        </svg>`;
-        const encoded = 'data:image/svg+xml;charset=utf-8,' + encodeURIComponent(svgMarkup);
-        document.querySelectorAll('link[rel="icon"], link[rel="apple-touch-icon"]').forEach((el) => {
-          el.setAttribute('href', encoded);
-        });
+        const iconUrl = 'https://upload.wikimedia.org/wikipedia/commons/thumb/1/1a/Logo_Kementerian_Ketenagakerjaan_%282016%29.png/512px-Logo_Kementerian_Ketenagakerjaan_%282016%29.png';
+        
+        const links = document.querySelectorAll('link[rel="icon"], link[rel="apple-touch-icon"]');
+        
+        if (links.length > 0) {
+          // Jika tag <link> sudah ada di <head>, langsung ganti href-nya
+          links.forEach((el) => {
+            el.setAttribute('href', iconUrl);
+          });
+        } else {
+          // Jika belum ada tag <link>, buat elemen baru secara otomatis
+          const newLink = document.createElement('link');
+          newLink.rel = 'icon';
+          newLink.type = 'image/png';
+          newLink.href = iconUrl;
+          document.head.appendChild(newLink);
+        }
       } catch (e) {}
     }
+
+    // function applyDynamicKemnakerFavicon() {
+    //   try {
+    //     const svgMarkup = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 120">
+    //       <rect x="4" y="4" width="112" height="112" rx="22" fill="#0B2E59"/>
+    //       <path d="M22 44 C22 28, 36 22, 54 22 L90 22 C96 22, 98 26, 98 32 L98 44 L44 44 L44 98 L32 98 C26 98, 22 94, 22 88 Z" fill="#FFFFFF"/>
+    //       <path d="M54 54 L98 54 L98 86 C98 94, 92 98, 84 98 L54 98 Z" fill="#1C75BC"/>
+    //       <path d="M54 78 L98 54 L98 90 C98 95, 94 98, 88 98 L54 98 Z" fill="#27AAE1"/>
+    //     </svg>`;
+    //     const encoded = 'data:image/svg+xml;charset=utf-8,' + encodeURIComponent(svgMarkup);
+    //     document.querySelectorAll('link[rel="icon"], link[rel="apple-touch-icon"]').forEach((el) => {
+    //       el.setAttribute('href', encoded);
+    //     });
+    //   } catch (e) {}
+    // }
 
     async function initApp() {
       applyDynamicKemnakerFavicon();
