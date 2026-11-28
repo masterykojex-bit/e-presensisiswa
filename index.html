@@ -2950,31 +2950,81 @@
       window.openMonthlyReportView();
     };
 
-    async function loadAdminRekap(dateFilter) {
+    let allRekapRecordsCache = []; // Menyimpan data absensi hasil tarikan terakhir
+
+    // Helper untuk mendapatkan nama program berdasarkan data absensi atau master peserta (NIK)
+    function getProgramByRecord(r) {
+      if (r.program) return String(r.program).trim();
+      if (typeof allStudentsCache !== 'undefined' && Array.isArray(allStudentsCache)) {
+        const foundStudent = allStudentsCache.find((s) => String(s.nik) === String(r.nik));
+        if (foundStudent && foundStudent.program) return String(foundStudent.program).trim();
+      }
+      return '';
+    }
+
+    // Mengisi pilihan dropdown #admin-filter-program secara otomatis
+    function populateRekapProgramDropdown(records) {
+      const selectEl = document.getElementById('admin-filter-program');
+      if (!selectEl) return;
+
+      const currentVal = selectEl.value;
+      const programSet = new Set();
+
+      // Ambil dari data absensi yang sedang tampil
+      records.forEach((r) => {
+        const prog = getProgramByRecord(r);
+        if (prog) programSet.add(prog);
+      });
+
+      // Tambahkan juga dari allStudentsCache agar semua program tetap muncul di daftar
+      if (typeof allStudentsCache !== 'undefined' && Array.isArray(allStudentsCache)) {
+        allStudentsCache.forEach((s) => {
+          if (s.program) programSet.add(String(s.program).trim());
+        });
+      }
+
+      const sortedPrograms = [...programSet].sort();
+      selectEl.innerHTML = '<option value="">Semua Program</option>';
+      sortedPrograms.forEach((prog) => {
+        const opt = document.createElement('option');
+        opt.value = prog;
+        opt.textContent = prog;
+        selectEl.appendChild(opt);
+      });
+
+      // Pertahankan pilihan sebelumnya jika masih tersedia
+      if (sortedPrograms.includes(currentVal)) {
+        selectEl.value = currentVal;
+      }
+    }
+
+    // Merender baris tabel #admin-rekap-tbody sesuai filter program yang aktif
+    function renderAdminRekapTable() {
       const tbody = document.getElementById('admin-rekap-tbody');
       const countEl = document.getElementById('admin-rekap-count');
-      tbody.innerHTML = `<tr><td colspan="6" class="p-6 text-center text-slate-400">Memuat data absensi...</td></tr>`;
+      const selectEl = document.getElementById('admin-filter-program');
+      const selectedProgram = selectEl ? selectEl.value : '';
 
-      try {
-        const res = await callBackend('getAttendanceRecords', { pin: adminSessionPin, dateFilter: dateFilter });
-        if (!res || !res.success) {
-          tbody.innerHTML = `<tr><td colspan="6" class="p-6 text-center text-rose-500">${res ? res.message : 'Gagal memuat'}</td></tr>`;
-          return;
-        }
-        const rows = res.records || [];
-        countEl.textContent = `${rows.length} Data`;
+      const filteredRows = allRekapRecordsCache.filter((r) => {
+        if (!selectedProgram) return true;
+        return getProgramByRecord(r) === selectedProgram;
+      });
 
-        if (rows.length === 0) {
-          tbody.innerHTML = `<tr><td colspan="6" class="p-6 text-center text-slate-400">Tidak ada data absensi.</td></tr>`;
-          return;
-        }
+      countEl.textContent = `${filteredRows.length} Data`;
 
-        tbody.innerHTML = rows.map((r) => `
+      if (filteredRows.length === 0) {
+        tbody.innerHTML = `<tr><td colspan="6" class="p-6 text-center text-slate-400">Tidak ada data absensi.</td></tr>`;
+        return;
+      }
+
+      tbody.innerHTML = filteredRows.map((r) => {
+        const progName = getProgramByRecord(r);
+        return `
           <tr class="hover:bg-slate-50">
             <td class="p-3 font-medium text-slate-700 whitespace-nowrap">${r.tanggal}</td>
             <td class="p-3">
               <p class="font-bold text-slate-800">${r.nama}</p>
-              <p class="text-[11px] text-slate-400">${r.nik}</p>
+              <p class="text-[11px] text-slate-400">${r.nik}${progName ? ` • <span class="text-[#0F3562] font-medium">${progName}</span>` : ''}</p>
             </td>
             <td class="p-3 whitespace-nowrap">
               <span class="px-2 py-0.5 rounded-md bg-sky-50 text-[#0F3562] font-semibold text-[11px]">${r.jenisPresensi || 'Presensi Harian'}</span>
@@ -2996,11 +3046,86 @@
               </div>
             </td>
           </tr>
-        `).join('');
+        `;
+      }).join('');
+    }
+
+    // Fungsi utama memuat data dari backend
+    async function loadAdminRekap(dateFilter) {
+      const tbody = document.getElementById('admin-rekap-tbody');
+      tbody.innerHTML = `<tr><td colspan="6" class="p-6 text-center text-slate-400">Memuat data absensi...</td></tr>`;
+
+      try {
+        const res = await callBackend('getAttendanceRecords', { pin: adminSessionPin, dateFilter: dateFilter });
+        if (!res || !res.success) {
+          tbody.innerHTML = `<tr><td colspan="6" class="p-6 text-center text-rose-500">${res ? res.message : 'Gagal memuat'}</td></tr>`;
+          return;
+        }
+
+        allRekapRecordsCache = res.records || [];
+        populateRekapProgramDropdown(allRekapRecordsCache);
+        renderAdminRekapTable();
       } catch (err) {
         tbody.innerHTML = `<tr><td colspan="6" class="p-6 text-center text-rose-500">${err.message}</td></tr>`;
       }
     }
+
+    // Event listener saat dropdown program diubah (langsung menyaring tabel)
+    document.getElementById('admin-filter-program')?.addEventListener('change', () => {
+      renderAdminRekapTable();
+    });
+
+    // async function loadAdminRekap(dateFilter) {
+    //   const tbody = document.getElementById('admin-rekap-tbody');
+    //   const countEl = document.getElementById('admin-rekap-count');
+    //   tbody.innerHTML = `<tr><td colspan="6" class="p-6 text-center text-slate-400">Memuat data absensi...</td></tr>`;
+
+    //   try {
+    //     const res = await callBackend('getAttendanceRecords', { pin: adminSessionPin, dateFilter: dateFilter });
+    //     if (!res || !res.success) {
+    //       tbody.innerHTML = `<tr><td colspan="6" class="p-6 text-center text-rose-500">${res ? res.message : 'Gagal memuat'}</td></tr>`;
+    //       return;
+    //     }
+    //     const rows = res.records || [];
+    //     countEl.textContent = `${rows.length} Data`;
+
+    //     if (rows.length === 0) {
+    //       tbody.innerHTML = `<tr><td colspan="6" class="p-6 text-center text-slate-400">Tidak ada data absensi.</td></tr>`;
+    //       return;
+    //     }
+
+    //     tbody.innerHTML = rows.map((r) => `
+    //       <tr class="hover:bg-slate-50">
+    //         <td class="p-3 font-medium text-slate-700 whitespace-nowrap">${r.tanggal}</td>
+    //         <td class="p-3">
+    //           <p class="font-bold text-slate-800">${r.nama}</p>
+    //           <p class="text-[11px] text-slate-400">${r.nik}</p>
+    //         </td>
+    //         <td class="p-3 whitespace-nowrap">
+    //           <span class="px-2 py-0.5 rounded-md bg-sky-50 text-[#0F3562] font-semibold text-[11px]">${r.jenisPresensi || 'Presensi Harian'}</span>
+    //         </td>
+    //         <td class="p-3 whitespace-nowrap">
+    //           <span class="text-emerald-600 font-bold">${r.checkIn}</span> /
+    //           <span class="text-rose-500 font-bold">${r.checkOut}</span>
+    //         </td>
+    //         <td class="p-3">
+    //           <span class="px-2 py-0.5 rounded-full text-[10px] font-bold ${r.status === 'TERLAMBAT' ? 'bg-amber-100 text-amber-700' : 'bg-emerald-100 text-emerald-700'}">${r.status}</span>
+    //           <p class="text-[11px] text-slate-500 mt-0.5">${r.durasi}</p>
+    //         </td>
+    //         <td class="p-3 space-y-1 text-[11px]">
+    //           <p class="text-slate-600 max-w-[180px] truncate" title="${r.lokasiIn || '-'}">In: ${r.lokasiIn || '-'}</p>
+    //           <div class="flex gap-2">
+    //             ${r.fotoIn ? `<a href="${r.fotoIn}" target="_blank" class="text-[#148296] underline font-semibold">Foto In</a>` : ''}
+    //             ${r.ttdIn ? `<a href="${r.ttdIn}" target="_blank" class="text-[#0F3562] underline font-semibold">TTD In</a>` : ''}
+    //             ${r.fotoOut ? `<a href="${r.fotoOut}" target="_blank" class="text-rose-600 underline font-semibold">Foto Out</a>` : ''}
+    //           </div>
+    //         </td>
+    //       </tr>
+    //     `).join('');
+    //   } catch (err) {
+    //     tbody.innerHTML = `<tr><td colspan="6" class="p-6 text-center text-rose-500">${err.message}</td></tr>`;
+    //   }
+    // }
 
     async function loadAdminStudents() {
       const tbody = document.getElementById('admin-students-tbody');
@@ -3227,10 +3352,18 @@
         const d = document.getElementById('admin-filter-date').value;
         loadAdminRekap(d || 'ALL');
       });
+
       document.getElementById('btn-filter-all-date').addEventListener('click', () => {
         document.getElementById('admin-filter-date').value = '';
+        const selectProgram = document.getElementById('admin-filter-program');
+        if (selectProgram) selectProgram.value = '';
         loadAdminRekap('ALL');
       });
+
+      // document.getElementById('btn-filter-all-date').addEventListener('click', () => {
+      //   document.getElementById('admin-filter-date').value = '';
+      //   loadAdminRekap('ALL');
+      // });
 
       document.getElementById('btn-toggle-student-form').addEventListener('click', () => {
         const form = document.getElementById('form-student-crud');
