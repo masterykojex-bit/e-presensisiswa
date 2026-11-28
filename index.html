@@ -942,6 +942,12 @@
         <div class="flex flex-wrap items-center justify-between gap-2 bg-slate-50 p-3 rounded-2xl border border-slate-200">
           <div class="flex items-center gap-2">
             <input type="date" id="admin-filter-date" class="px-3 py-1.5 rounded-xl border border-slate-200 text-xs font-medium bg-white">
+
+            <!-- PASTIKAN BARIS SELECT INI ADA DI HTML ANDA -->
+            <select id="admin-filter-program" class="px-3 py-1.5 rounded-xl border border-slate-200 text-xs font-medium bg-white text-slate-700 max-w-[200px]">
+              <option value="">Semua Program</option>
+            </select>
+
             <button id="btn-filter-date" type="button" class="px-3 py-1.5 rounded-xl bg-[#0F3562] text-white text-xs font-semibold cursor-pointer">Filter</button>
             <button id="btn-filter-all-date" type="button" class="px-3 py-1.5 rounded-xl bg-white border border-slate-200 text-slate-700 text-xs font-semibold cursor-pointer">Semua</button>
           </div>
@@ -3056,6 +3062,14 @@
       tbody.innerHTML = `<tr><td colspan="6" class="p-6 text-center text-slate-400">Memuat data absensi...</td></tr>`;
 
       try {
+        // Jika allStudentsCache belum dimuat, ambil dulu agar daftar Nama Program tersedia
+        if (typeof allStudentsCache !== 'undefined' && allStudentsCache.length === 0) {
+          const resStudents = await callBackend('getStudents', { pin: adminSessionPin }); // Sesuaikan nama fungsi backend Anda jika berbeda
+          if (resStudents && resStudents.success && Array.isArray(resStudents.students)) {
+            allStudentsCache = resStudents.students;
+          }
+        }
+
         const res = await callBackend('getAttendanceRecords', { pin: adminSessionPin, dateFilter: dateFilter });
         if (!res || !res.success) {
           tbody.innerHTML = `<tr><td colspan="6" class="p-6 text-center text-rose-500">${res ? res.message : 'Gagal memuat'}</td></tr>`;
