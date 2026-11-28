@@ -2052,24 +2052,84 @@
     window.showAkunInfoModal = function(topic) {
       const infoMap = {
         tentang: {
+          badge: 'Informasi Sistem',
           title: 'Tentang Aplikasi',
-          text: 'e-Presensi Siswa Pelatihan v2.3.0 merupakan sistem presensi digital berbasis lokasi GPS, foto selfie, dan tanda tangan digital untuk peserta pelatihan vokasi.'
+          iconSvg: `<svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>`,
+          htmlContent: `
+            <div class="text-left space-y-3 mt-1">
+              <div class="flex items-center justify-between bg-slate-50 px-3.5 py-2.5 rounded-xl border border-slate-100">
+                <span class="text-xs font-medium text-slate-500">Versi Aplikasi</span>
+                <span class="text-xs font-bold text-[#0F3562] bg-[#0F3562]/10 px-2.5 py-0.5 rounded-full">v2.3.0</span>
+              </div>
+              <p class="text-sm text-slate-600 leading-relaxed">
+                <strong class="text-slate-800">e-Presensi Siswa Pelatihan</strong> merupakan sistem presensi digital modern berbasis validasi <span class="text-slate-800 font-medium">lokasi GPS</span>, <span class="text-slate-800 font-medium">foto selfie</span>, dan <span class="text-slate-800 font-medium">tanda tangan digital</span> khusus peserta pelatihan vokasi.
+              </p>
+            </div>
+          `
         },
         ketentuan: {
+          badge: 'Aturan Penggunaan',
           title: 'Ketentuan Layanan',
-          text: 'Peserta wajib melakukan presensi Masuk dan Pulang sesuai jadwal yang ditetapkan instansi menggunakan perangkat pribadi dengan kamera dan GPS aktif.'
+          iconSvg: `<svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path></svg>`,
+          htmlContent: `
+            <div class="text-left space-y-2.5 mt-1 text-sm text-slate-600 leading-relaxed">
+              <p>Dengan menggunakan layanan ini, peserta wajib mematuhi ketentuan berikut:</p>
+              <ul class="space-y-2 bg-slate-50 p-3.5 rounded-xl border border-slate-100 text-xs text-slate-600">
+                <li class="flex items-start gap-2">
+                  <span class="text-[#0F3562] font-bold mt-0.5">•</span>
+                  <span>Melakukan presensi <strong>Masuk</strong> dan <strong>Pulang</strong> tepat waktu sesuai jadwal instansi.</span>
+                </li>
+                <li class="flex items-start gap-2">
+                  <span class="text-[#0F3562] font-bold mt-0.5">•</span>
+                  <span>Menggunakan perangkat pribadi dengan izin <strong>Kamera</strong> dan <strong>GPS aktif</strong>.</span>
+                </li>
+              </ul>
+            </div>
+          `
         },
         privasi: {
+          badge: 'Keamanan Data',
           title: 'Kebijakan Privasi',
-          text: 'Data lokasi koordinat, foto selfie, dan tanda tangan digital hanya digunakan untuk keperluan validasi kehadiran pelatihan dan tersimpan aman di server instansi.'
+          iconSvg: `<svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"></path></svg>`,
+          htmlContent: `
+            <div class="text-left space-y-3 mt-1 text-sm text-slate-600 leading-relaxed">
+              <p>
+                Data lokasi koordinat, foto selfie, dan tanda tangan digital yang dikirimkan hanya digunakan untuk keperluan <strong class="text-slate-800">validasi kehadiran pelatihan</strong>.
+              </p>
+              <div class="flex items-center gap-2.5 bg-emerald-50/80 text-emerald-800 px-3.5 py-2.5 rounded-xl border border-emerald-100 text-xs font-medium">
+                <svg class="w-4 h-4 text-emerald-600 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"></path></svg>
+                <span>Seluruh data terenkripsi dan tersimpan aman di server resmi instansi.</span>
+              </div>
+            </div>
+          `
         }
       };
+
       const item = infoMap[topic] || infoMap.tentang;
+
       Swal.fire({
-        title: item.title,
-        text: item.text,
-        icon: 'info',
-        confirmButtonColor: '#0F3562'
+        html: `
+          <div class="pt-2">
+            <div class="w-12 h-12 rounded-2xl bg-[#0F3562]/10 text-[#0F3562] flex items-center justify-center mx-auto mb-3">
+              ${item.iconSvg}
+            </div>
+            <span class="inline-block text-[10px] font-bold uppercase tracking-wider text-[#0F3562] bg-[#0F3562]/10 px-2.5 py-0.5 rounded-full mb-1">
+              ${item.badge}
+            </span>
+            <h3 class="text-lg font-bold text-slate-800 mb-3">${item.title}</h3>
+            ${item.htmlContent}
+          </div>
+        `,
+        showCloseButton: true,
+        confirmButtonText: 'Saya Mengerti',
+        buttonsStyling: false,
+        customClass: {
+          popup: 'rounded-3xl p-6 max-w-sm w-full shadow-2xl border border-slate-100 font-sans',
+          htmlContainer: '!m-0',
+          actions: 'w-full mt-5',
+          confirmButton: 'w-full py-2.5 px-4 rounded-xl text-sm font-semibold text-white bg-[#0F3562] hover:bg-[#0b284b] shadow-md transition-colors cursor-pointer',
+          closeButton: 'text-slate-400 hover:text-slate-600 focus:outline-none'
+        }
       });
     };
 
