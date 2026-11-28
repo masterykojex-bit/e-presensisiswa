@@ -5,11 +5,11 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>e-Presensi Siswa - BBPVP Semarang</title>
   <!-- Favicon & Thumbnail Icon Kemnaker -->
-  <link rel="icon" type="image/png" href="https://upload.wikimedia.org/wikipedia/commons/9/98/Logo_Kementerian_Ketenagakerjaan_%282016%29.png">
-  <link rel="apple-touch-icon" href="https://upload.wikimedia.org/wikipedia/commons/9/98/Logo_Kementerian_Ketenagakerjaan_%282016%29.png">
+  <link rel="icon" type="image/png" href="https://upload.wikimedia.org/wikipedia/commons/thumb/1/1a/Logo_Kementerian_Ketenagakerjaan_%282016%29.png/512px-Logo_Kementerian_Ketenagakerjaan_%282016%29.png">
+  <link rel="apple-touch-icon" href="https://upload.wikimedia.org/wikipedia/commons/thumb/1/1a/Logo_Kementerian_Ketenagakerjaan_%282016%29.png/512px-Logo_Kementerian_Ketenagakerjaan_%282016%29.png">
   <meta property="og:title" content="e-Presensi Siswa - BBPVP Semarang">
   <meta property="og:description" content="Sistem Absensi Digital Peserta Pelatihan BBPVP Semarang">
-  <meta property="og:image" content="https://upload.wikimedia.org/wikipedia/commons/9/98/Logo_Kementerian_Ketenagakerjaan_%282016%29.png">
+  <meta property="og:image" content="https://upload.wikimedia.org/wikipedia/commons/thumb/1/1a/Logo_Kementerian_Ketenagakerjaan_%282016%29.png/512px-Logo_Kementerian_Ketenagakerjaan_%282016%29.png">
   <!-- Tailwind CSS -->
   <script src="https://cdn.tailwindcss.com"></script>
   <!-- SweetAlert2 -->
@@ -177,10 +177,13 @@
       <!-- Top Bar: Logo Kemnaker & Tombol Panduan + Admin -->
       <div class="flex items-center justify-between gap-2 mb-5">
         <div class="flex items-center gap-2.5 min-w-0">
-          <img src="https://upload.wikimedia.org/wikipedia/commons/9/98/Logo_Kementerian_Ketenagakerjaan_%282016%29.png"
-            alt="Logo Kemnaker"
-            onerror="this.style.display='none'"
-            class="w-8 h-8 sm:w-9 sm:h-9 object-contain brightness-0 invert flex-shrink-0">
+          <!-- Logo Resmi Kemnaker (Sesuai Gambar Referensi) -->
+          <svg viewBox="0 0 120 120" class="w-9 h-9 sm:w-10 sm:h-10 flex-shrink-0 drop-shadow-xs" aria-label="Logo Kementerian Ketenagakerjaan">
+            <rect x="6" y="6" width="108" height="108" rx="22" fill="#0B2E59" stroke="#FFFFFF" stroke-width="5"/>
+            <path d="M22 44 C22 28, 36 22, 54 22 L90 22 C96 22, 98 26, 98 32 L98 44 L44 44 L44 98 L32 98 C26 98, 22 94, 22 88 Z" fill="#FFFFFF"/>
+            <path d="M54 54 L98 54 L98 86 C98 94, 92 98, 84 98 L54 98 Z" fill="#1C75BC"/>
+            <path d="M54 78 L98 54 L98 90 C98 95, 94 98, 88 98 L54 98 Z" fill="#27AAE1"/>
+          </svg>
           <div class="leading-tight min-w-0">
             <p class="text-[9px] sm:text-[10px] font-bold tracking-wider uppercase text-white/95 truncate">Kementerian Ketenagakerjaan</p>
             <p class="text-[9px] sm:text-[10px] font-medium tracking-wide uppercase text-sky-200 truncate">Republik Indonesia</p>
@@ -863,8 +866,8 @@
       </div>
 
       <!-- SUB-VIEW A: MENU UTAMA ADMIN -->
-      <div id="admin-menu-view" class="mt-5 grid grid-cols-1 sm:grid-cols-3 gap-4">
-        <button id="btn-menu-rekap" type="button" class="p-5 rounded-2xl border border-slate-200 hover:border-[#148296] hover:bg-sky-50/40 text-left transition-all group cursor-pointer">
+      <div id="admin-menu-view" class="mt-5 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3.5">
+        <button id="btn-menu-rekap" type="button" class="p-4 rounded-2xl border border-slate-200 hover:border-[#148296] hover:bg-sky-50/40 text-left transition-all group cursor-pointer">
           <div class="w-11 h-11 rounded-2xl bg-[#148296]/10 text-[#148296] flex items-center justify-center mb-3 group-hover:scale-105 transition-transform">
             <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 17v-2m3 2v-4m3 4v-6m2 10H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
@@ -874,7 +877,17 @@
           <p class="text-xs text-slate-500 mt-1 leading-relaxed">Lihat seluruh log kehadiran, lokasi GPS, foto selfie & tanda tangan peserta.</p>
         </button>
 
-        <button id="btn-menu-students" type="button" class="p-5 rounded-2xl border border-slate-200 hover:border-[#0F3562] hover:bg-indigo-50/40 text-left transition-all group cursor-pointer">
+        <button id="btn-menu-progress" type="button" class="p-4 rounded-2xl border border-slate-200 hover:border-emerald-500 hover:bg-emerald-50/40 text-left transition-all group cursor-pointer">
+          <div class="w-11 h-11 rounded-2xl bg-emerald-500/10 text-emerald-600 flex items-center justify-center mb-3 group-hover:scale-105 transition-transform">
+            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"></path>
+            </svg>
+          </div>
+          <h4 class="font-display font-bold text-slate-800 text-sm">Kartu Progres</h4>
+          <p class="text-xs text-slate-500 mt-1 leading-relaxed">Pantau progres kehadiran, target jam pelatihan, ketepatan waktu & cetak kartu.</p>
+        </button>
+
+        <button id="btn-menu-students" type="button" class="p-4 rounded-2xl border border-slate-200 hover:border-[#0F3562] hover:bg-indigo-50/40 text-left transition-all group cursor-pointer">
           <div class="w-11 h-11 rounded-2xl bg-[#0F3562]/10 text-[#0F3562] flex items-center justify-center mb-3 group-hover:scale-105 transition-transform">
             <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0z"></path>
@@ -884,7 +897,7 @@
           <p class="text-xs text-slate-500 mt-1 leading-relaxed">Tambah peserta baru, ubah data NIK/program, atau nonaktifkan peserta.</p>
         </button>
 
-        <button id="btn-menu-settings" type="button" class="p-5 rounded-2xl border border-slate-200 hover:border-amber-500 hover:bg-amber-50/40 text-left transition-all group cursor-pointer">
+        <button id="btn-menu-settings" type="button" class="p-4 rounded-2xl border border-slate-200 hover:border-amber-500 hover:bg-amber-50/40 text-left transition-all group cursor-pointer">
           <div class="w-11 h-11 rounded-2xl bg-amber-500/10 text-amber-600 flex items-center justify-center mb-3 group-hover:scale-105 transition-transform">
             <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6V4m0 2a2 2 0 100 4m0-4a2 2 0 110 4m-6 8a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4m6 6v10m6-2a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4"></path>
@@ -920,6 +933,60 @@
             </thead>
             <tbody id="admin-rekap-tbody" class="divide-y divide-slate-100 bg-white"></tbody>
           </table>
+        </div>
+      </div>
+
+      <!-- SUB-VIEW B2: KARTU PROGRES PESERTA PELATIHAN -->
+      <div id="admin-progress-view" class="hidden mt-4 space-y-4">
+        <!-- Ringkasan KPI Agregat -->
+        <div class="grid grid-cols-2 sm:grid-cols-4 gap-2.5">
+          <div class="p-3 rounded-2xl bg-slate-50 border border-slate-200/90">
+            <p class="text-[11px] font-medium text-slate-500">Total Peserta</p>
+            <p id="prog-kpi-total" class="font-display text-lg font-extrabold text-[#0F3562] mt-0.5">0</p>
+          </div>
+          <div class="p-3 rounded-2xl bg-emerald-50/70 border border-emerald-200/80">
+            <p class="text-[11px] font-medium text-emerald-700">Rata-rata Kehadiran</p>
+            <p id="prog-kpi-avg-days" class="font-display text-lg font-extrabold text-emerald-700 mt-0.5">0 Hari</p>
+          </div>
+          <div class="p-3 rounded-2xl bg-sky-50/70 border border-sky-200/80">
+            <p class="text-[11px] font-medium text-[#148296]">Rata-rata Tepat Waktu</p>
+            <p id="prog-kpi-avg-ontime" class="font-display text-lg font-extrabold text-[#148296] mt-0.5">0%</p>
+          </div>
+          <div class="p-3 rounded-2xl bg-amber-50/70 border border-amber-200/80">
+            <p class="text-[11px] font-medium text-amber-700">Target Hari Pelatihan</p>
+            <div class="flex items-center gap-1.5 mt-0.5">
+              <input type="number" id="prog-target-days" value="20" min="1" max="365"
+                class="w-16 px-2 py-0.5 rounded-lg border border-amber-300 bg-white text-sm font-bold text-slate-800 outline-none focus:border-[#0F3562]">
+              <span class="text-xs font-semibold text-slate-600">Hari</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Filter Program Pelatihan, Status & Pencarian -->
+        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2.5 bg-slate-50 p-3 rounded-2xl border border-slate-200">
+          <div class="flex flex-wrap items-center gap-2 flex-1">
+            <input type="text" id="prog-search-input" placeholder="Cari nama / NIK peserta..."
+              class="flex-1 min-w-[160px] px-3 py-1.5 rounded-xl border border-slate-200 text-xs bg-white outline-none focus:border-[#0F3562]">
+            <select id="prog-filter-program"
+              class="px-3 py-1.5 rounded-xl border border-slate-200 text-xs font-medium bg-white text-slate-700 outline-none focus:border-[#0F3562] max-w-[200px]">
+              <option value="ALL">Semua Program Pelatihan</option>
+            </select>
+            <select id="prog-filter-status"
+              class="px-3 py-1.5 rounded-xl border border-slate-200 text-xs font-medium bg-white text-slate-700 outline-none focus:border-[#0F3562]">
+              <option value="AKTIF">Peserta Aktif</option>
+              <option value="ALL">Semua Status</option>
+              <option value="NONAKTIF">Nonaktif</option>
+            </select>
+          </div>
+          <button id="btn-refresh-progress" type="button"
+            class="px-3 py-1.5 rounded-xl bg-[#0F3562] hover:bg-[#0b284b] text-white text-xs font-semibold cursor-pointer self-start sm:self-auto">
+            Muat Ulang
+          </button>
+        </div>
+
+        <!-- Grid Kartu Progres Peserta -->
+        <div id="admin-progress-grid" class="grid grid-cols-1 md:grid-cols-2 gap-3.5 max-h-[54vh] overflow-y-auto pr-1">
+          <div class="col-span-full p-8 text-center text-xs text-slate-400">Memuat Kartu Progres peserta...</div>
         </div>
       </div>
 
@@ -1090,8 +1157,12 @@
   <div id="print-report-sheet" class="hidden w-full bg-white text-slate-900">
     <!-- Kop Surat Formal -->
     <div class="flex items-center gap-4 pb-3 border-b-[3px] border-double border-slate-900">
-      <img src="https://upload.wikimedia.org/wikipedia/commons/9/98/Logo_Kementerian_Ketenagakerjaan_%282016%29.png"
-        alt="Logo Kemnaker" class="w-14 h-14 object-contain flex-shrink-0">
+      <svg viewBox="0 0 120 120" class="w-14 h-14 flex-shrink-0" aria-label="Logo Kementerian Ketenagakerjaan">
+        <rect x="4" y="4" width="112" height="112" rx="22" fill="#0B2E59"/>
+        <path d="M22 44 C22 28, 36 22, 54 22 L90 22 C96 22, 98 26, 98 32 L98 44 L44 44 L44 98 L32 98 C26 98, 22 94, 22 88 Z" fill="#FFFFFF"/>
+        <path d="M54 54 L98 54 L98 86 C98 94, 92 98, 84 98 L54 98 Z" fill="#1C75BC"/>
+        <path d="M54 78 L98 54 L98 90 C98 95, 94 98, 88 98 L54 98 Z" fill="#27AAE1"/>
+      </svg>
       <div class="flex-1 text-center pr-12">
         <p class="text-[11px] font-bold tracking-wider uppercase text-slate-700">Kementerian Ketenagakerjaan Republik Indonesia</p>
         <p class="text-[11px] font-semibold uppercase text-slate-600">Direktorat Jenderal Pembinaan Pelatihan Vokasi dan Produktivitas</p>
@@ -1212,6 +1283,7 @@
 
     let adminSessionPin = '';
     let allStudentsCache = [];
+    let allProgressCache = [];
 
     // -------------------------------------------------------------------------
     // 1. KOMUNIKASI BACKEND (HYBRID: GOOGLE.SCRIPT.RUN & FETCH API)
@@ -1231,6 +1303,7 @@
           else if (action === 'updateSettings') runner.updateSettings(params.pin, params.payload);
           else if (action === 'getAttendanceRecords') runner.getAttendanceRecords(params.pin, params.dateFilter);
           else if (action === 'getAllStudents') runner.getAllStudents(params.pin);
+          else if (action === 'getAdminProgressCards') runner.getAdminProgressCards(params.pin);
           else if (action === 'saveStudent') runner.saveStudent(params.pin, params.student, params.originalNik);
           else if (action === 'deleteStudent') runner.deleteStudent(params.pin, params.nik);
           else reject(new Error('Action tidak dikenali'));
@@ -2321,7 +2394,7 @@
     };
 
     function showAdminSubView(viewName) {
-      ['admin-menu-view', 'admin-rekap-view', 'admin-students-view', 'admin-settings-view'].forEach((id) => {
+      ['admin-menu-view', 'admin-rekap-view', 'admin-progress-view', 'admin-students-view', 'admin-settings-view'].forEach((id) => {
         const el = document.getElementById(id);
         if (el) el.classList.add('hidden');
       });
@@ -2341,6 +2414,12 @@
         titleEl.textContent = 'Hasil Absensi Peserta';
         subEl.textContent = 'Log presensi masuk, pulang, lokasi GPS, foto & TTD';
         loadAdminRekap('ALL');
+      } else if (viewName === 'progress') {
+        document.getElementById('admin-progress-view').classList.remove('hidden');
+        backBtn.classList.remove('hidden');
+        titleEl.textContent = 'Kartu Progres Peserta Pelatihan';
+        subEl.textContent = 'Monitoring capaian kehadiran, durasi jam, kedisiplinan & ekspor kartu';
+        loadAdminProgressCards();
       } else if (viewName === 'students') {
         document.getElementById('admin-students-view').classList.remove('hidden');
         backBtn.classList.remove('hidden');
@@ -2355,6 +2434,194 @@
         fillAdminSettingsForm();
       }
     }
+
+    async function loadAdminProgressCards() {
+      const grid = document.getElementById('admin-progress-grid');
+      if (grid) {
+        grid.innerHTML = `<div class="col-span-full p-8 text-center text-xs text-slate-400">Menghitung progres kehadiran peserta...</div>`;
+      }
+      try {
+        const res = await callBackend('getAdminProgressCards', { pin: adminSessionPin });
+        if (res && res.success) {
+          allProgressCache = res.progressList || [];
+          populateProgressProgramFilter();
+          renderAdminProgressCards();
+        } else {
+          // Fallback hitung dari data siswa & absensi jika backend versi lama
+          const [resStudents, resAbs] = await Promise.all([
+            callBackend('getAllStudents', { pin: adminSessionPin }),
+            callBackend('getAttendanceRecords', { pin: adminSessionPin, dateFilter: 'ALL' })
+          ]);
+          const students = (resStudents && resStudents.students) || [];
+          const records = (resAbs && resAbs.records) || [];
+          allProgressCache = students.map((s) => {
+            const recs = records.filter((r) => String(r.nik).trim() === String(s.nik).trim());
+            let countHarian = 0, countOjt = 0, countTepat = 0, countTerlambat = 0, countSelesai = 0, totalMinutes = 0, lastActiveDate = '-';
+            recs.forEach((r) => {
+              if (r.tanggal && (lastActiveDate === '-' || r.tanggal > lastActiveDate)) lastActiveDate = r.tanggal;
+              if ((r.jenisPresensi || '').toLowerCase().includes('ojt')) countOjt++; else countHarian++;
+              if ((r.status || '').toUpperCase() === 'TERLAMBAT') countTerlambat++; else countTepat++;
+              if (r.checkOut && r.checkOut !== '-' && r.checkOut !== '--:--') countSelesai++;
+              if (r.durasi && r.durasi.includes('jam')) {
+                const jm = r.durasi.match(/(\d+)\s*jam/);
+                const mm = r.durasi.match(/(\d+)\s*menit/);
+                if (jm) totalMinutes += parseInt(jm[1], 10) * 60;
+                if (mm) totalMinutes += parseInt(mm[1], 10);
+              }
+            });
+            const totalHadir = recs.length;
+            return {
+              nik: s.nik,
+              nama: s.nama,
+              jk: s.jk,
+              program: s.program || '-',
+              statusSiswa: s.status || 'Aktif',
+              hp: s.hp || '',
+              totalHadir,
+              countHarian,
+              countOjt,
+              countTepat,
+              countTerlambat,
+              countSelesai,
+              totalMinutes,
+              totalJamText: `${Math.floor(totalMinutes / 60)} jam ${totalMinutes % 60} menit`,
+              persenTepat: totalHadir > 0 ? Math.round((countTepat / totalHadir) * 100) : 0,
+              lastActiveDate
+            };
+          });
+          populateProgressProgramFilter();
+          renderAdminProgressCards();
+        }
+      } catch (err) {
+        if (grid) {
+          grid.innerHTML = `<div class="col-span-full p-6 text-center text-xs text-rose-500">Gagal memuat Kartu Progres: ${err.message}</div>`;
+        }
+      }
+    }
+
+    function populateProgressProgramFilter() {
+      const select = document.getElementById('prog-filter-program');
+      if (!select) return;
+      const currentVal = select.value;
+      const programs = Array.from(new Set(allProgressCache.map((p) => p.program).filter(Boolean))).sort();
+      select.innerHTML = `<option value="ALL">Semua Program Pelatihan</option>` +
+        programs.map((prog) => `<option value="${prog.replace(/"/g, '&quot;')}">${prog}</option>`).join('');
+      if (currentVal && (currentVal === 'ALL' || programs.includes(currentVal))) {
+        select.value = currentVal;
+      }
+    }
+
+    function renderAdminProgressCards() {
+      const grid = document.getElementById('admin-progress-grid');
+      if (!grid) return;
+
+      const keyword = (document.getElementById('prog-search-input').value || '').toLowerCase().trim();
+      const progFilter = document.getElementById('prog-filter-program').value || 'ALL';
+      const statusFilter = document.getElementById('prog-filter-status').value || 'AKTIF';
+      const targetDays = Math.max(1, parseInt(document.getElementById('prog-target-days').value, 10) || 20);
+
+      const filtered = allProgressCache.filter((item) => {
+        const stLower = (item.statusSiswa || '').toLowerCase();
+        const isAktif = stLower === 'aktif' || stLower === 'akrif';
+        if (statusFilter === 'AKTIF' && !isAktif) return false;
+        if (statusFilter === 'NONAKTIF' && isAktif) return false;
+        if (progFilter !== 'ALL' && item.program !== progFilter) return false;
+        if (keyword && !item.nama.toLowerCase().includes(keyword) && !item.nik.toLowerCase().includes(keyword)) return false;
+        return true;
+      });
+
+      // Update KPI Ringkasan
+      const totalPeserta = filtered.length;
+      const sumDays = filtered.reduce((acc, cur) => acc + cur.totalHadir, 0);
+      const sumOntime = filtered.reduce((acc, cur) => acc + cur.persenTepat, 0);
+      document.getElementById('prog-kpi-total').textContent = `${totalPeserta} Peserta`;
+      document.getElementById('prog-kpi-avg-days').textContent = totalPeserta > 0 ? `${(sumDays / totalPeserta).toFixed(1)} Hari` : '0 Hari';
+      document.getElementById('prog-kpi-avg-ontime').textContent = totalPeserta > 0 ? `${Math.round(sumOntime / totalPeserta)}%` : '0%';
+
+      if (filtered.length === 0) {
+        grid.innerHTML = `<div class="col-span-full p-8 text-center text-xs text-slate-400">Tidak ada peserta yang sesuai dengan filter.</div>`;
+        return;
+      }
+
+      grid.innerHTML = filtered.map((p) => {
+        const pctTarget = Math.min(100, Math.round((p.totalHadir / targetDays) * 100));
+        const barColor = pctTarget >= 80 ? 'bg-emerald-500' : (pctTarget >= 50 ? 'bg-[#148296]' : 'bg-amber-500');
+        const badgePredikat = p.totalHadir === 0
+          ? `<span class="px-2 py-0.5 rounded-full bg-slate-100 text-slate-500 font-semibold text-[10px]">Belum Ada Data</span>`
+          : (p.persenTepat >= 85
+              ? `<span class="px-2 py-0.5 rounded-full bg-emerald-100 text-emerald-700 font-bold text-[10px]">Sangat Disiplin</span>`
+              : (p.persenTepat >= 60
+                  ? `<span class="px-2 py-0.5 rounded-full bg-sky-100 text-[#0F3562] font-bold text-[10px]">Baik</span>`
+                  : `<span class="px-2 py-0.5 rounded-full bg-amber-100 text-amber-700 font-bold text-[10px]">Perlu Pembinaan</span>`));
+
+        return `
+          <div class="rounded-2xl border border-slate-200 bg-white p-4 shadow-2xs hover:border-[#148296]/60 transition-all flex flex-col justify-between gap-3">
+            <div>
+              <div class="flex items-start justify-between gap-2">
+                <div class="min-w-0">
+                  <h4 class="font-display text-sm font-bold text-slate-800 truncate">${p.nama}</h4>
+                  <p class="text-[11px] font-mono text-slate-400 mt-0.5">${p.nik}</p>
+                </div>
+                <div class="flex-shrink-0">${badgePredikat}</div>
+              </div>
+              <p class="text-[11px] font-medium text-[#0F3562] bg-slate-50 px-2.5 py-1 rounded-lg mt-2 truncate" title="${p.program}">
+                ${p.program}
+              </p>
+            </div>
+
+            <!-- Progress Bar Capaian Kehadiran -->
+            <div>
+              <div class="flex items-center justify-between text-[11px] mb-1">
+                <span class="text-slate-500 font-medium">Progres Kehadiran (${p.totalHadir}/${targetDays} Hari)</span>
+                <span class="font-bold text-slate-800">${pctTarget}%</span>
+              </div>
+              <div class="w-full h-2 rounded-full bg-slate-100 overflow-hidden">
+                <div class="h-full ${barColor} rounded-full transition-all duration-300" style="width: ${pctTarget}%"></div>
+              </div>
+            </div>
+
+            <!-- Metrik Detail -->
+            <div class="grid grid-cols-3 gap-2 pt-2 border-t border-slate-100 text-center">
+              <div class="bg-slate-50 rounded-xl py-1.5 px-1">
+                <p class="text-[10px] text-slate-400">Harian / OJT</p>
+                <p class="text-xs font-bold text-slate-800 mt-0.5">${p.countHarian} / ${p.countOjt}</p>
+              </div>
+              <div class="bg-slate-50 rounded-xl py-1.5 px-1">
+                <p class="text-[10px] text-slate-400">Tepat Waktu</p>
+                <p class="text-xs font-bold text-emerald-600 mt-0.5">${p.persenTepat}% (${p.countTepat})</p>
+              </div>
+              <div class="bg-slate-50 rounded-xl py-1.5 px-1">
+                <p class="text-[10px] text-slate-400">Total Jam</p>
+                <p class="text-xs font-bold text-[#0F3562] mt-0.5 truncate">${p.totalJamText}</p>
+              </div>
+            </div>
+
+            <!-- Footer Kartu & Tombol Cetak Kartu Progres -->
+            <div class="flex items-center justify-between pt-1 text-[11px]">
+              <span class="text-slate-400">Terakhir aktif: <strong class="text-slate-600">${p.lastActiveDate}</strong></span>
+              <button type="button" onclick="window.handleAdminInspectStudentProgress('${p.nik}')"
+                class="inline-flex items-center gap-1 px-2.5 py-1 rounded-lg bg-[#0F3562] hover:bg-[#0b284b] text-white font-semibold transition-colors cursor-pointer">
+                <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z"></path>
+                </svg>
+                <span>Buka & Cetak Kartu</span>
+              </button>
+            </div>
+          </div>
+        `;
+      }).join('');
+    }
+
+    window.handleAdminInspectStudentProgress = async function(nik) {
+      closeModalEl('admin-panel-modal');
+      const inputNik = document.getElementById('input-nik');
+      if (inputNik) {
+        inputNik.value = nik;
+        window.toggleClearNikButton();
+      }
+      await window.searchStudentByNIK();
+      window.openMonthlyReportView();
+    };
 
     async function loadAdminRekap(dateFilter) {
       const tbody = document.getElementById('admin-rekap-tbody');
@@ -2581,8 +2848,15 @@
       document.getElementById('btn-close-admin-panel').addEventListener('click', () => closeModalEl('admin-panel-modal'));
       document.getElementById('btn-admin-back').addEventListener('click', () => showAdminSubView('menu'));
       document.getElementById('btn-menu-rekap').addEventListener('click', () => showAdminSubView('rekap'));
+      document.getElementById('btn-menu-progress').addEventListener('click', () => showAdminSubView('progress'));
       document.getElementById('btn-menu-students').addEventListener('click', () => showAdminSubView('students'));
       document.getElementById('btn-menu-settings').addEventListener('click', () => showAdminSubView('settings'));
+
+      document.getElementById('prog-search-input').addEventListener('input', renderAdminProgressCards);
+      document.getElementById('prog-filter-program').addEventListener('change', renderAdminProgressCards);
+      document.getElementById('prog-filter-status').addEventListener('change', renderAdminProgressCards);
+      document.getElementById('prog-target-days').addEventListener('input', renderAdminProgressCards);
+      document.getElementById('btn-refresh-progress').addEventListener('click', loadAdminProgressCards);
 
       document.getElementById('btn-filter-date').addEventListener('click', () => {
         const d = document.getElementById('admin-filter-date').value;
@@ -2689,7 +2963,23 @@
     // -------------------------------------------------------------------------
     // 7. INISIALISASI APLIKASI
     // -------------------------------------------------------------------------
+    function applyDynamicKemnakerFavicon() {
+      try {
+        const svgMarkup = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 120">
+          <rect x="4" y="4" width="112" height="112" rx="22" fill="#0B2E59"/>
+          <path d="M22 44 C22 28, 36 22, 54 22 L90 22 C96 22, 98 26, 98 32 L98 44 L44 44 L44 98 L32 98 C26 98, 22 94, 22 88 Z" fill="#FFFFFF"/>
+          <path d="M54 54 L98 54 L98 86 C98 94, 92 98, 84 98 L54 98 Z" fill="#1C75BC"/>
+          <path d="M54 78 L98 54 L98 90 C98 95, 94 98, 88 98 L54 98 Z" fill="#27AAE1"/>
+        </svg>`;
+        const encoded = 'data:image/svg+xml;charset=utf-8,' + encodeURIComponent(svgMarkup);
+        document.querySelectorAll('link[rel="icon"], link[rel="apple-touch-icon"]').forEach((el) => {
+          el.setAttribute('href', encoded);
+        });
+      } catch (e) {}
+    }
+
     async function initApp() {
+      applyDynamicKemnakerFavicon();
       updateLiveDateTime();
       setInterval(updateLiveDateTime, 1000);
 
