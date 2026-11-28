@@ -118,7 +118,7 @@
           </button>
         </div>
 
-        <!-- Tombol Aksi Kanan Atas (Sesuai Referensi) -->
+        <!-- Tombol Aksi Kanan Atas -->
         <div class="flex items-center gap-2 flex-wrap sm:flex-nowrap">
           <a href="https://drive.google.com/file/d/1IutovyYoG_8E7Jrk3TIBr2uIoEHv0ere/view?usp=drivesdk" target="_blank" rel="noopener noreferrer"
             class="inline-flex items-center gap-1.5 px-3.5 py-2 rounded-full bg-white hover:bg-sky-50 text-[#0F3562] border border-[#0F3562]/30 text-xs font-semibold shadow-xs transition-colors">
@@ -169,7 +169,7 @@
   </div>
 
   <!-- ======================================================================= -->
-  <!-- VIEW 1: BERANDA / DASHBOARD UTAMA (SESUAI GAMBAR PRESENSI-1)            -->
+  <!-- VIEW 1: BERANDA / DASHBOARD UTAMA                                       -->
   <!-- ======================================================================= -->
   <div id="view-beranda" class="w-full max-w-lg mx-auto flex-1 animate-fade-up">
     <!-- Top Navy Header -->
@@ -207,10 +207,14 @@
         </div>
       </div>
 
-      <!-- Profil Peserta di Header -->
+      <!-- Profil Peserta di Header (Mendukung Foto Profil Dinamis) -->
       <div class="flex items-center gap-4">
-        <div class="w-16 h-16 sm:w-20 sm:h-20 rounded-full bg-slate-200 border-2 border-white/30 flex items-center justify-center flex-shrink-0 overflow-hidden shadow-inner">
-          <svg class="w-11 h-11 sm:w-14 sm:h-14 text-slate-500 mt-1" fill="currentColor" viewBox="0 0 24 24">
+        <div onclick="window.switchMainTab('user')" title="Klik untuk kelola foto profil di menu Akun"
+          class="relative w-16 h-16 sm:w-20 sm:h-20 rounded-full bg-slate-200 border-2 border-white/40 flex items-center justify-center flex-shrink-0 overflow-hidden shadow-inner cursor-pointer group">
+          <img id="header-user-avatar-img" src="" alt="Foto Profil Peserta"
+            onerror="window.handleAvatarImgError('header')"
+            class="hidden w-full h-full object-cover">
+          <svg id="header-user-avatar-placeholder" class="w-11 h-11 sm:w-14 sm:h-14 text-slate-500 mt-1" fill="currentColor" viewBox="0 0 24 24">
             <path d="M12 12c2.7 0 4.8-2.1 4.8-4.8S14.7 2.4 12 2.4 7.2 4.5 7.2 7.2 9.3 12 12 12zm0 2.4c-3.2 0-9.6 1.6-9.6 4.8v2.4h19.2v-2.4c0-3.2-6.4-4.8-9.6-4.8z"/>
           </svg>
         </div>
@@ -315,7 +319,7 @@
   </div>
 
   <!-- ======================================================================= -->
-  <!-- VIEW 2: REKAP PRESENSI / LIHAT SEMUA (SESUAI GAMBAR PRESENSI-2)         -->
+  <!-- VIEW 2: REKAP PRESENSI / LIHAT SEMUA                                    -->
   <!-- ======================================================================= -->
   <div id="view-rekap-semua" class="hidden w-full max-w-lg mx-auto flex-1 animate-fade-up">
     <!-- Top App Bar -->
@@ -365,7 +369,7 @@
   </div>
 
   <!-- ======================================================================= -->
-  <!-- VIEW 3: LAPORAN PRESENSI BULANAN (SESUAI GAMBAR PRESENSI-3)             -->
+  <!-- VIEW 3: LAPORAN PRESENSI BULANAN                                        -->
   <!-- ======================================================================= -->
   <div id="view-laporan-bulanan" class="hidden w-full max-w-lg mx-auto flex-1 animate-fade-up">
     <!-- Top App Bar -->
@@ -459,7 +463,7 @@
   </div>
 
   <!-- ======================================================================= -->
-  <!-- VIEW 4: DETAIL PRESENSI (SESUAI GAMBAR PRESENSI-4)                      -->
+  <!-- VIEW 4: DETAIL PRESENSI                                                 -->
   <!-- ======================================================================= -->
   <div id="view-detail-presensi" class="hidden w-full max-w-lg mx-auto flex-1 animate-fade-up">
     <div class="bg-[#0F3562] text-white px-4 py-3.5 flex items-center gap-3 sticky top-0 z-30 shadow-sm">
@@ -538,19 +542,38 @@
   </div>
 
   <!-- ======================================================================= -->
-  <!-- VIEW 5: AKUN / FOOTER USER (SESUAI GAMBAR PRESENSI-5)                   -->
+  <!-- VIEW 5: AKUN / FOOTER USER + UPDATE PROFILE PHOTO                       -->
   <!-- ======================================================================= -->
   <div id="view-user" class="hidden w-full max-w-lg mx-auto flex-1 animate-fade-up">
     <div class="bg-[#0F3562] text-white px-5 py-4 sticky top-0 z-30 shadow-sm">
       <h2 class="font-display text-lg font-bold">Akun</h2>
     </div>
 
+    <!-- Kartu Profil Utama dengan Avatar & Tombol Ganti Foto -->
     <div class="bg-white p-5 flex items-center gap-4 border-b border-slate-100">
-      <div class="w-16 h-16 rounded-full bg-slate-200 flex items-center justify-center flex-shrink-0 overflow-hidden">
-        <svg class="w-10 h-10 text-slate-500 mt-1" fill="currentColor" viewBox="0 0 24 24">
-          <path d="M12 12c2.7 0 4.8-2.1 4.8-4.8S14.7 2.4 12 2.4 7.2 4.5 7.2 7.2 9.3 12 12 12zm0 2.4c-3.2 0-9.6 1.6-9.6 4.8v2.4h19.2v-2.4c0-3.2-6.4-4.8-9.6-4.8z"/>
-        </svg>
+      <div class="relative flex-shrink-0">
+        <div id="akun-avatar-wrapper" class="w-16 h-16 sm:w-20 sm:h-20 rounded-full bg-slate-200 border-2 border-[#0F3562]/20 flex items-center justify-center overflow-hidden shadow-xs">
+          <img id="akun-user-avatar-img" src="" alt="Foto Profil"
+            onerror="window.handleAvatarImgError('akun')"
+            class="hidden w-full h-full object-cover">
+          <svg id="akun-user-avatar-placeholder" class="w-10 h-10 sm:w-12 sm:h-12 text-slate-500 mt-1" fill="currentColor" viewBox="0 0 24 24">
+            <path d="M12 12c2.7 0 4.8-2.1 4.8-4.8S14.7 2.4 12 2.4 7.2 4.5 7.2 7.2 9.3 12 12 12zm0 2.4c-3.2 0-9.6 1.6-9.6 4.8v2.4h19.2v-2.4c0-3.2-6.4-4.8-9.6-4.8z"/>
+          </svg>
+        </div>
+
+        <!-- Tombol Kamera Ganti Foto Profil -->
+        <button type="button" id="btn-trigger-profile-photo" onclick="window.triggerProfilePhotoInput()" title="Ubah Foto Profil"
+          class="hidden absolute -bottom-1 -right-1 w-7 h-7 sm:w-8 sm:h-8 rounded-full bg-[#0F3562] hover:bg-[#148296] text-white border-2 border-white flex items-center justify-center shadow-md transition-colors cursor-pointer">
+          <svg class="w-3.5 h-3.5 sm:w-4 sm:h-4" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z"></path>
+            <path stroke-linecap="round" stroke-linejoin="round" d="M15 13a3 3 0 11-6 0 3 3 0 016 0z"></path>
+          </svg>
+        </button>
+
+        <!-- Input File Tersembunyi untuk Foto Profil -->
+        <input type="file" id="input-profile-photo" accept="image/jpeg, image/png, image/webp" class="hidden" onchange="window.handleProfilePhotoUpload(event)">
       </div>
+
       <div class="min-w-0 flex-1">
         <h3 id="akun-nama" class="font-display text-base sm:text-lg font-bold text-slate-900 truncate">PESERTA PELATIHAN</h3>
         <p id="akun-program" class="text-xs text-slate-500 leading-snug mt-0.5 line-clamp-2">Belum ada akun aktif</p>
@@ -573,12 +596,21 @@
       </button>
 
       <!-- Detail Profil Expandable -->
-      <div id="akun-profil-detail" class="hidden px-5 pb-4 pt-1 bg-slate-50/70 border-t border-slate-100 text-xs space-y-2">
+      <div id="akun-profil-detail" class="hidden px-5 pb-4 pt-2 bg-slate-50/70 border-t border-slate-100 text-xs space-y-2">
         <div class="flex justify-between py-1"><span class="text-slate-400">NIK / NIP</span><span id="prof-nik" class="font-semibold text-slate-700">-</span></div>
         <div class="flex justify-between py-1"><span class="text-slate-400">Jenis Kelamin</span><span id="prof-jk" class="font-semibold text-slate-700">-</span></div>
         <div class="flex justify-between py-1"><span class="text-slate-400">Email</span><span id="prof-email" class="font-semibold text-slate-700">-</span></div>
         <div class="flex justify-between py-1"><span class="text-slate-400">No. HP</span><span id="prof-hp" class="font-semibold text-slate-700">-</span></div>
         <div class="flex justify-between py-1 gap-4"><span class="text-slate-400">Alamat</span><span id="prof-alamat" class="font-semibold text-slate-700 text-right">-</span></div>
+        <div id="prof-photo-action-row" class="hidden pt-2 border-t border-slate-200/70">
+          <button type="button" onclick="window.triggerProfilePhotoInput()"
+            class="w-full py-2 px-3 rounded-xl bg-[#0F3562]/10 hover:bg-[#0F3562]/15 text-[#0F3562] font-semibold flex items-center justify-center gap-2 transition-colors cursor-pointer">
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
+            </svg>
+            <span>Ubah Foto Profil</span>
+          </button>
+        </div>
       </div>
     </div>
 
@@ -656,7 +688,7 @@
         class="w-full py-3.5 px-4 rounded-xl border border-[#A63A3A] text-[#A63A3A] hover:bg-rose-50 font-semibold text-sm transition-colors cursor-pointer">
         Keluar dari Akun
       </button>
-      <p class="text-center text-xs text-slate-400 mt-4">e-Presensi Kemnaker v2.2.0</p>
+      <p class="text-center text-xs text-slate-400 mt-4">e-Presensi Kemnaker v2.3.0</p>
     </div>
   </div>
 
@@ -891,7 +923,7 @@
             </svg>
           </div>
           <h4 class="font-display font-bold text-slate-800 text-sm">Database Peserta (CRUD)</h4>
-          <p class="text-xs text-slate-500 mt-1 leading-relaxed">Tambah peserta baru, ubah data NIK/program, atau nonaktifkan peserta.</p>
+          <p class="text-xs text-slate-500 mt-1 leading-relaxed">Tambah peserta baru, ubah data NIK/program/foto, atau nonaktifkan peserta.</p>
         </button>
 
         <button id="btn-menu-settings" type="button" class="p-4 rounded-2xl border border-slate-200 hover:border-amber-500 hover:bg-amber-50/40 text-left transition-all group cursor-pointer">
@@ -987,7 +1019,7 @@
         </div>
       </div>
 
-      <!-- SUB-VIEW C: DATABASE PESERTA (CRUD SISWA) -->
+      <!-- SUB-VIEW C: DATABASE PESERTA (CRUD SISWA + FOTO PROFIL) -->
       <div id="admin-students-view" class="hidden mt-4 space-y-4">
         <div class="border border-slate-200 rounded-2xl overflow-hidden bg-slate-50/70">
           <div class="px-4 py-3 flex items-center justify-between bg-white border-b border-slate-200">
@@ -1000,6 +1032,31 @@
 
           <form id="form-student-crud" class="hidden p-4 space-y-3">
             <input type="hidden" id="crud-original-nik">
+            <input type="hidden" id="crud-existing-foto">
+
+            <!-- Pratinjau & Unggah Foto Profil pada Form Admin -->
+            <div class="flex items-center gap-3.5 p-3 rounded-xl bg-white border border-slate-200">
+              <div class="w-14 h-14 rounded-full bg-slate-100 border border-slate-300 overflow-hidden flex items-center justify-center flex-shrink-0">
+                <img id="crud-foto-preview" src="" alt="Preview Foto" class="hidden w-full h-full object-cover">
+                <svg id="crud-foto-placeholder" class="w-8 h-8 text-slate-400" fill="currentColor" viewBox="0 0 24 24">
+                  <path d="M12 12c2.7 0 4.8-2.1 4.8-4.8S14.7 2.4 12 2.4 7.2 4.5 7.2 7.2 9.3 12 12 12zm0 2.4c-3.2 0-9.6 1.6-9.6 4.8v2.4h19.2v-2.4c0-3.2-6.4-4.8-9.6-4.8z"/>
+                </svg>
+              </div>
+              <div class="flex-1 min-w-0">
+                <label class="block text-[11px] font-semibold text-slate-700 mb-1">Foto Profil Peserta (Opsional)</label>
+                <div class="flex flex-wrap items-center gap-2">
+                  <label class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-semibold cursor-pointer transition-colors">
+                    <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                      <path stroke-linecap="round" stroke-linejoin="round" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12"></path>
+                    </svg>
+                    <span>Pilih Foto</span>
+                    <input type="file" id="crud-foto-input" accept="image/jpeg, image/png, image/webp" class="hidden">
+                  </label>
+                  <span id="crud-foto-status" class="text-[11px] text-slate-400 truncate">Belum ada foto dipilih</span>
+                </div>
+              </div>
+            </div>
+
             <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
               <div>
                 <label class="block text-[11px] font-semibold text-slate-600 mb-1">NIK / NIP *</label>
@@ -1065,7 +1122,7 @@
             <thead class="bg-slate-100 text-slate-600 sticky top-0 z-10">
               <tr>
                 <th class="p-3 font-semibold">NIK / NIP</th>
-                <th class="p-3 font-semibold">NAMA & KONTAK</th>
+                <th class="p-3 font-semibold">PESERTA & KONTAK</th>
                 <th class="p-3 font-semibold">JK</th>
                 <th class="p-3 font-semibold">PROGRAM & ALAMAT</th>
                 <th class="p-3 font-semibold">STATUS</th>
@@ -1132,7 +1189,7 @@
             <div class="flex gap-2">
               <input type="text" id="set-folder-id" class="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 text-xs font-mono">
               <a id="link-open-drive" href="https://drive.google.com/drive/folders/1AZEzlYDFF_As4KMEyd690gb_QgD9XMap" target="_blank"
-                class="px-3.5 py-2.5 rounded-xl bg-sky-600 hover:bg-sky-700 text-white text-xs font-semibold flex-shrink-0">
+                class="px-3 py-2.5 rounded-xl bg-sky-600 hover:bg-sky-700 text-white text-xs font-semibold flex-shrink-0">
                 Buka Drive
               </a>
             </div>
@@ -1281,6 +1338,7 @@
     let adminSessionPin = '';
     let allStudentsCache = [];
     let allProgressCache = [];
+    let crudPhotoBase64 = null;
 
     // -------------------------------------------------------------------------
     // 1. KOMUNIKASI BACKEND (HYBRID: GOOGLE.SCRIPT.RUN & FETCH API)
@@ -1294,6 +1352,7 @@
 
           if (action === 'getInitialSettings') runner.getSettings();
           else if (action === 'getStudentAndAttendance') runner.getStudentAndAttendance(params.nik);
+          else if (action === 'updateStudentProfilePhoto') runner.updateStudentProfilePhoto(params.nik, params.photoBase64);
           else if (action === 'checkIn') runner.checkIn(params.nik, params.photoBase64, params.signatureBase64, params.jenisPresensi, params.lokasi);
           else if (action === 'checkOut') runner.checkOut(params.nik, params.photoBase64, params.signatureBase64, params.jenisPresensi, params.lokasi);
           else if (action === 'verifyAdminPin') runner.verifyAdminPin(params.pin);
@@ -1326,7 +1385,7 @@
     }
 
     // -------------------------------------------------------------------------
-    // 2. NOTIFIKASI & JAM LIVE
+    // 2. NOTIFIKASI, JAM LIVE & HELPER FOTO PROFIL
     // -------------------------------------------------------------------------
     function showToast(type, message) {
       const container = document.getElementById('toast-container');
@@ -1376,12 +1435,149 @@
 
     function convertDriveUrlToImg(url) {
       if (!url) return '';
+      if (url.startsWith('data:image')) return url;
       const match = url.match(/\/d\/([a-zA-Z0-9_-]+)/) || url.match(/id=([a-zA-Z0-9_-]+)/);
       if (match && match[1]) {
         return `https://drive.google.com/thumbnail?id=${match[1]}&sz=w600`;
       }
       return url;
     }
+
+    /**
+     * Kompresi file gambar menjadi Base64 JPEG agar ringan dikirim ke Google Apps Script
+     */
+    function compressImageFileToBase64(file, maxWidth = 400, quality = 0.82) {
+      return new Promise((resolve, reject) => {
+        const reader = new FileReader();
+        reader.onload = (ev) => {
+          const img = new Image();
+          img.onload = () => {
+            const canvas = document.createElement('canvas');
+            let w = img.width;
+            let h = img.height;
+            if (w > maxWidth) {
+              h = Math.round((h * maxWidth) / w);
+              w = maxWidth;
+            }
+            canvas.width = w;
+            canvas.height = h;
+            const ctx = canvas.getContext('2d');
+            ctx.drawImage(img, 0, 0, w, h);
+            resolve(canvas.toDataURL('image/jpeg', quality));
+          };
+          img.onerror = () => reject(new Error('File gambar tidak dapat dibaca.'));
+          img.src = ev.target.result;
+        };
+        reader.onerror = () => reject(new Error('Gagal membaca file gambar.'));
+        reader.readAsDataURL(file);
+      });
+    }
+
+    /**
+     * Memperbarui tampilan avatar di Header Beranda dan Halaman Akun
+     */
+    function updateStudentAvatarUI(fotoUrl) {
+      const cleanUrl = convertDriveUrlToImg(fotoUrl);
+      const headerImg = document.getElementById('header-user-avatar-img');
+      const headerPh = document.getElementById('header-user-avatar-placeholder');
+      const akunImg = document.getElementById('akun-user-avatar-img');
+      const akunPh = document.getElementById('akun-user-avatar-placeholder');
+
+      if (cleanUrl) {
+        if (headerImg) {
+          headerImg.src = cleanUrl;
+          headerImg.classList.remove('hidden');
+        }
+        if (headerPh) headerPh.classList.add('hidden');
+
+        if (akunImg) {
+          akunImg.src = cleanUrl;
+          akunImg.classList.remove('hidden');
+        }
+        if (akunPh) akunPh.classList.add('hidden');
+      } else {
+        if (headerImg) {
+          headerImg.src = '';
+          headerImg.classList.add('hidden');
+        }
+        if (headerPh) headerPh.classList.remove('hidden');
+
+        if (akunImg) {
+          akunImg.src = '';
+          akunImg.classList.add('hidden');
+        }
+        if (akunPh) akunPh.classList.remove('hidden');
+      }
+    }
+
+    window.handleAvatarImgError = function(target) {
+      if (target === 'header') {
+        const img = document.getElementById('header-user-avatar-img');
+        const ph = document.getElementById('header-user-avatar-placeholder');
+        if (img) img.classList.add('hidden');
+        if (ph) ph.classList.remove('hidden');
+      } else {
+        const img = document.getElementById('akun-user-avatar-img');
+        const ph = document.getElementById('akun-user-avatar-placeholder');
+        if (img) img.classList.add('hidden');
+        if (ph) ph.classList.remove('hidden');
+      }
+    };
+
+    window.triggerProfilePhotoInput = function() {
+      if (!currentStudent || !currentStudent.nik) {
+        showToast('warning', 'Silakan cari NIK / NIP Anda di Beranda terlebih dahulu.');
+        return;
+      }
+      const inputEl = document.getElementById('input-profile-photo');
+      if (inputEl) inputEl.click();
+    };
+
+    window.handleProfilePhotoUpload = async function(event) {
+      const file = event.target.files && event.target.files[0];
+      if (!file) return;
+
+      if (!currentStudent || !currentStudent.nik) {
+        showToast('warning', 'Sesi peserta tidak ditemukan. Silakan cari NIK terlebih dahulu.');
+        event.target.value = '';
+        return;
+      }
+
+      if (!file.type.startsWith('image/')) {
+        showToast('error', 'Harap pilih file gambar (JPG, PNG, atau WEBP).');
+        event.target.value = '';
+        return;
+      }
+
+      const akunWrapper = document.getElementById('akun-avatar-wrapper');
+      const btnCam = document.getElementById('btn-trigger-profile-photo');
+      if (akunWrapper) akunWrapper.style.opacity = '0.5';
+      if (btnCam) btnCam.disabled = true;
+
+      showToast('info', 'Mengunggah dan memperbarui foto profil...');
+
+      try {
+        const compressedBase64 = await compressImageFileToBase64(file, 400, 0.82);
+        const res = await callBackend('updateStudentProfilePhoto', {
+          nik: currentStudent.nik,
+          photoBase64: compressedBase64
+        });
+
+        if (res && res.success) {
+          currentStudent.fotoProfil = res.fotoProfil;
+          updateStudentAvatarUI(res.fotoProfil);
+          showToast('success', res.message || 'Foto profil berhasil diperbarui!');
+        } else {
+          showToast('error', (res && res.message) || 'Gagal memperbarui foto profil.');
+        }
+      } catch (err) {
+        showToast('error', 'Terjadi kesalahan saat mengunggah foto: ' + err.message);
+      } finally {
+        if (akunWrapper) akunWrapper.style.opacity = '1';
+        if (btnCam) btnCam.disabled = false;
+        event.target.value = '';
+      }
+    };
 
     // -------------------------------------------------------------------------
     // 3. NAVIGASI HALAMAN (BERANDA, LIHAT SEMUA, LAPORAN BULANAN, DETAIL, USER)
@@ -1711,7 +1907,6 @@
       const cleanPeriode = (periodLabel || 'Rekap').replace(/[^a-zA-Z0-9]/g, '_');
       const fileName = `Laporan_Presensi_${cleanNama}_${cleanPeriode}.pdf`;
 
-      // Tampilkan sementara elemen laporan untuk dirender menjadi PDF
       printEl.classList.remove('hidden');
       printEl.style.padding = '16px';
 
@@ -1803,7 +1998,7 @@
       const infoMap = {
         tentang: {
           title: 'Tentang Aplikasi',
-          text: 'e-Presensi Siswa Pelatihan v2.2.0 merupakan sistem presensi digital berbasis lokasi GPS, foto selfie, dan tanda tangan digital untuk peserta pelatihan vokasi.'
+          text: 'e-Presensi Siswa Pelatihan v2.3.0 merupakan sistem presensi digital berbasis lokasi GPS, foto selfie, dan tanda tangan digital untuk peserta pelatihan vokasi.'
         },
         ketentuan: {
           title: 'Ketentuan Layanan',
@@ -1835,6 +2030,12 @@
       document.getElementById('header-user-program').textContent = 'Masukkan NIK / NIP untuk memulai presensi';
       document.getElementById('akun-nama').textContent = 'PESERTA PELATIHAN';
       document.getElementById('akun-program').textContent = 'Belum ada akun aktif';
+
+      updateStudentAvatarUI('');
+      const btnCam = document.getElementById('btn-trigger-profile-photo');
+      const photoRow = document.getElementById('prof-photo-action-row');
+      if (btnCam) btnCam.classList.add('hidden');
+      if (photoRow) photoRow.classList.add('hidden');
 
       document.getElementById('checkin-time').textContent = '--:--';
       document.getElementById('checkout-time').textContent = '--:--';
@@ -1949,6 +2150,13 @@
       document.getElementById('prof-email').textContent = student.email || '-';
       document.getElementById('prof-hp').textContent = student.hp || '-';
       document.getElementById('prof-alamat').textContent = student.alamat || '-';
+
+      // Tampilkan Foto Profil & aktifkan tombol ganti foto
+      updateStudentAvatarUI(student.fotoProfil || '');
+      const btnCam = document.getElementById('btn-trigger-profile-photo');
+      const photoRow = document.getElementById('prof-photo-action-row');
+      if (btnCam) btnCam.classList.remove('hidden');
+      if (photoRow) photoRow.classList.remove('hidden');
 
       const btnIn = document.getElementById('btn-checkin');
       const btnOut = document.getElementById('btn-checkout');
@@ -2377,7 +2585,7 @@
     }
 
     // -------------------------------------------------------------------------
-    // 6. PANEL ADMIN (LOGIN PIN, HASIL ABSENSI, CRUD SISWA, PENGATURAN)
+    // 6. PANEL ADMIN (LOGIN PIN, HASIL ABSENSI, KARTU PROGRES, CRUD, PENGATURAN)
     // -------------------------------------------------------------------------
     window.handleOpenAdmin = function() {
       const modal = document.getElementById('admin-pin-modal');
@@ -2421,7 +2629,7 @@
         document.getElementById('admin-students-view').classList.remove('hidden');
         backBtn.classList.remove('hidden');
         titleEl.textContent = 'Database Peserta (CRUD)';
-        subEl.textContent = 'Kelola daftar NIK/NIP, program & status peserta';
+        subEl.textContent = 'Kelola daftar NIK/NIP, foto profil, program & status peserta';
         loadAdminStudents();
       } else if (viewName === 'settings') {
         document.getElementById('admin-settings-view').classList.remove('hidden');
@@ -2444,7 +2652,6 @@
           populateProgressProgramFilter();
           renderAdminProgressCards();
         } else {
-          // Fallback hitung dari data siswa & absensi jika backend versi lama
           const [resStudents, resAbs] = await Promise.all([
             callBackend('getAllStudents', { pin: adminSessionPin }),
             callBackend('getAttendanceRecords', { pin: adminSessionPin, dateFilter: 'ALL' })
@@ -2474,6 +2681,7 @@
               program: s.program || '-',
               statusSiswa: s.status || 'Aktif',
               hp: s.hp || '',
+              fotoProfil: s.fotoProfil || '',
               totalHadir,
               countHarian,
               countOjt,
@@ -2527,7 +2735,6 @@
         return true;
       });
 
-      // Update KPI Ringkasan
       const totalPeserta = filtered.length;
       const sumDays = filtered.reduce((acc, cur) => acc + cur.totalHadir, 0);
       const sumOntime = filtered.reduce((acc, cur) => acc + cur.persenTepat, 0);
@@ -2551,13 +2758,21 @@
                   ? `<span class="px-2 py-0.5 rounded-full bg-sky-100 text-[#0F3562] font-bold text-[10px]">Baik</span>`
                   : `<span class="px-2 py-0.5 rounded-full bg-amber-100 text-amber-700 font-bold text-[10px]">Perlu Pembinaan</span>`));
 
+        const fotoUrl = convertDriveUrlToImg(p.fotoProfil);
+        const avatarHtml = fotoUrl
+          ? `<img src="${fotoUrl}" alt="${p.nama}" class="w-10 h-10 rounded-full object-cover border border-slate-200 flex-shrink-0">`
+          : `<div class="w-10 h-10 rounded-full bg-[#0F3562]/10 text-[#0F3562] font-display font-bold text-xs flex items-center justify-center flex-shrink-0">${(p.nama || 'P').charAt(0).toUpperCase()}</div>`;
+
         return `
           <div class="rounded-2xl border border-slate-200 bg-white p-4 shadow-2xs hover:border-[#148296]/60 transition-all flex flex-col justify-between gap-3">
             <div>
               <div class="flex items-start justify-between gap-2">
-                <div class="min-w-0">
-                  <h4 class="font-display text-sm font-bold text-slate-800 truncate">${p.nama}</h4>
-                  <p class="text-[11px] font-mono text-slate-400 mt-0.5">${p.nik}</p>
+                <div class="flex items-center gap-2.5 min-w-0">
+                  ${avatarHtml}
+                  <div class="min-w-0">
+                    <h4 class="font-display text-sm font-bold text-slate-800 truncate">${p.nama}</h4>
+                    <p class="text-[11px] font-mono text-slate-400 mt-0.5">${p.nik}</p>
+                  </div>
                 </div>
                 <div class="flex-shrink-0">${badgePredikat}</div>
               </div>
@@ -2715,12 +2930,22 @@
           ? `<button onclick="window.handleToggleStudentStatus('${s.nik}', '${s.nama.replace(/'/g, "\\'")}', true)" type="button" class="px-2.5 py-1 rounded-lg bg-rose-100 hover:bg-rose-200 text-rose-700 font-semibold text-[11px] cursor-pointer">Non Aktif</button>`
           : `<button onclick="window.handleToggleStudentStatus('${s.nik}', '${s.nama.replace(/'/g, "\\'")}', false)" type="button" class="px-2.5 py-1 rounded-lg bg-emerald-100 hover:bg-emerald-200 text-emerald-700 font-semibold text-[11px] cursor-pointer">Aktifkan</button>`;
 
+        const fotoUrl = convertDriveUrlToImg(s.fotoProfil);
+        const avatarThumb = fotoUrl
+          ? `<img src="${fotoUrl}" alt="${s.nama}" class="w-8 h-8 rounded-full object-cover border border-slate-200 flex-shrink-0">`
+          : `<div class="w-8 h-8 rounded-full bg-slate-100 text-slate-500 font-bold text-[11px] flex items-center justify-center flex-shrink-0">${(s.nama || 'P').charAt(0).toUpperCase()}</div>`;
+
         return `
           <tr class="hover:bg-slate-50">
             <td class="p-3 font-mono font-semibold text-slate-700 whitespace-nowrap">${s.nik}</td>
             <td class="p-3">
-              <p class="font-bold text-slate-800">${s.nama}</p>
-              <p class="text-[11px] text-slate-400">${s.hp || '-'} • ${s.email || '-'}</p>
+              <div class="flex items-center gap-2.5">
+                ${avatarThumb}
+                <div>
+                  <p class="font-bold text-slate-800">${s.nama}</p>
+                  <p class="text-[11px] text-slate-400">${s.hp || '-'} • ${s.email || '-'}</p>
+                </div>
+              </div>
             </td>
             <td class="p-3 font-semibold text-slate-600">${s.jk || '-'}</td>
             <td class="p-3">
@@ -2737,6 +2962,32 @@
       }).join('');
     }
 
+    function resetCrudPhotoUI(existingUrl = '') {
+      crudPhotoBase64 = null;
+      const preview = document.getElementById('crud-foto-preview');
+      const ph = document.getElementById('crud-foto-placeholder');
+      const status = document.getElementById('crud-foto-status');
+      const input = document.getElementById('crud-foto-input');
+      if (input) input.value = '';
+
+      const cleanUrl = convertDriveUrlToImg(existingUrl);
+      if (cleanUrl) {
+        if (preview) {
+          preview.src = cleanUrl;
+          preview.classList.remove('hidden');
+        }
+        if (ph) ph.classList.add('hidden');
+        if (status) status.textContent = 'Foto profil tersimpan';
+      } else {
+        if (preview) {
+          preview.src = '';
+          preview.classList.add('hidden');
+        }
+        if (ph) ph.classList.remove('hidden');
+        if (status) status.textContent = 'Belum ada foto dipilih';
+      }
+    }
+
     window.handleEditStudent = function(nik) {
       const s = allStudentsCache.find((item) => item.nik === nik);
       if (!s) return;
@@ -2744,6 +2995,7 @@
       form.classList.remove('hidden');
       document.getElementById('student-form-title').textContent = `Edit Peserta: ${s.nama}`;
       document.getElementById('crud-original-nik').value = s.nik;
+      document.getElementById('crud-existing-foto').value = s.fotoProfil || '';
       document.getElementById('crud-nik').value = s.nik;
       document.getElementById('crud-nama').value = s.nama;
       document.getElementById('crud-jk').value = s.jk || 'L';
@@ -2752,6 +3004,7 @@
       document.getElementById('crud-hp').value = s.hp || '';
       document.getElementById('crud-email').value = s.email || '';
       document.getElementById('crud-alamat').value = s.alamat || '';
+      resetCrudPhotoUI(s.fotoProfil || '');
     };
 
     window.handleToggleStudentStatus = async function(nik, nama, currentlyAktif) {
@@ -2869,9 +3122,30 @@
         form.classList.toggle('hidden');
       });
 
+      document.getElementById('crud-foto-input').addEventListener('change', async (e) => {
+        const file = e.target.files && e.target.files[0];
+        if (!file) return;
+        try {
+          crudPhotoBase64 = await compressImageFileToBase64(file, 400, 0.82);
+          const preview = document.getElementById('crud-foto-preview');
+          const ph = document.getElementById('crud-foto-placeholder');
+          const status = document.getElementById('crud-foto-status');
+          if (preview) {
+            preview.src = crudPhotoBase64;
+            preview.classList.remove('hidden');
+          }
+          if (ph) ph.classList.add('hidden');
+          if (status) status.textContent = file.name;
+        } catch (err) {
+          showToast('error', err.message);
+        }
+      });
+
       document.getElementById('btn-reset-student-form').addEventListener('click', () => {
         document.getElementById('form-student-crud').reset();
         document.getElementById('crud-original-nik').value = '';
+        document.getElementById('crud-existing-foto').value = '';
+        resetCrudPhotoUI('');
         document.getElementById('student-form-title').textContent = '+ Tambah Peserta Baru';
         document.getElementById('form-student-crud').classList.add('hidden');
       });
@@ -2892,7 +3166,9 @@
           status: document.getElementById('crud-status').value,
           hp: document.getElementById('crud-hp').value.trim(),
           email: document.getElementById('crud-email').value.trim(),
-          alamat: document.getElementById('crud-alamat').value.trim()
+          alamat: document.getElementById('crud-alamat').value.trim(),
+          fotoProfil: document.getElementById('crud-existing-foto').value.trim(),
+          photoBase64: crudPhotoBase64 || ''
         };
         const origNik = document.getElementById('crud-original-nik').value.trim();
 
@@ -2906,6 +3182,8 @@
             showToast('success', res.message);
             document.getElementById('form-student-crud').reset();
             document.getElementById('crud-original-nik').value = '';
+            document.getElementById('crud-existing-foto').value = '';
+            resetCrudPhotoUI('');
             document.getElementById('student-form-title').textContent = '+ Tambah Peserta Baru';
             document.getElementById('form-student-crud').classList.add('hidden');
             await loadAdminStudents();
@@ -2963,16 +3241,12 @@
     function applyDynamicKemnakerFavicon() {
       try {
         const iconUrl = 'https://upload.wikimedia.org/wikipedia/commons/thumb/1/1a/Logo_Kementerian_Ketenagakerjaan_%282016%29.png/512px-Logo_Kementerian_Ketenagakerjaan_%282016%29.png';
-        
         const links = document.querySelectorAll('link[rel="icon"], link[rel="apple-touch-icon"]');
-        
         if (links.length > 0) {
-          // Jika tag <link> sudah ada di <head>, langsung ganti href-nya
           links.forEach((el) => {
             el.setAttribute('href', iconUrl);
           });
         } else {
-          // Jika belum ada tag <link>, buat elemen baru secara otomatis
           const newLink = document.createElement('link');
           newLink.rel = 'icon';
           newLink.type = 'image/png';
